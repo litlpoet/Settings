@@ -1,0 +1,65 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/bk/.emacs.d/" . "elisp/")
+ ("/usr/share/" . "applications/")
+ ("/usr/" . "share/")
+ ("/home/" . "bk/")
+ ("/home/bk/VersionControl/Research/VMCR/" . "VMCR/")
+ ("/home/bk/VersionControl/Research/VMCR/VMCR/" . "VMCR_GUI/")
+ ("/home/bk/VersionControl/Research/" . "VMCR/")
+ ("/home/bk/VersionControl/" . "Research/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/bk/"
+ "/home/bk/.emacs.d/elisp/"
+ "/sudo:Core2Quad:"
+ "/usr/share/applications/"
+ "/home/bk/VersionControl/Research/VMCR/VMCR/VMCR_GUI/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ ".emacs"
+ "01_out_of_the_box.el"
+ "emacs-snapshot-nw.desktop"
+ ".profile"
+ ".bashrc"
+ "ps1.txt"
+ "main.cpp"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/bk/" (21914 53617 707891 406000) ".profile" "Videos/" ".dropbox-dist/" ".face" ".themes/" ".cache/" ".xsession-errors" ".ICEauthority" ".designer/" "Pictures/" ".bash_profile" ".macromedia/" "Clouds/" ".pam_environment" ".bash_logout" ".emacs~" "ps1.txt" ".gitconfig" ".emacs" "Desktop/" ".Xauthority" ".local/" ".dmrc" ".linuxmint/" ".config/" ".dropbox/" ".icons/" ".gnome2/" ".gconf/" "#ps1.txt#" ".nv/" ".bash_history" "Public/" ".nvidia-settings-rc" "VersionControl/" ".pki/" "Downloads/" "../" "Music/" ".uim.d/" "Documents/" ".bashrc~" ".mozilla/" ".cinnamon/" ".bashrc" "./" ".profile~" ".lesshst" ".emacs.d/" ".xinputrc" ".adobe/" ".atom/" ".aptitude/" "Templates/" ".gnome/" ".gksu.lock" ".dbus/" ".gnome2_private/" ".gem/")
+
+ ("/usr/share/applications/" (21914 41911 379165 280000) "bluetooth-wizard.desktop" "gcr-viewer.desktop" "dropbox.desktop" "cinnamon-display-panel.desktop" "mintstick-format.desktop" "libreoffice-xsltfilter.desktop" "cinnamon-settings-applets.desktop" "gthumb.desktop" "gdebi.desktop" "cinnamon-settings-tiling.desktop" "mintWelcome.desktop" "cinnamon-settings-hotcorner.desktop" "im-config.desktop" "evince-previewer.desktop" "bluetooth-sendto.desktop" "google-chrome.desktop~" "system-config-printer.desktop" "cinnamon-settings-panel.desktop" "cinnamon-settings-privacy.desktop" "brasero.desktop" "atom.desktop" "libreoffice-impress.desktop" "mintupload.desktop" "hplj1020.desktop" "banshee.desktop" "defaults.list" "cinnamon-settings-mouse.desktop" "gnome-system-monitor.desktop" "cinnamon-settings-daemon.desktop" "cinnamon-settings-default.desktop" "gthumb-import.desktop" "sublime-text.desktop" "mono-runtime-terminal.desktop" "cinnamon-settings-notifications.desktop" "cinnamon-settings-fonts.desktop" "cinnamon-network-panel.desktop" "gnome-panel.desktop" "gnome-disk-image-mounter.desktop" "mint-user-guide.desktop" "gnome-terminal.desktop" "cinnamon-settings-users.desktop" "cinnamon-settings-desktop.desktop" "seahorse.desktop" "yelp.desktop" "nemo-autorun-software.desktop" "banshee-audiocd.desktop" "libreoffice-calc.desktop" "metacity.desktop" "mimeinfo.cache" "mintBackup.desktop" "nm-applet.desktop" "cinnamon-settings-screensaver.desktop" "nvidia-settings.desktop" "nm-applet_mate.desktop" "mintstick.desktop" "mintstick-kde.desktop" "mintBackup_mime.desktop" "libreoffice-math.desktop" "docky.desktop" "gnome-system-log.desktop" "cinnamon-bluetooth-properties.desktop" "hexchat.desktop" "gnome-screenshot.desktop" "cinnamon-screensaver.desktop" "cinnamon2d.desktop" "cinnamon-settings-effects.desktop" "openjdk-7-policytool.desktop" "cinnamon-settings-general.desktop" "emacs-snapshot-nw.desktop" "cinnamon-settings-info.desktop" "gksu.desktop" "gnome-power-statistics.desktop" "cinnamon-settings-workspaces.desktop" "cinnamon-settings-windows.desktop" "libreoffice-draw.desktop" "python3.4.desktop" "google-chrome.desktop" "cinnamon.desktop" "transmission-gtk.desktop" "gucharmap.desktop" "cinnamon-color-panel.desktop" "mintstick-format-kde.desktop" "mintInstall_kde.desktop" "kde4/" "cinnamon-settings.desktop" "thunderbird.desktop" "synaptic.desktop" "libreoffice-writer.desktop" "brasero-nautilus.desktop" "totem.desktop" "icedtea-netx-javaws.desktop" "cinnamon-settings-desklets.desktop" "signon-ui-browser-process.desktop" "synaptic-kde.desktop" "gcr-prompter.desktop" "vlc.desktop" "file-roller.desktop" "mintdrivers.desktop" "cinnamon-settings-power.desktop" "nemo.desktop" "banshee-media-player.desktop" "cinnamon-datetime-panel.desktop" "itweb-settings.desktop" "DigiaQt-qtcreator-community.desktop" "nemo-autostart.desktop" "cinnamon-settings-extensions.desktop" "pidgin.desktop" "mintUpdate.desktop" "emacs-snapshot.desktop" "gcalctool.desktop" "cinnamon-settings-startup.desktop" "cinnamon-wacom-panel.desktop" "mintInstall.desktop" "gimp.desktop" "uim.desktop" "cinnamon-sound-nua-panel.desktop" "mintLocale.desktop" "simple-scan.desktop" "cinnamon-menu-editor.desktop" "gedit.desktop" "eog.desktop" "Qt-MaintenanceTool.desktop" "cinnamon-killer-daemon.desktop" "nm-connection-editor.desktop" "mintNanny.desktop" "cinnamon-settings-keyboard.desktop" "cinnamon-settings-user.desktop" "vino-preferences.desktop" "cinnamon-settings-backgrounds.desktop" "cinnamon-control-center.desktop" "cinnamon-universal-access-panel.desktop" "firefox.desktop" "apturl_mime.desktop" "mintInstall_mime.desktop" "gnome-disks.desktop" "evince.desktop" "gnome-user-share-properties.desktop" "baobab.desktop" "synapse.desktop" "cinnamon-region-panel.desktop" "libreoffice-startcenter.desktop" "cinnamon-sound-panel.desktop" "mintsources.desktop" "cinnamon-settings-calendar.desktop" "notification-daemon.desktop" "tomboy.desktop" "mono-runtime-common.desktop" "python2.7.desktop" "cinnamon-settings-themes.desktop" "gkbd-keyboard-display.desktop" "gnome-font-viewer.desktop" "gnome-disk-image-writer.desktop" "../" "./")
+
+ ("/home/bk/.emacs.d/elisp/" (21913 42304 489693 198000) "../" "./")
+
+ ("/home/bk/.emacs.d/" (21914 51116 371805 41000) "ido.last" "auto-save-list/" "ido.last~" "../" "tramp" "./" "elisp/")
+
+ ("/usr/share/application-registry/" (21911 36362 835286 418000) "gdebi.applications" "icedtea-netx-web-start.applications" "./" "../" "libreoffice.applications" "openjdk-7-archive.applications")
+
+ ("/home/bk/VersionControl/Research/VMCR/VMCR/VMCR_GUI/" (21913 59756 578295 777000) "vmuiusercontrol.hpp" "vmuiusercontrol.cpp" "VMCR_GUI.pro" "imgs/" "VMCR_GUI_LINUX.pri" "vmuioptionsfog.ui" "vmuiusercontrol.ui" "icons/" "vmuimenu.ui" "vmuioptionsfog.hpp" "vmuitoolbox.hpp" "vmuioptionsshadow.cpp" "vmuitoolbox.ui" "vmuimenu.hpp" "vmcr_gui_resources.qrc" "vmuitimeline.cpp" "main.cpp" "vmuitimeline.ui" "vmuimenu.cpp" "../" "vmuitoolbox.cpp" "styles/" "vmuimainwindow.cpp" "vmuitimeline.hpp" "vmuimainwindow.hpp" "VMCR_GUI_WIN.pri" "./" "vmuioptionsfog.cpp" "vmuioptionsshadow.hpp" "vmuimainwindow.ui" "vmuioptionsshadow.ui")
+
+ ("/usr/share/" (21913 34989 605440 632000) "directfb-1.2.10/" "libparse-debianchangelog-perl/" "gnome-terminal/" "cmake-3.2/" "consoletrans/" "evince/" "rubygems-integration/" "sgml/" "calendar/" "python-apt/" "sgml-base/" "insserv/" "libgksu/" "aspell/" "libnm-gtk/" "canna/" "ppp/" "games/" "gnome-bluetooth/" "gimp/" "gitk/" "ubuntu-system-adjustments/" "console-setup/" "i18n/" "gnome-vpn-properties/" "recovery-mode/" "pkg-config-crosswrapper" "gnome-system-log/" "indicators/" "ubuntu-drivers-common/" "base-passwd/" "javazi/" "usb_modeswitch/" "cinnamon-bluetooth/" "gcr-3/" "zoneinfo/" "locale-langpack/" "libreoffice/" "debhelper/" "mime-info/" "GConf/" "perl/" "cinnamon-settings-daemon/" "pulseaudio/" "zenity/" "gedit-2/" "gtksourceview-3.0/" "mint-upgrade-info/" "mousetweaks/" "gnome/" "caribou/" "dictionaries-common/" "transmission/" "mdm/" "docky/" "readline/" "base-files/" "gutenprint/" "ri/" "info/" "poppler/" "command-not-found/" "doc/" "foo2zjs/" "aclocal/" "ghostscript/" "gtksourceview-2.0/" "libgweather/" "vim/" "libthai/" "backgrounds/" "git-core/" "pixmaps/" "file-roller/" "awk/" "unattended-upgrades/" "mobile-broadband-provider-info/" "keyutils/" "numpy/" "language-tools/" "libtimezonemap/" "pyshared-data/" "mint-kernel-info/" "file/" "cinnamon-control-center/" "iptables/" "avahi/" "libgphoto2/" "nodejs/" "pam/" "evolution-data-server/" "hardening-includes/" "help/" "GeoIP/" "nm-applet/" "dh-python/" "apps/" "gconf/" "telepathy/" "libgnomekbd/" "qtchooser/" "cowsay/" "gnome-online-accounts/" "color/" "gnome-system-monitor/" "java/" "lintian/" "im-config/" "djvu/" "build-essential/" "python3/" "pyshared/" "muffin/" "vte/" "nvidia/" "hal/" "fonts/" "uim/" "fontconfig/" "seahorse/" "gnome-session/" "git-gui/" "libc-bin/" "libexttextcat/" "media-player-info/" "gcc-5/" "perl5/" "apt/" "yelp-xsl/" "hosts/" "myspell/" "adduser/" "brasero/" "totem/" "maven-repo/" "gdm/" "locale/" "common-licenses/" "mint-artwork-cinnamon/" "os-prober/" "banshee/" "gettext/" "cinnamon-session/" "pkgconfig/" "gnome-panel/" "omf/" "libwacom/" "sgml-data/" "eog/" "libsensors4/" "atom/" "mime/" "acpi-support/" "update-notifier/" "llvm-3.6/" "xml-core/" "mono/" "emacs/" "xfce4/" "gnome-user-share/" "groff/" "linuxmint/" "nautilus-dropbox/" "debianutils/" "nux/" "cinnamon/" "gdb/" "gstreamer-0.10/" "lupin-support/" "thumbnailers/" "mintsources/" "gnupg/" "wallpapers/" "help-langpack/" "nano/" "gthumb/" "casper/" "python-support/" "apt-xapian-index/" "X11/" "yelp/" "gtk-engines/" "desktop-directories/" "kde4/" "xsessions/" "binfmts/" "colord/" "unity/" "farstream/" "icedtea-web/" "dict/" "pycentral-data/" "doc-base/" "man-db/" "icons/" "ufw/" "p11-kit/" "liblouis/" "bug/" "hwdata/" "synaptic/" "gnome-control-center/" "locales/" "gtk-doc/" "snmp/" "libaudio2/" "apturl/" "qt4/" "upstart/" "sounds/" "man/" "application-registry/" "localechooser/" "alsa/" "foo2qpdl/" "cups/" "liblangtag/" "librarian/" "intltool-debian/" "gst-plugins-base/" "mintstick/" "samba/" "python/" "faces/" "gksu/" "themes/" "bash-completion/" "rlwrap/" "nemo-share/" "virtualbox/" "oneconf/" "sysv-rc/" "ecryptfs-utils/" "gvfs/" "uncrustify/" "nvidia-352/" "initramfs-tools/" "gnome-disk-utility/" "consolefonts/" "tabset/" "webkitgtk-1.0/" "gstreamer-1.0/" "mono-2.0/" "aptitude/" "cinnamon-screensaver/" "gnome-background-properties/" "grub-gfxpayload-lists/" "applications/" "menu/" "glib-2.0/" "appdata/" "dotnet/" "hplip/" "screen-resolution-extra/" "cli-common/" "geoclue-providers/" "dpkg/" "mate-background-properties/" "rsyslog/" "nemo/" "hunspell/" "webkitgtk-3.0/" "guile/" "enchant/" "gnome-settings-daemon/" "vino/" "ca-certificates/" "gdebi/" "pnm2ppa/" "pam-configs/" "alsa-base/" "firefox/" "gnome-2.0/" "ssl-cert/" "simple-scan/" "apport/" "grub/" "xml/" "nautilus/" "session-migration/" "m17n/" "mimelnk/" "systemtap/" "gitweb/" "tcltk/" "polkit-1/" "keyrings/" "purple/" "ppd/" "browserscripts/" "dbus-1/" "package-data-downloads/" "linux-sound-base/" "clang/" "cinnamon-background-properties/" "nemo-python/" "brltty/" "system-config-printer/" "idl/" "metacity/" "software-center/" "tomboy/" "pygtk/" "vlc/" "speech-dispatcher/" "gnome-shell/" "debconf/" "ca-certificates-java/" "misc/" "ImageMagick-6.7.7/" "../" "./")
+
+ ("/usr/" (21902 49427 89008 312000) "games/" "include/" "src/" "share/" "./" "sbin/" "local/" "../" "bin/" "lib32/" "lib/")
+
+ ("/home/" (21897 33336 855883 133000) "bk/" "lost+found/" "../" "./")
+
+ ("/home/bk/VersionControl/Research/VMCR/VMCR/" (21908 40473 483278 41000) "DATA/" "VMCR_GUI/" ".git/" ".gitignore" "VMCR.pro.user" "README.md" "VMCR.pro" "VMCR_LIB/" "../" "./" "VMCR.sublime-project" "VMCR_UML/" ".gitattributes")
+
+ ("/home/bk/VersionControl/Research/VMCR/" (21908 15958 286078 409000) "VMCR_Debug/" "VMCR_Release/" "../" "./" "VMCR/")
+
+ ("/home/bk/VersionControl/Research/" (21908 15743 562067 901000) "../" "./" "VMCR/")
+
+ ("/home/bk/VersionControl/" (21910 62213 886328 495000) "Libraries/" "Research/" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t
