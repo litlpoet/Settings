@@ -1,3 +1,9 @@
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -13,6 +19,11 @@
  '(inhibit-startup-screen t)
  '(menu-bar-mode nil)
  '(next-line-add-newlines t)
+ '(org-log-done (quote time))
+ '(package-selected-packages
+   (quote
+    (company-c-headers auto-complete-c-headers cmake-mode)))
+ '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(size-indication-mode t)
  '(tool-bar-mode nil)
@@ -24,6 +35,14 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; add MELPA to repository list
+(add-to-list
+ 'package-archives '("melpa" . "http://melpa.org/packages/")
+ )
+
 ;; add '~/.emacs.d/elisp/' folder as my custom script folder
-(add-to-list 'load-path "~/.emacs.d/elisp/")
+(add-to-list
+ 'load-path "~/.emacs.d/elisp/")
+(load "00_key_bindings.el")
+(load "01_programming.el")
 
