@@ -14,7 +14,6 @@
    (quote
     ("05c3bc4eb1219953a4f182e10de1f7466d28987f48d647c01f1f0037ff35ab9a" default)))
  '(font-use-system-font t)
- '(global-linum-mode t)
  '(inhibit-startup-screen t)
  '(initial-frame-alist
    (quote
@@ -26,8 +25,9 @@
  '(org-log-done (quote time))
  '(package-selected-packages
    (quote
-    (async helm monokai-theme company popup yasnippet company-c-headers cmake-mode)))
+    (undo-tree volatile-highlights dash epl pkg-info helm-projectile projectile async helm monokai-theme company popup yasnippet company-c-headers cmake-mode)))
  '(scroll-bar-mode nil)
+ '(scroll-step 1)
  '(show-paren-mode t)
  '(size-indication-mode t)
  '(tool-bar-mode nil)
@@ -47,11 +47,6 @@
 ;; add '~/.emacs.d/elisp/' folder as my custom script folder
 (add-to-list
  'load-path "~/.emacs.d/elisp/")
-(load "common_config.el")
-(load "org_config.el")
+(load "common_config")
+(load "org_config")
 (load "programming_config")
-
-
-
-
-

@@ -1,6 +1,7 @@
 ;; start company (complete anythin) instead of auto-complete
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'prog-mode-hook 'linum-mode)
 
 ;; start yasnippet
 (require 'yasnippet)
