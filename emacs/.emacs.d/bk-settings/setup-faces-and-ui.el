@@ -23,11 +23,11 @@
 
 ;; change font to Inconsolata
 (setq default-frame-alist
-      '((font . "Inconsolata-14")))
+      '((font . "Source Code Pro-14")))
 
 ;; set italic font for italic face
-(set-face-attribute 'italic nil
-		    :family "Inconsolata-Italic")
+;; (set-face-attribute 'italic nil
+		    ;; :family "Source Code Pro-Italic")
 
 ;; set korean font
 (set-fontset-font t 'hangul

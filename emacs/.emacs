@@ -17,7 +17,10 @@
  '(custom-safe-themes
    (quote
     ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default)))
- '(package-selected-packages (quote (company async helm color-theme-sanityinc-tomorrow))))
+ '(flymake-google-cpplint-command "c:/Local/python27/Scripts/cpplint.py")
+ '(package-selected-packages
+   (quote
+    (flycheck flycheck-google-cpplint iedit company-c-headers sr-speedbar ztree recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s workgroups2 company async helm color-theme-sanityinc-tomorrow))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -33,15 +36,21 @@
 (require 'setup-helm)
 (require 'setup-applications)
 (require 'setup-communication)
-(require 'setup-convenience)  
-(require 'setup-data)         
+(require 'setup-convenience)
+(require 'setup-data)
 (require 'setup-development)
-(require 'setup-editing)      
+(require 'setup-editing)
 (require 'setup-environment)
-(require 'setup-external)     
+(require 'setup-external)
 (require 'setup-faces-and-ui)
-(require 'setup-files)        
-(require 'setup-help)         
-(require 'setup-local)        
+(require 'setup-files)
+(require 'setup-help)
+(require 'setup-local)
 (require 'setup-programming)
-(require 'setup-text)         
+(require 'setup-text)
+
+;; workgroups2 setting
+(require 'workgroups2)
+(workgroups-mode 1)
+
+;; test backup
