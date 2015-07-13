@@ -9,12 +9,18 @@
 (require 'irony)
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
+;; (setq irony-additional-clang-options '("-std=c++11" "libc++"))
+(setq irony-additional-clang-options '("-std=c++11"))
 
 (defun bk:irony-mode-hook()
   (define-key irony-mode-map [remap completion-at-point]
     'irony-completion-at-point-async)
   (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
+    'irony-completion-at-point-async)
+  (when (eq system-type 'windows-nt)
+    (setq w32-pipe-read-delay 0))
+  )
+
 (add-hook 'irony-mode-hook 'bk:irony-mode-hook)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
@@ -24,8 +30,7 @@
 (add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ;; clang-format
-(load "/usr/share/emacs/site-lisp/clang-format-3.6/clang-format.el")
-
+(require 'clang-format)
 (defun bk:clang-format-setting()
   (define-key c-mode-base-map (kbd "C-S-f") 'clang-format-buffer)
   (setq-local clang-format-style "Google"))
@@ -57,29 +62,21 @@
   (add-to-list 'company-c-headers-path-system
                "/usr/include/c++/4.9/"))
 
-;; (require 'cc-mode)
-;; (define-key c-mode-map [(tab)] 'company-complete)
-;; (define-key c++-mode-map [(tab)] 'company-complete)
-
 ;; flycheck
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;;; flycheck-irony
 (require 'flycheck-irony)
 (eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
+  )
 
 ;; flycheck-google-cpplint
 (eval-after-load 'flycheck
   '(progn
      (require 'flycheck-google-cpplint)
-     (flycheck-add-next-checker 'irony
+     (flycheck-add-next-checker 'c/c++-clang
                                 '(t . c/c++-googlelint)))
-  )
-
-(when (eq system-type 'windows-nt)
-  (executable-find "cpplint.py") ; => "python.exe c:/Local/python27/Scripts/cpplint.py"
   )
 
 ;; semantic related
@@ -95,6 +92,13 @@
 ;; cmake
 (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
 (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+
+;; cpputils-cmake
+(require 'cpputils-cmake)
+(add-hook 'c-mode-common-hook
+          (lambda()
+            (if (derived-mode-p 'c-mode 'c++-mode)
+                (cppcm-reload-all))))
 
 (provide 'setup-programming)
 ;;; setup-programming.el ends here
