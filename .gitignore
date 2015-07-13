@@ -2,7 +2,11 @@
 auto-save-list
 *~
 *.dat
+*.eld
 ido.*
+recentf
 emacs/.emacs.d/elpa
 emacs/.emacs.d/eshell
+emacs/.emacs.d/irony
+emacs/.emacs.d/semanticdb
 *.*#

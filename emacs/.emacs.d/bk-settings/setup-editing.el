@@ -1,4 +1,6 @@
-(provide 'setup-editing)
+;;; setup-editing.el --- editing package setup
+;;; Commentary:
+;;; Code:
 
 ;; basic editing extensions
 (setq global-mark-ring-max 5000
@@ -19,7 +21,7 @@
 
 ;; killing
 (setq kill-ring-max 5000
-			kill-whole-line t)
+      kill-whole-line t)
 
 ;; important white space in diff-mode
 (add-hook 'diff-mode-hook
@@ -52,7 +54,7 @@
 (setq sp-hybrid-kill-entire-symbol nil)
 (sp-use-paredit-bindings)
 
-;; clena-aindent-mode
+;; clean-aindent-mode
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook ' clean-aindent-mode)
 
@@ -63,3 +65,6 @@
 ;; yasnippet
 (require 'yasnippet)
 (yas-global-mode 1)
+
+(provide 'setup-editing)
+;;; setup-editing.el ends here

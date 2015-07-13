@@ -1,4 +1,6 @@
-(provide 'setup-convenience)
+;;; setup-convenience.el --- covenience package setup
+;;; Commentary:
+;;; Code:
 
 ;; start company (complete anything) instead of auto-complete
 (require 'company)
@@ -8,9 +10,12 @@
 (global-auto-revert-mode)
 
 ;; highlight current line
+(if (boundp 'global-hl-line-sticky-flag)
+    (setq global-hl-line-sticky-flag t))
 (global-hl-line-mode)
 
 ;; show ibuffer in another window
+(require 'ibuffer)
 (setq ibuffer-use-other-window t)
 
 ;; line number visualization only in programming mode
@@ -26,8 +31,14 @@
 (require 'expand-region)
 (global-set-key (kbd "M-m") 'er/expand-region)
 
-
 ;; projectile
+(require 'projectile)
 (projectile-global-mode)
 (when (eq system-type 'windows-nt)
   (setq projectile-indexing-method 'alien))
+
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+
+(provide 'setup-convenience)
+;;; setup-convenience.el ends here

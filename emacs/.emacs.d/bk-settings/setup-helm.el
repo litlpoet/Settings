@@ -1,24 +1,16 @@
-(provide 'setup-helm)
+;;; setup-helm --- setting package helm
+;;; commentary:
+;;; code:
 
 ;; start 'helm'
 (require 'helm)
 (require 'helm-config)
 
-(global-set-key (kbd "C-c h")
-		'helm-command-prefix)
-
-(global-set-key (kbd "C-x b")
-		'helm-mini)
-
-(global-set-key (kbd "C-x C-f")
-		'helm-find-files)
-
-(global-set-key (kbd "M-x")
-		'helm-M-x)
-
-(global-set-key (kbd "M-y")
-		'helm-show-kill-ring)
-
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-unset-key (kbd "C-x c"))
 
 (define-key helm-map (kbd "<tab>")
@@ -40,3 +32,6 @@
       helm-buffers-fuzzy-matching t)
 
 (helm-mode 1)
+
+(provide 'setup-helm)
+;;; setup-helm.el ends here
