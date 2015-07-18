@@ -24,7 +24,7 @@
  '(flycheck-clang-language-standard "c++11")
  '(package-selected-packages
    (quote
-    (clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit company-c-headers sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow))))
+    (evil clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit company-c-headers sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -36,21 +36,20 @@
 (add-to-list 'load-path
 	     "~/.emacs.d/bk-settings/")
 
+;; evil mode
+;; (require 'evil)
+;; (evil-mode 1)
+
 ;; load my module
 (require 'setup-helm)
-;; (require 'setup-applications)
-;; (require 'setup-communication)
+(require 'setup-projectile)
+(require 'setup-irony)
+(require 'setup-company)
+(require 'setup-flycheck)
 (require 'setup-convenience)
-;; (require 'setup-data)
-;; (require 'setup-development)
 (require 'setup-editing)
-;; (require 'setup-environment)
-;; (require 'setup-external)
 (require 'setup-faces-and-ui)
 (require 'setup-files)
-;; (require 'setup-help)
-;; (require 'setup-local)
 (require 'setup-programming)
-;; (require 'setup-text)
 
 ;;; .emacs ends here
