@@ -13,8 +13,8 @@
     'irony-completion-at-point-async)
   (define-key irony-mode-map [remap complete-symbol]
     'irony-completion-at-point-async)
-  ;; (when (eq system-type 'windows-nt)
-  ;;   (setq w32-pipe-read-delay 0))
+  (when (eq system-type 'windows-nt)
+    (setq w32-pipe-read-delay 0))
   )
 
 (add-hook 'irony-mode-hook 'bk:irony-mode-hook)

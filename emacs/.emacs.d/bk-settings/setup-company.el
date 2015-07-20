@@ -5,13 +5,13 @@
 ;; start company (complete anything) instead of auto-complete
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay 0.2)
 
 ;; company irony
 ;; company yasnippet with irony
 (eval-after-load 'company
   '(progn
      (require 'company-irony)
-     (add-to-list 'company-backends 'company-irony)
      (push '(company-irony :with company-yasnippet) company-backends)
      (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
   )
@@ -28,6 +28,9 @@
                "c:/Local/msys64/mingw64/include/"
                "c:/Local/msys64/mingw64/include/c++/4.9.2/"
                "c:/Local/include/eigen3/"))
+       (setq company-c-headers-path-user
+             '("c:/Local/include/eigen3/"
+               "." ".."))
        )
      (when (eq system-type 'gnu/linux)
        (add-to-list 'company-c-headers-path-system

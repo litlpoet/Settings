@@ -8,7 +8,7 @@
 ;; (when (eq system-type 'windows-nt)
 ;;   (setq projectile-indexing-method 'alien))
 (setq projectile-indexing-method 'alien)
-(setq projectile-enable-caching nil)
+;; (setq projectile-enable-caching nil)
 
 (require 'helm-projectile)
 (setq projectile-completion-system 'helm)

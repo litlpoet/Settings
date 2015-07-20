@@ -31,6 +31,8 @@
       helm-M-x-fuzzy-match t
       helm-buffers-fuzzy-matching t)
 
+(helm-autoresize-mode t)
+
 (helm-mode 1)
 
 (provide 'setup-helm)
