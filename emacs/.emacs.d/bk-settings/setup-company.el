@@ -7,11 +7,12 @@
 (add-hook 'after-init-hook 'global-company-mode)
 
 ;; company irony
-(require 'company-irony)
+;; company yasnippet with irony
 (eval-after-load 'company
   '(progn
      (require 'company-irony)
      (add-to-list 'company-backends 'company-irony)
+     (push '(company-irony :with company-yasnippet) company-backends)
      (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
   )
 
@@ -33,6 +34,7 @@
                     "/usr/include/c++/4.9/"))
      )
   )
+
 
 (provide 'setup-company)
 ;;; setup-company.el ends here
