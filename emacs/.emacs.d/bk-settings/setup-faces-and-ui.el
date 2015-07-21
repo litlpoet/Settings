@@ -8,16 +8,16 @@
 (menu-bar-mode -1)
 (column-number-mode 1)
 (winner-mode 1)
+(size-indication-mode t)
 
 ;; turn off cursor blinking
 (blink-cursor-mode -1)
 
 (setq inhibit-startup-screen t
+      visible-bell 1
       scroll-margin 0
       scroll-conservatively 100000
       scroll-preserve-screen-position t)
-
-(size-indication-mode t)
 
 ;; change window title in useful way
 (setq frame-title-format
@@ -55,6 +55,7 @@
 (setq
  golden-ratio-exclude-buffer-names
  '("*compilation*"
+   "*Help*"
    "*Messages*"
    "*Warnings*"))
 
