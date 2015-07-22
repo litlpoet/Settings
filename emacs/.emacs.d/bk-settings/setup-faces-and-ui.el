@@ -68,6 +68,7 @@
 
 (golden-ratio-mode 1)
 
+;; smart mode line
 (sml/setup)
 
 (provide 'setup-faces-and-ui)
