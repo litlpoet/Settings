@@ -1,0 +1,25 @@
+[user]
+	name = Byungkuk Choi
+	email = litlpoet@gmail.com
+[gui]
+	fontdiff = -family \"Source Code Pro\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
+	recentrepo = S:/VersionControl/Research/VMCR/VMCR
+[push]
+	default = simple
+[merge]
+	tool = kdiff3
+[mergetool "kdiff3"]
+	path = C:/Program Files/KDiff3/kdiff3.exe
+[diff]
+	tool = kdiff3
+	guitool = kdiff3
+[difftool "kdiff3"]
+	path = C:/Program Files/KDiff3/kdiff3.exe
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
+[core]
+	autocrlf = true
+[http]
+	sslcainfo = /c/Users/Byungkuk/AppData/Local/GitHub/PortableGit_c2ba306e536fdf878271f7fe636a147ff37326ad/bin/curl-ca-bundle.crt
