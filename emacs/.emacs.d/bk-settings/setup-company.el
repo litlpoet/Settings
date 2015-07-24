@@ -34,13 +34,12 @@
              '("." ".."))
        )
      (when (eq system-type 'gnu/linux)
-       (add-to-list 'company-c-headers-path-system
-                    "/usr/include/c++/4.9/")
+       (append company-c-headers-path-system
+               '("/usr/include/c++/4.9/"
+                 "/usr/local/include/eigen3/"))
        (setq company-c-headers-path-user
-             '("/usr/local/include/eigen3/"
-               "." ".."))
+             '("." ".."))
        )
-
      )
   )
 
