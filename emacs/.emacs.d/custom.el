@@ -9,6 +9,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(compilation-scroll-output t)
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
@@ -16,6 +17,12 @@
  '(package-selected-packages
    (quote
     (smart-mode-line-powerline-theme smart-mode-line golden-ratio magit evil clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit company-c-headers sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow)))
+ '(safe-local-variable-values
+   (quote
+    ((projectile-project-run-cmd . "make test -C \"s:/VersionControl/Research/libML/build\"")
+     (projectile-project-compilation-cmd . "make -j 4 -C \"s:/VersionControl/Research/libML/build\"")
+     (projectile-project-run-cmd . "s:/VersionControl/Research/QtPlotter/build/Plotter.exe")
+     (projectile-project-compilation-cmd . "make -j 4 -C \"s:/VersionControl/Research/QtPlotter/build\""))))
  '(sml/mode-width (quote right))
  '(sml/theme (quote respectful)))
 (custom-set-faces

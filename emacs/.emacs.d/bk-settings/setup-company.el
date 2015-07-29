@@ -27,9 +27,7 @@
              '("c:/Local/msys64/mingw64/x86_64-w64-mingw32/include/"
                "c:/Local/msys64/mingw64/include/"
                "c:/Local/msys64/mingw64/include/c++/4.9.2/"
-               "c:/Local/msys64/mingw64/qt5-static/include/"
-               "c:/Local/include/eigen3/"
-               ))
+               "c:/Local/include/eigen3/"))
        (setq company-c-headers-path-user
              '("." ".."))
        )

@@ -3,6 +3,7 @@
 ;;; Code:
 
 ;; projectile
+(message "[bk:setup-projectile.el is loading...]")
 (require 'projectile)
 (projectile-global-mode)
 ;; (when (eq system-type 'windows-nt)
@@ -13,6 +14,9 @@
 (require 'helm-projectile)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
+
+(setq projectile-switch-project-action
+      'projectile-dired)
 
 (provide 'setup-projectile)
 

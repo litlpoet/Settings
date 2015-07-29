@@ -3,6 +3,7 @@
 ;;; code:
 
 ;; start 'helm'
+(message "[bk:setup-helm.el is loading...]")
 (require 'helm)
 (require 'helm-config)
 

@@ -2,6 +2,7 @@
 ;;; commentary:
 ;;; code:
 
+(message "[bk:setup-faces-and-ui.el is loading...]")
 ;; for clean look
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
