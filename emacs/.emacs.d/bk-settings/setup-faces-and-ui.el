@@ -42,23 +42,24 @@
 ;; golden-ratio
 (require 'golden-ratio)
 
-(setq
- golden-ratio-exclude-modes
- '("ediff-mode"
-   "magit-log-mode"
-   "magit-reflog-mode"
-   "magit-status-mode"
-   "IELM"
-   "eshell-mode"
-   "dired-mode")
- )
+(setq golden-ratio-auto-scale t)
+;; (setq
+;;  golden-ratio-exclude-modes
+;;  '("ediff-mode"
+;;    "magit-log-mode"
+;;    "magit-reflog-mode"
+;;    "magit-status-mode"
+;;    "IELM"
+;;    "eshell-mode"
+;;    "dired-mode")
+;;  )
 
-(setq
- golden-ratio-exclude-buffer-names
- '("*compilation*"
-   "*Help*"
-   "*Messages*"
-   "*Warnings*"))
+;; (setq
+;;  golden-ratio-exclude-buffer-names
+;;  '("*compilation*"
+;;    "*Help*"
+;;    "*Messages*"
+;;    "*Warnings*"))
 
 (defun bk:helm-alive-p ()
   (if (boundp 'helm-alive-p)

@@ -29,6 +29,7 @@
 (require 'setup-irony)
 (require 'setup-company)
 (require 'setup-flycheck)
+(require 'setup-org)
 (require 'setup-convenience)
 (require 'setup-editing)
 (require 'setup-faces-and-ui)
