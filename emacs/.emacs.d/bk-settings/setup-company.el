@@ -32,9 +32,11 @@
              '("." ".."))
        )
      (when (eq system-type 'gnu/linux)
-       (append company-c-headers-path-system
-               '("/usr/include/c++/4.9/"
-                 "/usr/local/include/eigen3/"))
+       (setq company-c-headers-path-system
+             (append company-c-headers-path-system
+                     '("/usr/include/c++/4.9/"
+                       "/usr/local/include/eigen3/"
+                       "/opt/qt5/5.5/gcc_64/include/")))
        (setq company-c-headers-path-user
              '("." ".."))
        )

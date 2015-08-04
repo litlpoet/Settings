@@ -1,0 +1,13 @@
+[user]
+	name = Byungkuk Choi
+	email = litlpoet@gmail.com
+[gui]
+	fontdiff = -family \"Source Code Pro\" -size 10 -weight normal -slant roman -underline 0 -overstrike 0
+[push]
+	default = simple
+[filter "lfs"]
+	clean = git lfs clean %f
+	smudge = git lfs smudge %f
+	required = true
+[core]
+	autocrlf = true
