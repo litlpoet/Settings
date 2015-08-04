@@ -1,0 +1,45 @@
+command used
+
+$ grep ^ /etc/apt/sources.list /etc/apt/sources.list.d/*
+/etc/apt/sources.list:#deb cdrom:[Linux Mint 17.1 _Rebecca_ - Release amd64 20141126]/ trusty contrib main non-free
+/etc/apt/sources.list.d/brightbox-ruby-ng-trusty.list:deb http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu trusty main
+/etc/apt/sources.list.d/brightbox-ruby-ng-trusty.list:# deb-src http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu trusty main
+/etc/apt/sources.list.d/docky-core-stable-trusty.list:deb http://ppa.launchpad.net/docky-core/stable/ubuntu trusty main
+/etc/apt/sources.list.d/docky-core-stable-trusty.list:# deb-src http://ppa.launchpad.net/docky-core/stable/ubuntu trusty main
+/etc/apt/sources.list.d/george-edison55-cmake-3_x-trusty.list:deb http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu trusty main
+/etc/apt/sources.list.d/george-edison55-cmake-3_x-trusty.list:# deb-src http://ppa.launchpad.net/george-edison55/cmake-3.x/ubuntu trusty main
+/etc/apt/sources.list.d/getdeb.list:# deb http://archive.getdeb.net/ubuntu trusty-getdeb apps 
+/etc/apt/sources.list.d/git-core-ppa-trusty.list:deb http://ppa.launchpad.net/git-core/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/git-core-ppa-trusty.list:# deb-src http://ppa.launchpad.net/git-core/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/google-chrome.list:### THIS FILE IS AUTOMATICALLY CONFIGURED ###
+/etc/apt/sources.list.d/google-chrome.list:# You may comment out this entry, but any other modifications may be lost.
+/etc/apt/sources.list.d/google-chrome.list:deb http://dl.google.com/linux/chrome/deb/ stable main
+/etc/apt/sources.list.d/mamarley-nvidia-trusty.list:deb http://ppa.launchpad.net/mamarley/nvidia/ubuntu trusty main
+/etc/apt/sources.list.d/mamarley-nvidia-trusty.list:# deb-src http://ppa.launchpad.net/mamarley/nvidia/ubuntu trusty main
+/etc/apt/sources.list.d/nodesource.list:deb https://deb.nodesource.com/node_0.12 trusty main
+/etc/apt/sources.list.d/nodesource.list:# deb-src https://deb.nodesource.com/node_0.12 trusty main
+/etc/apt/sources.list.d/noobslab-themes-trusty.list:deb http://ppa.launchpad.net/noobslab/themes/ubuntu trusty main
+/etc/apt/sources.list.d/noobslab-themes-trusty.list:# deb-src http://ppa.launchpad.net/noobslab/themes/ubuntu trusty main
+/etc/apt/sources.list.d/numix-ppa-trusty.list:deb http://ppa.launchpad.net/numix/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/numix-ppa-trusty.list:# deb-src http://ppa.launchpad.net/numix/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/official-package-repositories.list:deb http://mirrors.hustunique.com/linuxmint rafaela main upstream import 
+/etc/apt/sources.list.d/official-package-repositories.list:
+/etc/apt/sources.list.d/official-package-repositories.list:deb http://extra.linuxmint.com rafaela main
+/etc/apt/sources.list.d/official-package-repositories.list:
+/etc/apt/sources.list.d/official-package-repositories.list:deb http://mirror.premi.st/ubuntu trusty main restricted universe multiverse
+/etc/apt/sources.list.d/official-package-repositories.list:deb http://mirror.premi.st/ubuntu trusty-updates main restricted universe multiverse
+/etc/apt/sources.list.d/official-package-repositories.list:
+/etc/apt/sources.list.d/official-package-repositories.list:deb http://security.ubuntu.com/ubuntu/ trusty-security main restricted universe multiverse
+/etc/apt/sources.list.d/official-package-repositories.list:deb http://archive.canonical.com/ubuntu/ trusty partner
+/etc/apt/sources.list.d/ravefinity-project-ppa-trusty.list:deb http://ppa.launchpad.net/ravefinity-project/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/ravefinity-project-ppa-trusty.list:# deb-src http://ppa.launchpad.net/ravefinity-project/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/synapse-core-ppa-trusty.list:deb http://ppa.launchpad.net/synapse-core/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/synapse-core-ppa-trusty.list:# deb-src http://ppa.launchpad.net/synapse-core/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/ubuntu-elisp-ppa-trusty.list:deb http://ppa.launchpad.net/ubuntu-elisp/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/ubuntu-elisp-ppa-trusty.list:# deb-src http://ppa.launchpad.net/ubuntu-elisp/ppa/ubuntu trusty main
+/etc/apt/sources.list.d/ubuntu-toolchain-r-test-trusty.list:deb http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu trusty main
+/etc/apt/sources.list.d/ubuntu-toolchain-r-test-trusty.list:# deb-src http://ppa.launchpad.net/ubuntu-toolchain-r/test/ubuntu trusty main
+/etc/apt/sources.list.d/unit193-sourcecodepro-trusty.list:deb http://ppa.launchpad.net/unit193/sourcecodepro/ubuntu trusty main
+/etc/apt/sources.list.d/unit193-sourcecodepro-trusty.list:# deb-src http://ppa.launchpad.net/unit193/sourcecodepro/ubuntu trusty main
+/etc/apt/sources.list.d/webupd8team-sublime-text-3-trusty.list:deb http://ppa.launchpad.net/webupd8team/sublime-text-3/ubuntu trusty main
+/etc/apt/sources.list.d/webupd8team-sublime-text-3-trusty.list:# deb-src http://ppa.launchpad.net/webupd8team/sublime-text-3/ubuntu trusty main
