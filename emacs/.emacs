@@ -8,13 +8,18 @@
 	     '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
+;; auto install packages
+(defvar auto-package-install-file
+  (expand-file-name "auto-package-install.el" user-emacs-directory))
+(load auto-package-install-file)
+
 ;; make customize setting sperated from this .emacs file
 (setq custom-file
       (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
 (defvar root-dir (file-name-directory load-file-name)
-  "The root directory of the Emacs.")
+  "The root directory of the .emacs.")
 
 (defvar bk-setting-dir
   (expand-file-name "bk-settings" user-emacs-directory)
