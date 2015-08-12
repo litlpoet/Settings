@@ -4,8 +4,7 @@
 (require 'cl)
 
 (defvar bk:required-packages
-  '(
-    clang-format
+  '(clang-format
     clean-aindent-mode
     cmake-font-lock
     cmake-mode
@@ -33,14 +32,12 @@
     projectile
     recentf-ext
     smart-mode-line
-    smart-mode-line-powerline-theme
     smartparens
     sr-speedbar
     stickyfunc-enhance
     undo-tree
     volatile-highlights
-    yasnippet
-    )
+    yasnippet)
   "bk's list of packages to ensure are installed at launch.")
 
 ;; check if all packages are installed
@@ -48,8 +45,7 @@
   (loop for p in bk:required-packages
         when (not (package-installed-p p))
         do (return nil)
-        finally (return t))
-  )
+        finally (return t)))
 
 ;; if not all packages are installed, check one by one and install the missing ones.
 (unless (bk:packages-installed)

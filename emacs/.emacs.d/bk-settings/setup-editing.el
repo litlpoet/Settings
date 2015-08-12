@@ -56,12 +56,10 @@
 ;; (sp-use-paredit-bindings)
 (show-smartparens-global-mode +1)
 (smartparens-global-mode 1)
-
 (sp-with-modes '(c-mode c++-mode)
   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-                                            ("* ||\n[i]" "RET")))
-  )
+                                            ("* ||\n[i]" "RET"))))
 
 ;; clean-aindent-mode
 (require 'clean-aindent-mode)
@@ -74,6 +72,10 @@
 ;; yasnippet
 (require 'yasnippet)
 (yas-global-mode 1)
+
+;; iedit
+(require 'iedit)
+(global-set-key (kbd "C-;") 'iedit-mode)
 
 ;; multiple-cursors
 (require 'multiple-cursors)

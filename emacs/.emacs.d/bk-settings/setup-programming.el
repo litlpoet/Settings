@@ -3,6 +3,15 @@
 ;;; Code:
 
 (message "[bk:setup-programming.el is loading...]")
+;; line number visualization only in programming mode
+(add-hook 'prog-mode-hook 'linum-mode)
+
+;; useless whitespace is highlighted in programming mode
+(add-hook 'prog-mode-hook
+	  (lambda()
+	    (interactive)
+	    (setq show-trailing-whitespace 1)))
+
 ;; make .h file to cpp mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
