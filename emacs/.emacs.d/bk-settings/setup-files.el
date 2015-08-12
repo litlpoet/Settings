@@ -3,6 +3,7 @@
 ;;; code:
 
 ;; large size file warning
+(message "[bk:setup-files.el is loading...]")
 (setq large-file-warning-threshold 100000000) ;; size in bytes
 
 ;; back up files

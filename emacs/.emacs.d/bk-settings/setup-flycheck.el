@@ -3,6 +3,7 @@
 ;;; Code:
 
 ;; flycheck
+(message "[bk:setup-flycheck.el is loading...]")
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 

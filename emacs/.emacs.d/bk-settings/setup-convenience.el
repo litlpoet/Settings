@@ -3,6 +3,7 @@
 ;;; Code:
 
 ;; update any changes made on file to the current buffer
+(message "[bk:setup-convenience.el is loading...]")
 (global-auto-revert-mode)
 
 ;; highlight current line

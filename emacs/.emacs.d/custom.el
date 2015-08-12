@@ -19,10 +19,8 @@
     (multiple-cursors smart-mode-line-powerline-theme smart-mode-line golden-ratio magit evil clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit company-c-headers sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow)))
  '(safe-local-variable-values
    (quote
-    ((projectile-project-run-cmd . "~/VersionControl/Research/QtPlotter/build/Plotter")
-     (projectile-project-compilation-cmd . "make -j 4 -C \"~/VersionControl/Research/QtPlotter/build\"")
-     (projectile-project-run-cmd . "make test -C \"~/VersionControl/Research/libML/build\"")
-     (projectile-project-compilation-cmd . "make -j 4 -C \"~/VersionControl/Research/libML/build\"")
+    ((projectile-project-run-cmd . "s:/VersionControl/Research/sketchimo/build/sketchimo.exe")
+     (projectile-project-compilation-cmd . "make -j 4 -C \"s:/VersionControl/Research/sketchimo/vmcr/build\"")
      (projectile-project-run-cmd . "make test -C \"s:/VersionControl/Research/libML/build\"")
      (projectile-project-compilation-cmd . "make -j 4 -C \"s:/VersionControl/Research/libML/build\"")
      (projectile-project-run-cmd . "s:/VersionControl/Research/QtPlotter/build/Plotter.exe")

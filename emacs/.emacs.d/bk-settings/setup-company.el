@@ -3,6 +3,7 @@
 ;;; Code:
 
 ;; start company (complete anything) instead of auto-complete
+(message "[bk:setup-company.el is loading...]")
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.2)
@@ -42,7 +43,6 @@
        )
      )
   )
-
 
 (provide 'setup-company)
 ;;; setup-company.el ends here

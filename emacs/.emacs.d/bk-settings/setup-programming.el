@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
+(message "[bk:setup-programming.el is loading...]")
 ;; make .h file to cpp mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 

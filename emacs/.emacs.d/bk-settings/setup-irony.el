@@ -3,6 +3,7 @@
 ;;; Code:
 
 ;; irony-mode
+(message "[bk:setup-irony.el is loading...]")
 (require 'irony)
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)

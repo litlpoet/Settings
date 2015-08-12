@@ -3,6 +3,7 @@
 ;;; Code:
 
 ;; basic editing extensions
+(message "[bk:setup-editing.el is loading...]")
 (setq global-mark-ring-max 5000
       mark-ring-max 5000
       mode-require-final-newline t

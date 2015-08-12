@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
+(message "[bk:setup-org.el is loading...]")
 (require 'org)
 (setq org-log-done t)
 
