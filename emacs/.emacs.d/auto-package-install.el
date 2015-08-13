@@ -4,7 +4,10 @@
 (require 'cl)
 
 (defvar bk:required-packages
-  '(clang-format
+  '(
+    ace-window
+    avy
+    clang-format
     clean-aindent-mode
     cmake-font-lock
     cmake-mode
@@ -37,7 +40,8 @@
     stickyfunc-enhance
     undo-tree
     volatile-highlights
-    yasnippet)
+    yasnippet
+    )
   "bk's list of packages to ensure are installed at launch.")
 
 ;; check if all packages are installed
