@@ -12,11 +12,7 @@
 (setq custom-file
       (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
-
-;; auto install packages
-(defvar auto-package-install-file
-  (expand-file-name "auto-package-install.el" user-emacs-directory))
-(load auto-package-install-file)
+;; (package-user-selected-packages-install)
 
 (defvar root-dir (file-name-directory load-file-name)
   "The root directory of the .emacs.")
@@ -29,6 +25,7 @@
 (add-to-list 'load-path bk-setting-dir)
 
 ;; load my module
+(require 'setup-packages) ;; should be done first
 (require 'setup-helm)
 (require 'setup-projectile)
 (require 'setup-irony)

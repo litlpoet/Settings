@@ -11,9 +11,7 @@
  '(column-number-mode t)
  '(compilation-scroll-output t)
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
- '(custom-safe-themes
-   (quote
-    ("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default)))
+ '(custom-safe-themes t)
  '(default-frame-alist
     (quote
      ((font . "Source Code Pro-14")
@@ -34,7 +32,16 @@
  '(package-selected-packages
    (quote
     (ace-window avy multiple-cursors smart-mode-line golden-ratio magit clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit company-c-headers sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow)))
- '(safe-local-variable-values nil)
+ '(safe-local-variable-values
+   (quote
+    ((eval setq-local projectile-project-run-cmd
+           (expand-file-name "~/VersionControl/Modules/QtPlotter/build/Plotter"))
+     (projectile-project-compilation-cmd . "make -j 4 -C \"~/VersionControl/Modules/QtPlotter/build\"")
+     (projectile-project-run-cmd . "make test -C \"~/VersionControl/Modules/libML/build\"")
+     (projectile-project-compilation-cmd . "make -j 8 -C \"~/VersionControl/Modules/libML/build\"")
+     (eval setq-local projectile-project-run-cmd
+           (expand-file-name "~/VersionControl/Research/sketchimo/build/sketchimo"))
+     (projectile-project-compilation-cmd . "make -j 8 -C \"~/VersionControl/Research/sketchimo/build\""))))
  '(scroll-bar-mode nil)
  '(scroll-conservatively 100000)
  '(scroll-preserve-screen-position t)
