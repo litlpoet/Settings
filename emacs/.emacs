@@ -2,17 +2,19 @@
 ;;; Commentary:
 ;;; Code:
 
-;; add melpa to package-list
+;; ;; add melpa to package-list
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/") t)
+             '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;; make customize setting sperated from this .emacs file
+;; note: try to use customize for built-in packages
+;;       except 'theme' related packages
 (setq custom-file
       (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
-;; (package-user-selected-packages-install)
+;; (package-user-selected-packages-install) ;; no such a funcion yet
 
 (defvar root-dir (file-name-directory load-file-name)
   "The root directory of the .emacs.")
@@ -32,6 +34,7 @@
 (require 'setup-company)
 (require 'setup-flycheck)
 (require 'setup-org)
+(require 'setup-display-buffer)
 (require 'setup-convenience)
 (require 'setup-editing)
 (require 'setup-faces-and-ui)

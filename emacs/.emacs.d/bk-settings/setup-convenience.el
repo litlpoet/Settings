@@ -17,5 +17,18 @@
 (require 'expand-region)
 (global-set-key (kbd "M-m") 'er/expand-region)
 
+;; window dedication
+(defun bk:toggle-current-window-dedication ()
+  "Window dedication."
+  (interactive)
+  (let* ((window (selected-window))
+         (dedicated (window-dedicated-p window)))
+    (set-window-dedicated-p window (not dedicated))
+    (message "Window %sdedicated to %s"
+             (if dedicated "no longer " "")
+             (buffer-name))))
+
+(global-set-key [pause] 'bk:toggle-current-window-dedication)
+
 (provide 'setup-convenience)
 ;;; setup-convenience.el ends here

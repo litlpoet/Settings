@@ -10,17 +10,15 @@
         do (return nil)
         finally (return t)))
 
-;; if not all packages are installed, check one by one and install the missing ones.
-(unless (bk:packages-installed)
-                                        ; check for new packages (package versions)
+;; if not all packages are installed,
+;; check one by one and install the missing ones.
+(unless (bk:packages-installed) ; check for new packages (package versions)
   (message "%s" "Emacs is now refreshing its package database...")
   (package-refresh-contents)
   (message "%s" "done.")
-                                        ; install the missing packages
-  (dolist (p package-selected-packages)
+  (dolist (p package-selected-packages) ; install the missing packages
     (when (not (package-installed-p p))
-      (package-install p)))
-  )
+      (package-install p))))
 
 (provide 'setup-packages)
 ;;; setup-packages.el ends here

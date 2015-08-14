@@ -7,22 +7,21 @@
 ;; change window title in useful way
 (setq frame-title-format
       '("" invocation-name " - "
-	(:eval ( if (buffer-file-name)
-		   (abbreviate-file-name (buffer-file-name))
-		 "%b"))))
+        (:eval ( if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
 
 ;; set italic font for italic face
 ;; (set-face-attribute 'italic nil
-		    ;; :family "Source Code Pro-Italic")
+;; :family "Source Code Pro-Italic")
 
 ;; set korean font
 (set-fontset-font t 'hangul
-		  (font-spec :name "NanumGothicCoding"))
+                  (font-spec :name "NanumGothicCoding"))
 
-;; golden-ratio
-(require 'golden-ratio)
-
-(setq golden-ratio-auto-scale t)
+;; ;; golden-ratio
+;; (require 'golden-ratio)
+;; (setq golden-ratio-auto-scale t)
 ;; (setq
 ;;  golden-ratio-exclude-modes
 ;;  '("ediff-mode"
@@ -33,22 +32,18 @@
 ;;    "eshell-mode"
 ;;    "dired-mode")
 ;;  )
-
 ;; (setq
 ;;  golden-ratio-exclude-buffer-names
-;;  '("*compilation*"
-;;    "*Help*"
-;;    "*Messages*"
-;;    "*Warnings*"))
-
-(defun bk:helm-alive-p ()
-  (if (boundp 'helm-alive-p)
-      (symbol-value 'helm-alive-p)))
-
-(add-to-list 'golden-ratio-inhibit-functions
-             'bk:helm-alive-p)
-
-(golden-ratio-mode 1)
+;;  '("*Flycheck errors*"
+;;    "*compilation"
+;;    "*Warnings*"
+;;    "*shell"))
+;; (defun bk:helm-alive-p ()
+;;   (if (boundp 'helm-alive-p)
+;;       (symbol-value 'helm-alive-p)))
+;; (add-to-list 'golden-ratio-inhibit-functions
+;;              'bk:helm-alive-p)
+;; (golden-ratio-mode 1)
 
 ;; smart mode line
 (sml/setup)

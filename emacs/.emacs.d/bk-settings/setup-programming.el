@@ -8,9 +8,12 @@
 
 ;; useless whitespace is highlighted in programming mode
 (add-hook 'prog-mode-hook
-	  (lambda()
-	    (interactive)
-	    (setq show-trailing-whitespace 1)))
+          (lambda()
+            (interactive)
+            (setq show-trailing-whitespace 1)
+            (setq-local whitespace-style '(face tabs trailing lines-tail))
+            (setq-local whitespace-line-column  80)
+            (whitespace-mode 1)))
 
 ;; make .h file to cpp mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
