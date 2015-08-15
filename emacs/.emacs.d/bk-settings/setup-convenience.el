@@ -7,7 +7,7 @@
 
 ;; avy and ace-window
 (global-set-key (kbd "C-c j") 'avy-goto-word-or-subword-1)
-(global-set-key (kbd "M-p") 'ace-window)
+(global-set-key (kbd "C-x o") 'ace-window)
 
 ;; show ibuffer in another window
 (require 'ibuffer)

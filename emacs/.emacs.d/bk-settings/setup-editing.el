@@ -28,17 +28,11 @@
 (add-hook
  'diff-mode-hook
  (lambda()
-   (setq-local whitespace-style
-               '(face
-                 tabs
-                 tab-mark
-                 spaces
-                 space-mark
-                 trailing
-                 indentation::space
-                 indentation::tab
-                 newline
-                 newline-mark))
+   (setq-local
+    whitespace-style
+    '(face tabs tab-mark trailing
+      indentation::space indentation::tab
+      spaces space-mark newline newline-mark))
    (whitespace-mode 1)))
 
 ;; duplicate-thing
@@ -69,10 +63,6 @@
 ;; undo tree
 (require 'undo-tree)
 (global-undo-tree-mode)
-
-;; yasnippet
-(require 'yasnippet)
-(yas-global-mode 1)
 
 ;; iedit
 (require 'iedit)

@@ -45,6 +45,7 @@
 (require 'setup-files)
 (require 'setup-programming)
 (require 'setup-auto-insert)
+(require 'setup-yasnippet)
 
 ;; environmental variables
 (when (eq system-type 'windows-nt)

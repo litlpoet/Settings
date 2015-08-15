@@ -47,6 +47,9 @@
  '(scroll-bar-mode nil)
  '(scroll-conservatively 100000)
  '(scroll-preserve-screen-position t)
+ '(semantic-default-submodes
+   (quote
+    (global-semantic-decoration-mode global-semantic-stickyfunc-mode global-semantic-idle-scheduler-mode global-semanticdb-minor-mode)))
  '(show-paren-mode t)
  '(size-indication-mode t)
  '(sml/mode-width (quote right))

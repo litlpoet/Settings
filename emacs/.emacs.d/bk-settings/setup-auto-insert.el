@@ -1,28 +1,30 @@
 ;;; setup-auto-insert.el --- auto insert setup
 ;;; Commentary:
 ;;; Code:
+(message "[bk:setup-auto-insert.el is loading...]")
 (auto-insert-mode 1)
 
 ;; Auto-insert Stuff
-(setq
- auto-insert-directory
- (concat bk-setting-directory
-         (file-name-as-directory "auto-insert")))
+(defconst bk:auto-insert-dir
+  (file-name-as-directory
+   (expand-file-name "bk-inserts" user-emacs-directory)))
+
+(setq auto-insert-directory bk:auto-insert-dir)
 
 ;; If you don't want to be prompted before insertion
 ;; (setq-default auto-insert-query nil)
 
 ;; List of associated file with extension
-(setq
- bk:auto-insert-alist
- '(
-   ;; file pattern . ["filename-to-insert" insertion-function]
-   ;; or
-   ;; (file pattern . description) . action (see `auto-insert-alist').
-   (("\\.[hH]\\(h\\|pp\\)?$" . "C / C++ header") . bk:generate-include-guard)
-   ;;TODO: a function who ask for the kind of project, C/C++ library...
-   (("\\.eproject" . "project configuration file") . "dot.eproject")
-   (("Makefile" . "Makefile") . "config.mk")))
+(defvar
+  bk:auto-insert-alist
+  '(
+    ;; file pattern . ["filename-to-insert" insertion-function]
+    ;; or
+    ;; (file pattern . description) . action (see `auto-insert-alist').
+    (("\\.[hH]\\(h\\|pp\\)?$" . "C/C++ header") . bk:generate-include-guard)
+    ;;TODO: a function who ask for the kind of project, C/C++ library...
+    ;; (("Makefile" . "Makefile") . "config.mk"))
+    ))
 
 ;; Add `bk:auto-insert-alist alist' in `auto-insert-alist'.
 (dolist (elem bk:auto-insert-alist)
@@ -53,8 +55,8 @@ Format an include guard, using projectile-project-root
             (file-name-extension buffer-file-name)))
         (replace-regexp-in-string
          "[^A-Z0-9_]" "_"
-         (upcase (concat filename "_" ext "_")))
-        (bk:format-include-guard-fallback))))
+         (upcase (concat filename "_" ext "_"))))
+    (bk:format-include-guard-fallback)))
 
 (defun bk:generate-include-guard ()
   "Generate an include guard (should be in a C/C++ file), used by

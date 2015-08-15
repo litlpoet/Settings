@@ -34,8 +34,7 @@
 
 (if (eq system-type 'windows-nt)
     (setq dired-listing-switches "-lha")
-  (setq dired-listing-switches "-lha --group-directories-first")
-  )
+  (setq dired-listing-switches "-lha --group-directories-first"))
 
 ;; automatic refresh of dired
 (add-hook 'dired-mode-hook 'auto-revert-mode)

@@ -1,6 +1,7 @@
 ;;; setup-packages.el --- install listed packages automatically.
 ;;; Commentary:
 ;;; Code:
+(message "[bk:setup-packages.el is loading...]")
 (require 'cl)
 
 ;; check if all packages are installed

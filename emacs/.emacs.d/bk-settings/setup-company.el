@@ -6,7 +6,7 @@
 (message "[bk:setup-company.el is loading...]")
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay 0.2)
+(setq company-idle-delay 0.3)
 
 ;; company irony
 ;; company yasnippet with irony
@@ -27,7 +27,7 @@
        (setq company-c-headers-path-system
              '("c:/Local/msys64/mingw64/x86_64-w64-mingw32/include/"
                "c:/Local/msys64/mingw64/include/"
-               "c:/Local/msys64/mingw64/include/c++/4.9.2/"
+               "c:/Local/msys64/mingw64/include/c++/5.2.0/"
                "c:/Local/include/eigen3/"))
        (setq company-c-headers-path-user
              '("." ".."))
