@@ -16,15 +16,19 @@
 (load custom-file)
 ;; (package-user-selected-packages-install) ;; no such a funcion yet
 
-(defvar root-dir (file-name-directory load-file-name)
+(defconst root-dir (file-name-directory load-file-name)
   "The root directory of the .emacs.")
 
-(defvar bk-setting-dir
+(defconst bk-setting-load-path
   (expand-file-name "bk-settings" user-emacs-directory)
+  "The load path for bk's setting.")
+
+(defconst bk-setting-directory
+  (file-name-as-directory bk-setting-load-path)
   "The directory for bk's setting.")
 
 ;; add my setting modules path
-(add-to-list 'load-path bk-setting-dir)
+(add-to-list 'load-path bk-setting-load-path)
 
 ;; load my module
 (require 'setup-packages) ;; should be done first
@@ -40,6 +44,7 @@
 (require 'setup-faces-and-ui)
 (require 'setup-files)
 (require 'setup-programming)
+(require 'setup-auto-insert)
 
 ;; environmental variables
 (when (eq system-type 'windows-nt)
