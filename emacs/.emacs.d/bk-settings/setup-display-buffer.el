@@ -15,7 +15,8 @@
      display-buffer-in-side-window)
     (side            . bottom)
     (reusable-frames . visible)
-    (window-height   . 0.25))))
+    (window-height   . 0.25))
+   ("." nil (reusable-frames . visible))))
 
 (defun bk:quit-bottom-side-windows ()
   "Quit windows at the bottom of the current frame."

@@ -33,10 +33,15 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (ace-window avy multiple-cursors smart-mode-line golden-ratio magit clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit company-c-headers sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow)))
+    (company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors smart-mode-line golden-ratio magit clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow)))
  '(safe-local-variable-values
    (quote
     ((eval setq-local projectile-project-run-cmd
+           (expand-file-name "~/VersionControl/Research/interpolation/build/interpolation"))
+     (projectile-project-compilation-cmd . "make -j 8 -C \"~/VersionControl/Research/interpolation/build\"")
+     (eval setq-local projectile-project-run-cmd
+           (expand-file-name "~/VersionControl/Modules/QtPlotter/build/qtplot"))
+     (eval setq-local projectile-project-run-cmd
            (expand-file-name "~/VersionControl/Modules/QtPlotter/build/Plotter"))
      (projectile-project-compilation-cmd . "make -j 4 -C \"~/VersionControl/Modules/QtPlotter/build\"")
      (projectile-project-run-cmd . "make test -C \"~/VersionControl/Modules/libML/build\"")

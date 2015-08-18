@@ -13,9 +13,13 @@
 (eval-after-load 'company
   '(progn
      (require 'company-irony)
+     ;; (require 'company-irony-c-headers) ;; not mature yet
      (push '(company-irony :with company-yasnippet) company-backends)
-     (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands))
-  )
+     (add-to-list 'company-backends
+                  '(conpany-irony
+                    :with company-yasnippet))
+     (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands));; progn
+  );; eval after load
 
 ;; company c headers
 ;; this backend should go before irony
@@ -30,8 +34,7 @@
                "c:/Local/msys64/mingw64/include/c++/5.2.0/"
                "c:/Local/include/eigen3/"))
        (setq company-c-headers-path-user
-             '("." ".."))
-       )
+             '("." "..")))
      (when (eq system-type 'gnu/linux)
        (setq company-c-headers-path-system
              (append company-c-headers-path-system
@@ -39,10 +42,8 @@
                        "/usr/local/include/eigen3/"
                        "/opt/qt5/5.5/gcc_64/include/")))
        (setq company-c-headers-path-user
-             '("." ".."))
-       )
-     )
-  )
+             '("." "..")))) ;; progn
+  ) ;; eval-after-load
 
 (provide 'setup-company)
 ;;; setup-company.el ends here

@@ -32,12 +32,18 @@
 
 ;; load my module
 (require 'setup-packages) ;; should be done first
+
+;; setup packages
 (require 'setup-helm)
 (require 'setup-projectile)
 (require 'setup-irony)
 (require 'setup-company)
 (require 'setup-flycheck)
+(require 'setup-yasnippet)
 (require 'setup-org)
+(require 'setup-auctex)
+
+;; setup global and modes
 (require 'setup-display-buffer)
 (require 'setup-convenience)
 (require 'setup-editing)
@@ -45,7 +51,6 @@
 (require 'setup-files)
 (require 'setup-programming)
 (require 'setup-auto-insert)
-(require 'setup-yasnippet)
 
 ;; environmental variables
 (when (eq system-type 'windows-nt)
