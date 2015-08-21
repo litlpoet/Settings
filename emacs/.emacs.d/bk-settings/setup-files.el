@@ -7,7 +7,7 @@
 (setq large-file-warning-threshold 100000000) ;; size in bytes
 
 ;; back up files
-(defvar backup-directory "~/.emacs.d/.tmp")
+(defvar backup-directory "~/.emacs.d/tmp")
 (if (not (file-exists-p backup-directory))
     (make-directory backup-directory t))
 

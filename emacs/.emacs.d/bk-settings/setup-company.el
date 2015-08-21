@@ -6,7 +6,7 @@
 (message "[bk:setup-company.el is loading...]")
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay 0.3)
+(setq company-idle-delay 0.5)
 
 ;; company irony
 ;; company yasnippet with irony

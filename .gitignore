@@ -10,6 +10,7 @@ emacs/.emacs.d/eshell
 emacs/.emacs.d/irony
 emacs/.emacs.d/semanticdb
 emacs/.emacs.d/server
+emacs/.emacs.d/tmp
 emacs/.emacs.d/.mc-lists.el
 *.*#
 *.cache
