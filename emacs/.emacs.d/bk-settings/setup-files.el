@@ -13,7 +13,7 @@
 
 (setq
  make-backup-files t
- backup-directory-alist '(("." . "~/.emacs.d/.tmp"))
+ backup-directory-alist '(("." . "~/.emacs.d/tmp"))
  backup-by-copying t
  version-control t
  delete-old-versions t

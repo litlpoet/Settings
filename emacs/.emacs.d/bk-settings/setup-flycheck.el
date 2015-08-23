@@ -10,14 +10,21 @@
 (eval-after-load 'flycheck
   '(progn
      (require 'flycheck-irony)
-     (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)))
+     (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
+     (require 'flycheck-google-cpplint)
+     (flycheck-add-next-checker
+      'irony
+      '(warning . c/c++-googlelint))
+     );; progn
+  );; eval-after-load
 
 ;; flycheck-google-cpplint
-(eval-after-load 'flycheck
-  '(progn
-     (require 'flycheck-google-cpplint)
-     (flycheck-add-next-checker 'irony
-                                '(t . c/c++-googlelint))))
+;; (eval-after-load 'flycheck
+;;   '(progn
+;;      (require 'flycheck-google-cpplint)
+;;      (flycheck-add-next-checker
+;;       'irony
+;;       '(warning . c/c++-googlelint))))
 
 (provide 'setup-flycheck)
 ;;; setup-flycheck.el ends here
