@@ -41,8 +41,6 @@
      (projectile-project-compilation-cmd . "make -j 8 -C \"~/VersionControl/Research/interpolation/build\"")
      (eval setq-local projectile-project-run-cmd
            (expand-file-name "~/VersionControl/Modules/QtPlotter/build/qtplot"))
-     (eval setq-local projectile-project-run-cmd
-           (expand-file-name "~/VersionControl/Modules/QtPlotter/build/Plotter"))
      (projectile-project-compilation-cmd . "make -j 4 -C \"~/VersionControl/Modules/QtPlotter/build\"")
      (projectile-project-run-cmd . "make test -C \"~/VersionControl/Modules/libML/build\"")
      (projectile-project-compilation-cmd . "make -j 8 -C \"~/VersionControl/Modules/libML/build\"")
