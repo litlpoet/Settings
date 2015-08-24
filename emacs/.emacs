@@ -27,6 +27,9 @@
   (file-name-as-directory bk-setting-load-path)
   "The directory for bk's setting.")
 
+;; only y-or-n prompt
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; add my setting modules path
 (add-to-list 'load-path bk-setting-load-path)
 

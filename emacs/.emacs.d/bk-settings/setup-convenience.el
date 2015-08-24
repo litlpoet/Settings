@@ -5,6 +5,9 @@
 ;; update any changes made on file to the current buffer
 (message "[bk:setup-convenience.el is loading...]")
 
+;; kill buffer directly
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
 ;; avy and ace-window
 (global-set-key (kbd "C-c j") 'avy-goto-word-or-subword-1)
 (global-set-key (kbd "C-x o") 'ace-window)

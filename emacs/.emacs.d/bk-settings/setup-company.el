@@ -12,15 +12,15 @@
 
 ;; company irony
 ;; company yasnippet with irony
-(eval-after-load 'company
-  '(progn
-     (require 'company-irony)
-     ;; (require 'company-irony-c-headers) ;; not mature yet
-     ;; (add-to-list 'company-backends
-     ;;              '(company-irony :with company-yasnippet))
-     (add-to-list 'company-backends 'company-irony));; progn
-  );; eval after load
-(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+;; (eval-after-load 'company
+;;   '(progn
+;;      (require 'company-irony)
+;;      ;; (require 'company-irony-c-headers) ;; not mature yet
+;;      ;; (add-to-list 'company-backends
+;;      ;;              '(company-irony :with company-yasnippet))
+;;      (add-to-list 'company-backends 'company-irony));; progn
+;;   );; eval after load
+;; (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 
 ;; company c headers
 ;; this backend should go before irony
