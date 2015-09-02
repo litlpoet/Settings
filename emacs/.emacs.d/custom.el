@@ -10,6 +10,7 @@
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(compilation-scroll-output t)
+ '(current-language-environment "UTF-8")
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes t)
  '(default-frame-alist
@@ -17,10 +18,12 @@
      ((font . "Source Code Pro-14")
       (width . 150)
       (height . 45))))
+ '(delete-selection-mode t)
  '(electric-pair-mode t)
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
  '(global-hl-line-sticky-flag nil)
+ '(global-mark-ring-max 5000)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-frame-alist
@@ -30,6 +33,9 @@
      (height . 45)
      (top . 10)
      (left . 10))))
+ '(kill-ring-max 5000)
+ '(kill-whole-line t)
+ '(mark-ring-max 5000)
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
@@ -57,6 +63,7 @@
  '(size-indication-mode t)
  '(sml/mode-width (quote right))
  '(sml/theme (quote respectful))
+ '(tab-width 2)
  '(tool-bar-mode nil)
  '(visible-bell t)
  '(winner-mode t))

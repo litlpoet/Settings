@@ -5,24 +5,14 @@
 
 ;; basic editing extensions
 (message "[bk:setup-editing.el is loading...]")
-(setq global-mark-ring-max 5000
-      mark-ring-max 5000
-      mode-require-final-newline t
-      tab-width 2)
-
-(delete-selection-mode)
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; encodings
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
+;; (set-terminal-coding-system 'utf-8)
+;; (set-keyboard-coding-system 'utf-8)
 ;; (set-language-environment "UTF-8")
-(prefer-coding-system 'utf-8)
+;; (prefer-coding-system 'utf-8)
 ;; (setq default-input-method "korean-hangul")
-
-;; killing
-(setq kill-ring-max 5000
-      kill-whole-line t)
 
 ;; important white space in diff-mode
 (add-hook
