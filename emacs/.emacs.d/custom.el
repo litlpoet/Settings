@@ -39,7 +39,7 @@
  '(menu-bar-mode nil)
  '(package-selected-packages
    (quote
-    (glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors smart-mode-line magit clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow)))
+    (helm-ag glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors smart-mode-line magit clang-format cpputils-cmake cmake-mode cmake-font-lock stickyfunc-enhance helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit sr-speedbar recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm color-theme-sanityinc-tomorrow)))
  '(safe-local-variable-values
    (quote
     ((eval setq-local projectile-project-run-cmd

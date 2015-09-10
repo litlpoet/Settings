@@ -41,6 +41,7 @@
 (require 'setup-projectile)
 (require 'setup-irony)
 (require 'setup-company)
+(require 'setup-cmake)
 (require 'setup-flycheck)
 (require 'setup-yasnippet)
 (require 'setup-org)

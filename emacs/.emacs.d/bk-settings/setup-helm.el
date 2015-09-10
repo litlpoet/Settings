@@ -37,5 +37,8 @@
 
 (helm-mode 1)
 
+(require 'helm-ag)
+(setq helm-ag-insert-at-point 'symbol)
+
 (provide 'setup-helm)
 ;;; setup-helm.el ends here
