@@ -1,4 +1,3 @@
-
 ;;; setup-editing.el --- editing package setup
 ;;; Commentary:
 ;;; Code:
@@ -8,10 +7,10 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; encodings
-;; (set-terminal-coding-system 'utf-8)
-;; (set-keyboard-coding-system 'utf-8)
-;; (set-language-environment "UTF-8")
-;; (prefer-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(global-set-key (kbd "<kana>") 'toggle-input-method)
 ;; (setq default-input-method "korean-hangul")
 
 ;; important white space in diff-mode
