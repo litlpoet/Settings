@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 (message "[bk:setup-auto-insert.el is loading...]")
+
 (auto-insert-mode 1)
 
 ;; Auto-insert Stuff

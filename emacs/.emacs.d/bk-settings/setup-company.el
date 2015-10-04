@@ -4,6 +4,7 @@
 
 ;; start company (complete anything) instead of auto-complete
 (message "[bk:setup-company.el is loading...]")
+
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (global-set-key (kbd "M-RET") 'company-complete)
@@ -51,6 +52,9 @@
         company-c-headers-path-user
         '("." "..")))) ;; progn
   ) ;; eval-after-load
+
+;; company auctex
+(company-auctex-init)
 
 (provide 'setup-company)
 ;;; setup-company.el ends here

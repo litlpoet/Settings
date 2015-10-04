@@ -6,9 +6,30 @@
 ;;; Commentary:
 
 ;;; Code:
+(message "[bk:setup-auctex.el is loading...]")
+
+;; linum mode
+(add-hook 'TeX-mode-hook 'linum-mode)
+
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
+
+(setq TeX-PDF-mode t)
+(setq TeX-source-correlate-mode t)
+(setq
+ TeX-view-program-list
+ '(("Sumatra PDF"
+    ("\"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+     (mode-io-correlate " -forward-search %b %n ")
+     " %o"))))
+
+(eval-after-load 'tex
+  '(progn
+     (assq-delete-all 'output-pdf TeX-view-program-selection)
+     (add-to-list 'TeX-view-program-selection
+                  '(output-pdf "Sumatra PDF")))
+  )
 
 (provide 'setup-auctex)
 ;;; setup-auctex.el ends here

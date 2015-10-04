@@ -3,7 +3,9 @@
 ;;; Commentary:
 ;; Author: bk <bk@T530>
 ;; Keywords: c, cpp
+
 ;;; Code:
+(message "[bk:setup-cmake.el is loading...]")
 
 ;; cmake-mode
 (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)

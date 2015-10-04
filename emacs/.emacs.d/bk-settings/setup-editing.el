@@ -4,6 +4,8 @@
 
 ;; basic editing extensions
 (message "[bk:setup-editing.el is loading...]")
+
+;; new line
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 ;; encodings
