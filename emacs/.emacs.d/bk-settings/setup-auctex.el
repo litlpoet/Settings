@@ -17,19 +17,18 @@
 
 (setq TeX-PDF-mode t)
 (setq TeX-source-correlate-mode t)
-(setq
- TeX-view-program-list
- '(("Sumatra PDF"
-    ("\"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
-     (mode-io-correlate " -forward-search %b %n ")
-     " %o"))))
-
-(eval-after-load 'tex
-  '(progn
-     (assq-delete-all 'output-pdf TeX-view-program-selection)
-     (add-to-list 'TeX-view-program-selection
-                  '(output-pdf "Sumatra PDF")))
-  )
+(when (eq system-type 'windows-nt)
+  (setq
+   TeX-view-program-list
+   '(("Sumatra PDF"
+      ("\"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+       (mode-io-correlate " -forward-search %b %n ")
+       " %o"))))
+  (eval-after-load 'tex
+    '(progn
+       (assq-delete-all 'output-pdf TeX-view-program-selection)
+       (add-to-list 'TeX-view-program-selection
+                    '(output-pdf "Sumatra PDF")))))
 
 (provide 'setup-auctex)
 ;;; setup-auctex.el ends here
