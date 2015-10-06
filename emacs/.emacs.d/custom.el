@@ -27,13 +27,8 @@
  '(global-mark-ring-max 5000)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
- '(initial-frame-alist
-   (quote
-    ((vertical-scroll-bars)
-     (width . 150)
-     (height . 45)
-     (top . 10)
-     (left . 10))))
+ '(initial-frame-alist (quote ((vertical-scroll-bars) (fullscreen . maximized))))
+ '(ispell-dictionary "en")
  '(kill-ring-max 5000)
  '(kill-whole-line t)
  '(mark-ring-max 5000)

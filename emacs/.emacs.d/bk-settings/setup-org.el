@@ -3,7 +3,10 @@
 ;;; Code:
 
 (message "[bk:setup-org.el is loading...]")
+
 (require 'org)
+(add-hook 'org-mode-hook 'flyspell-mode)
+
 (setq org-log-done t)
 
 (define-key global-map "\C-cl" 'org-store-link)

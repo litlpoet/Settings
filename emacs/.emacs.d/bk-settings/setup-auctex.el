@@ -10,6 +10,7 @@
 
 ;; linum mode
 (add-hook 'TeX-mode-hook 'linum-mode)
+(add-hook 'TeX-mode-hook 'flyspell-mode)
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
