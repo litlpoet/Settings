@@ -10,6 +10,7 @@
 (global-set-key (kbd "M-RET") 'company-complete)
 (setq company-idle-delay nil)
 (setq company-selection-wrap-around t)
+(setq company-lighter-base "Cpny")
 
 ;; company irony
 ;; company yasnippet with irony

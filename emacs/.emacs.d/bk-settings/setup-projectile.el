@@ -9,6 +9,8 @@
 ;; (when (eq system-type 'windows-nt)
 ;;   (setq projectile-indexing-method 'alien))
 (setq projectile-indexing-method 'alien)
+(setq projectile-mode-line
+      '(:eval (format " Prj[%s]" (projectile-project-name))))
 ;; (setq projectile-enable-caching nil)
 
 (require 'helm-projectile)

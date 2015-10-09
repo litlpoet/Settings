@@ -54,6 +54,7 @@
 ;; undo tree
 (require 'undo-tree)
 (global-undo-tree-mode)
+(setq undo-tree-mode-lighter " UndoT")
 
 ;; iedit
 (require 'iedit)
