@@ -46,6 +46,7 @@
 (require 'setup-yasnippet)
 (require 'setup-org)
 (require 'setup-auctex)
+(require 'setup-smartparens)
 
 ;; setup global and modes
 (require 'setup-display-buffer)

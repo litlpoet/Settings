@@ -19,7 +19,6 @@
       (width . 150)
       (height . 45))))
  '(delete-selection-mode t)
- '(electric-pair-mode t)
  '(fill-column 80)
  '(global-auto-revert-mode t)
  '(global-hl-line-mode t)
@@ -55,7 +54,6 @@
  '(semantic-default-submodes
    (quote
     (global-semantic-decoration-mode global-semantic-stickyfunc-mode global-semantic-idle-scheduler-mode global-semanticdb-minor-mode)))
- '(show-paren-mode t)
  '(size-indication-mode t)
  '(sml/mode-width (quote right))
  '(sml/theme (quote respectful))

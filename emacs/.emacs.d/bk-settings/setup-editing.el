@@ -34,19 +34,6 @@
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
 
-;; smartparen
-;; (require 'smartparens-config)
-;; ;; (setq sp-base-key-bindings 'paredit)
-;; ;; (setq sp-autoskip-closing-pair 'always)
-;; ;; (setq sp-hybrid-kill-entire-symbol nil)
-;; ;; (sp-use-paredit-bindings)
-;; (show-smartparens-global-mode +1)
-;; (smartparens-global-mode 1)
-;; (sp-with-modes '(c-mode c++-mode)
-;;   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
-;;   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-;;                                             ("* ||\n[i]" "RET"))))
-
 ;; clean-aindent-mode
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
