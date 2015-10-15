@@ -20,32 +20,6 @@
 (set-fontset-font
  t 'hangul (font-spec :name "NanumGothicCoding"))
 
-;; ;; golden-ratio
-;; (require 'golden-ratio)
-;; (setq golden-ratio-auto-scale t)
-;; (setq
-;;  golden-ratio-exclude-modes
-;;  '("ediff-mode"
-;;    "magit-log-mode"
-;;    "magit-reflog-mode"
-;;    "magit-status-mode"
-;;    "IELM"
-;;    "eshell-mode"
-;;    "dired-mode")
-;;  )
-;; (setq
-;;  golden-ratio-exclude-buffer-names
-;;  '("*Flycheck errors*"
-;;    "*compilation"
-;;    "*Warnings*"
-;;    "*shell"))
-;; (defun bk:helm-alive-p ()
-;;   (if (boundp 'helm-alive-p)
-;;       (symbol-value 'helm-alive-p)))
-;; (add-to-list 'golden-ratio-inhibit-functions
-;;              'bk:helm-alive-p)
-;; (golden-ratio-mode 1)
-
 ;; smart mode line
 (sml/setup)
 

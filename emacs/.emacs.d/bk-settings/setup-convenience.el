@@ -2,6 +2,11 @@
 ;;; Commentary:
 ;;; Code:
 
+;; useful meta bind1
+(global-set-key "\M-9" 'backward-sexp)
+(global-set-key "\M-0" 'forward-sexp)
+(global-set-key "\M-1" 'delete-other-windows)
+
 ;; update any changes made on file to the current buffer
 (message "[bk:setup-convenience.el is loading...]")
 
