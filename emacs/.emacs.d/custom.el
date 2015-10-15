@@ -32,6 +32,7 @@
  '(kill-whole-line t)
  '(mark-ring-max 5000)
  '(menu-bar-mode nil)
+ '(org-fontify-done-headline t)
  '(org-hidden-keywords (quote (author date email title)))
  '(package-selected-packages
    (quote
