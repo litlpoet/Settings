@@ -6,6 +6,8 @@
 ;; Keywords: lisp
 
 ;;; Code:
+(defconst bk:emacs-start-time (current-time))
+
 ;; Turn off mouse interface early in startup to avoid momentary display
 (when window-system
   (menu-bar-mode -1)
@@ -18,6 +20,8 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
 ;; Set-up use-package
@@ -30,7 +34,7 @@
   (require 'use-package))
 (require 'diminish)
 (require 'bind-key)
-;; (setq use-package-verbose t)
+(setq use-package-verbose t)
 
 (defvar bk:init.org-message-depth 2
   "What depth of init.org headers to message at startup.")
@@ -60,12 +64,19 @@
 ;; (defconst bk:setting-load-path
 ;;   (expand-file-name "bk-settings" user-emacs-directory)
 ;;   "The load path for bk's setting.")
-
-;; (defconst bk:setting-directory
-;;   (file-name-as-directory bk:setting-load-path)
-;;   "The directory for bk's setting.")
-
 ;; (add-to-list 'load-path bk:setting-load-path)
+
+(when window-system
+  (let ((elapsed (float-time (time-subtract (current-time)
+                                            bk:emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+  (add-hook 'after-init-hook
+            `(lambda ()
+               (let ((elapsed (float-time (time-subtract (current-time)
+                                                         bk:emacs-start-time))))
+                 (message "Loading %s...done (%.3fs) [after-init]"
+                          ,load-file-name elapsed)))
+            t))
 
 ;; (provide 'init)
 ;;; init.el ends here

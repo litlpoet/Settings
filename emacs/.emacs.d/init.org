@@ -23,36 +23,17 @@
     :init
     (load-theme 'sanityinc-tomorrow-night t))
 #+END_SRC
+
 **** mode-line theme (smart-mode-line)
 #+BEGIN_SRC emacs-lisp
   (use-package smart-mode-line
     :ensure t
-    :config
+    :init
     (setq sml/mode-width 'right)
     (setq sml/theme 'dark)
     (sml/setup)
     (set-face-attribute `mode-line nil :box nil)
     (set-face-attribute `mode-line-inactive nil :box nil))
-#+END_SRC
-
-*** check package installation
-    1) Check if all packages are installed.
-    2) If some packages are missing, install them automatically
-#+BEGIN_SRC emacs-lisp 
-(require 'cl)
-(defun bk:packages-installed()
-  (loop for p in package-selected-packages
-        when (not (package-installed-p p))
-        do (return nil)
-        finally (return t)))
-
-(unless (bk:packages-installed) ; check for new packages (package versions)
-  (message "%s" "Emacs is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" "done.")
-  (dolist (p package-selected-packages) ; install the missing packages
-    (when (not (package-installed-p p))
-      (package-install p))))
 #+END_SRC
 
 *** encoding
@@ -63,16 +44,16 @@
 (set-fontset-font
  t 'hangul (font-spec :name "NanumGothicCoding"))
 #+END_SRC
+
 *** backup
 #+BEGIN_SRC emacs-lisp
 (defconst bk:backup-directory
   (expand-file-name "tmp" user-emacs-directory)
   "The tmp directory")
-(if (not (file-exists-p bk:backup-directory))
+(unless (file-exists-p bk:backup-directory)
     (make-directory bk:backup-directory t))
 (setq backup-directory-alist `(("." . ,bk:backup-directory)))
 #+END_SRC
-
 
 ** Built-in Package Setup
 *** dired
@@ -81,19 +62,6 @@
     (setq dired-listing-switches "-lha")
   (setq dired-listing-switches "-lha --group-directories-first"))
 (add-hook 'dired-mode-hook 'auto-revert-mode)
-#+END_SRC
-*** org
-
-    setup org-mode
-    [[*org%20key%20bindings][org key bindings]]
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'org-mode-hook 'flyspell-mode)
-(setq org-log-done t)
-(setq org-src-window-setup 'current-window
-      org-src-strip-leading-and-trailing-blank-lines t
-      org-src-preserve-indentation t
-      org-src-tab-acts-natively t)
 #+END_SRC
 
 *** prog-mode
@@ -110,6 +78,7 @@
 ;; (add-hook 'prog-mode-hook 'linum-mode)
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
+
 *** auto-insert
 #+BEGIN_SRC emacs-lisp
 (defconst bk:auto-insert-dir
@@ -158,12 +127,35 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
   (add-to-list 'auto-insert-alist elem))
 #+END_SRC
 
+*** whitespace
+#+BEGIN_SRC emacs-lisp
+(use-package whitespace
+  :diminish whitespace-mode)
+#+END_SRC
+
 
 ** External Package Setup
+*** org
+
+    setup org-mode
+    [[*org%20key%20bindings][org key bindings]]
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'flyspell-mode)
+(setq org-log-done t
+      org-src-fontify-natively t
+      org-src-window-setup 'current-window
+      org-src-strip-leading-and-trailing-blank-lines t
+      org-src-preserve-indentation t
+      org-src-tab-acts-natively t)
+#+END_SRC
+
 *** helm
+
     setup helm and helm-ag.
     [[*helm%20key%20bindings][helm key bindings]]
     [[*helm%20mini%20buffer%20key%20definitions][helm mini buffer key definitions]]
+
 #+BEGIN_SRC emacs-lisp 
 (require 'helm)
 (require 'helm-config)
@@ -184,7 +176,9 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** projectile
+
     setup projectile and helm-projectile
+
 #+BEGIN_SRC emacs-lisp
 (require 'projectile)
 (projectile-global-mode)
@@ -197,7 +191,9 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** helm-projectile
+
     setup helm-projectile
+
 #+BEGIN_SRC emacs-lisp
 (require 'helm-projectile)
 (setq projectile-completion-system 'helm)
@@ -207,7 +203,9 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** irony
+
     setup irony-mode
+
 #+BEGIN_SRC emacs-lisp
 (require 'irony)
 (defun bk:irony-mode-hook()
@@ -228,8 +226,10 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** company
+
     setup company-mode
     [[*company%20key%20bindings][company key bindings]]
+
 #+BEGIN_SRC emacs-lisp
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -253,8 +253,10 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** company-c-headers
+
     setup company-c-headers back-end
     this back-end should go before irony-mode back-end
+
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
   '(progn
@@ -282,14 +284,18 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** cmake
+
     setup cmake-mode
+
 #+BEGIN_SRC emacs-lisp
 (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
 (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
 #+END_SRC
 
 *** flycheck
+
     setup flycheck
+
 #+BEGIN_SRC emacs-lisp
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -304,19 +310,28 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** yasnippet
+
     setup yasnippet
+
 #+BEGIN_SRC emacs-lisp
-(defconst bk:snippet-dir
-  (file-name-as-directory
-   (expand-file-name "bk-snippets" user-emacs-directory)))
-(unless (file-exists-p bk:snippet-dir)
-  (make-directory bk:snippet-dir))
-(setq yas-snippet-dirs (list bk:snippet-dir))
-(yas-global-mode 1)
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :diminish yas-minor-mode
+  :init
+  (defconst bk:snippet-dir
+    (file-name-as-directory
+     (expand-file-name "bk-snippets" user-emacs-directory)))
+  (if (file-exists-p bk:snippet-dir)
+      (setq yas-snippet-dirs (list bk:snippet-dir)))
+  :config
+  (yas-global-mode 1))
 #+END_SRC
 
 *** auctex
+
     setup auctex-mode
+
 #+BEGIN_SRC emacs-lisp
 (add-hook 'TeX-mode-hook 'linum-mode)
 (add-hook 'TeX-mode-hook 'flyspell-mode)
@@ -340,15 +355,22 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** smartparens
+
     setup smartparens
+
 #+BEGIN_SRC emacs-lisp
-(smartparens-global-mode t)
-(require 'smartparens-config)
-(show-smartparens-global-mode t)
+;; (require 'smartparens-config)
+;; (show-smartparens-global-mode t)
 ;; (sp-with-modes '(c-mode c++-mode)
 ;;   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
 ;;   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
 ;;                                             ("* ||\n[i]" "RET"))))
+(use-package smartparens
+  :ensure t
+  :diminish smartparens-mode
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode t))
 #+END_SRC
 
 *** paradox
@@ -358,6 +380,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+BEGIN_SRC emacs-lisp
 (use-package paradox
   :ensure t
+  :defer t
   :config
   (setq paradox-github-token
         (with-temp-buffer
@@ -384,42 +407,70 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 *** volatile-highlights
+
 #+BEGIN_SRC emacs-lisp
-(require 'volatile-highlights)
-(volatile-highlights-mode t)
+(use-package volatile-highlights
+  :ensure t
+  :diminish volatile-highlights-mode
+  :config
+  (set-face-inverse-video 'vhl/default-face t)
+  (volatile-highlights-mode t))
 #+END_SRC
+
 *** clean-aindent-mode
+
 #+BEGIN_SRC emacs-lisp
-(require 'clean-aindent-mode)
-(add-hook 'prog-mode-hook 'clean-aindent-mode)
+(use-package clean-aindent-mode
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'clean-aindent-mode))
 #+END_SRC
+
 *** undo tree
+
 #+BEGIN_SRC emacs-lisp
-(require 'undo-tree)
-(global-undo-tree-mode)
-(setq undo-tree-mode-lighter " UndoT")
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode))
 #+END_SRC
+
 *** recentf
+
 #+BEGIN_SRC emacs-lisp
-(require 'recentf)
-(recentf-mode)
-(setq recentf-max-menu-items 10
-      recentf-max-saved-items 1000)
+(use-package recentf
+  :ensure t
+  :init
+  (setq recentf-max-menu-items 10
+        recentf=max-saved-items 1000)
+  :config
+  (recentf-mode))
 #+END_SRC
+
 *** google-c-style
+
 #+BEGIN_SRC emacs-lisp
-(require 'google-c-style)
-(add-hook 'c-mode-common-hook 'google-set-c-style)
-(add-hook 'c-mode-common-hook 'google-make-newline-indent)
+(use-package google-c-style
+  :ensure t
+  :commands (google-set-c-style google-make-newline-indent)
+  :init
+  (add-hook 'c-mode-common-hook 'google-set-c-style)
+  (add-hook 'c-mode-common-hook 'google-make-newline-indent))
 #+END_SRC
+
 *** clang-format
+
 #+BEGIN_SRC emacs-lisp
-(require 'clang-format)
-(defun bk:clang-format-setting()
-  (define-key c-mode-base-map (kbd "C-S-f") 'clang-format-buffer)
-  (setq-local clang-format-style "Google"))
-(add-hook 'c-mode-hook 'bk:clang-format-setting)
-(add-hook 'c++-mode-hook 'bk:clang-format-setting)
+(use-package clang-format
+  :ensure t
+  :init
+  (add-hook 'c-mode-hook 'bk:clang-format-setting)
+  (add-hook 'c++-mode-hook 'bk:clang-format-setting)
+  :config
+  (defun bk:clang-format-setting()
+    (define-key c-mode-base-map (kbd "C-S-f") 'clang-format-buffer)
+    (setq-local clang-format-style "Google")))
 #+END_SRC
 
 
@@ -465,6 +516,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
              (if dedicated "no longer " "")
              (buffer-name))))
 #+END_SRC
+
 *** white space display in diff mode
     important white space in diff mode
 #+BEGIN_SRC emacs-lisp
@@ -478,6 +530,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
       spaces space-mark newline newline-mark))
    (whitespace-mode 1)))
 #+END_SRC
+
 *** useful window title info.
 #+BEGIN_SRC emacs-lisp
 (setq
@@ -628,3 +681,25 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 
 
 * not used configuration
+** check package installation
+
+   1) Check if all packages are installed.
+   2) If some packages are missing, install them automatically
+
+#+BEGIN_SRC emacs-lisp 
+(require 'cl)
+(defun bk:packages-installed()
+  (loop for p in package-selected-packages
+        when (not (package-installed-p p))
+        do (return nil)
+        finally (return t)))
+
+(unless (bk:packages-installed) ; check for new packages (package versions)
+  (message "%s" "Emacs is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" "done.")
+  (dolist (p package-selected-packages) ; install the missing packages
+    (when (not (package-installed-p p))
+      (package-install p))))
+#+END_SRC
+
