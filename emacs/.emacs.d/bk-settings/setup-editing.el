@@ -5,15 +5,17 @@
 ;; basic editing extensions
 (message "[bk:setup-editing.el is loading...]")
 
-;; new line
-(global-set-key (kbd "RET") 'newline-and-indent)
-
 ;; encodings
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-(global-set-key (kbd "<kana>") 'toggle-input-method)
 ;; (setq default-input-method "korean-hangul")
+
+;; new line
+(global-set-key (kbd "RET") 'newline-and-indent)
+
+;; toggle input
+(global-set-key (kbd "<kana>") 'toggle-input-method)
 
 ;; important white space in diff-mode
 (add-hook

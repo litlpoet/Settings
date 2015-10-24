@@ -1,0 +1,630 @@
+#+AUTHOR: Byungkuk Choi
+#+email: litlpoet@gmail.com
+#+STARTUP: fninline content
+#+SEQ_TODO: TODO READY DONE
+
+* init.el
+** Preparation
+*** set custom file location
+
+    Make customize setting separated from the init{.el, .org} files
+    note: try to use customize for built-in packages
+
+#+BEGIN_SRC emacs-lisp
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+#+END_SRC
+
+*** load themes
+**** main theme
+#+BEGIN_SRC emacs-lisp
+  (use-package color-theme-sanityinc-tomorrow
+    :ensure t
+    :init
+    (load-theme 'sanityinc-tomorrow-night t))
+#+END_SRC
+**** mode-line theme (smart-mode-line)
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (setq sml/mode-width 'right)
+    (setq sml/theme 'dark)
+    (sml/setup)
+    (set-face-attribute `mode-line nil :box nil)
+    (set-face-attribute `mode-line-inactive nil :box nil))
+#+END_SRC
+
+*** check package installation
+    1) Check if all packages are installed.
+    2) If some packages are missing, install them automatically
+#+BEGIN_SRC emacs-lisp 
+(require 'cl)
+(defun bk:packages-installed()
+  (loop for p in package-selected-packages
+        when (not (package-installed-p p))
+        do (return nil)
+        finally (return t)))
+
+(unless (bk:packages-installed) ; check for new packages (package versions)
+  (message "%s" "Emacs is now refreshing its package database...")
+  (package-refresh-contents)
+  (message "%s" "done.")
+  (dolist (p package-selected-packages) ; install the missing packages
+    (when (not (package-installed-p p))
+      (package-install p))))
+#+END_SRC
+
+*** encoding
+#+BEGIN_SRC emacs-lisp
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(set-fontset-font
+ t 'hangul (font-spec :name "NanumGothicCoding"))
+#+END_SRC
+*** backup
+#+BEGIN_SRC emacs-lisp
+(defconst bk:backup-directory
+  (expand-file-name "tmp" user-emacs-directory)
+  "The tmp directory")
+(if (not (file-exists-p bk:backup-directory))
+    (make-directory bk:backup-directory t))
+(setq backup-directory-alist `(("." . ,bk:backup-directory)))
+#+END_SRC
+
+
+** Built-in Package Setup
+*** dired
+#+BEGIN_SRC emacs-lisp
+(if (eq system-type 'windows-nt)
+    (setq dired-listing-switches "-lha")
+  (setq dired-listing-switches "-lha --group-directories-first"))
+(add-hook 'dired-mode-hook 'auto-revert-mode)
+#+END_SRC
+*** org
+
+    setup org-mode
+    [[*org%20key%20bindings][org key bindings]]
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'org-mode-hook 'flyspell-mode)
+(setq org-log-done t)
+(setq org-src-window-setup 'current-window
+      org-src-strip-leading-and-trailing-blank-lines t
+      org-src-preserve-indentation t
+      org-src-tab-acts-natively t)
+#+END_SRC
+
+*** prog-mode
+#+BEGIN_SRC emacs-lisp
+(add-hook
+ 'prog-mode-hook
+ (lambda()
+   (interactive)
+   (setq-local show-trailing-whitespace 1)
+   (setq-local whitespace-style '(face tabs trailing lines-tail))
+   (setq-local whitespace-line-column  80)
+   (whitespace-mode 1)))
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+;; (add-hook 'prog-mode-hook 'linum-mode)
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+#+END_SRC
+*** auto-insert
+#+BEGIN_SRC emacs-lisp
+(defconst bk:auto-insert-dir
+  (file-name-as-directory
+   (expand-file-name "bk-inserts" user-emacs-directory)))
+(setq auto-insert-directory bk:auto-insert-dir)
+
+(defvar bk:auto-insert-alist
+  '(;; file pattern . ["filename-to-insert" insertion-function] or
+    ;; (file pattern . description) . action (see `auto-insert-alist').
+    (("\\.[hH]\\(h\\|pp\\)?$" . "C/C++ header") . bk:generate-include-guard)))
+
+(defun bk:format-include-guard-fallback ()
+  "Generate an include guard string with file name."
+  (let ((filename
+         (file-name-nondirectory
+          (file-name-sans-extension buffer-file-name)))
+        (ext
+         (file-name-extension buffer-file-name)))
+    (replace-regexp-in-string
+     "[^A-Z0-9_]" "_"
+     (upcase (concat filename "_" ext "_")))))
+
+(defun bk:format-include-guard ()
+  "Format an include guard, using projectile-project-root.
+If not in a projectile project use `bk:format-include-guard-fallback'."
+  (if (projectile-project-p)
+      (let ((filename
+             (subseq
+              (file-name-sans-extension buffer-file-name)
+              (length (projectile-project-root))))
+            (ext (file-name-extension buffer-file-name)))
+        (replace-regexp-in-string
+         "[^A-Z0-9_]" "_"
+         (upcase (concat filename "_" ext "_"))))
+    (bk:format-include-guard-fallback)))
+
+(defun bk:generate-include-guard ()
+  "Generate an include guard (should be in a C/C++ file),
+ used by `auto-insert-mode'."
+  (insert "guard")
+  (yas/expand))
+
+(setq auto-insert-directory bk:auto-insert-dir)
+(dolist (elem bk:auto-insert-alist)
+  (add-to-list 'auto-insert-alist elem))
+#+END_SRC
+
+
+** External Package Setup
+*** helm
+    setup helm and helm-ag.
+    [[*helm%20key%20bindings][helm key bindings]]
+    [[*helm%20mini%20buffer%20key%20definitions][helm mini buffer key definitions]]
+#+BEGIN_SRC emacs-lisp 
+(require 'helm)
+(require 'helm-config)
+(when (executable-find "curl")
+  (setq helm-google-suggest-use-curl-p t))
+(setq helm-split-window-in-side-p t
+      helm-move-to-line-cycle-in-source t
+      helm-ff-search-library-in-sexp t
+      helm-scroll-amount 8
+      helm-ff-file-name-history-use-recentf t
+      helm-M-x-fuzzy-match t
+      helm-buffers-fuzzy-matching t)
+(helm-autoresize-mode t)
+(helm-mode 1)
+
+(require 'helm-ag)
+(setq helm-ag-insert-at-point 'symbol)
+#+END_SRC
+
+*** projectile
+    setup projectile and helm-projectile
+#+BEGIN_SRC emacs-lisp
+(require 'projectile)
+(projectile-global-mode)
+;; (when (eq system-type 'windows-nt)
+;;   (setq projectile-indexing-method 'alien))
+(setq projectile-indexing-method 'alien)
+(setq projectile-mode-line
+      '(:eval (format " Prj[%s]" (projectile-project-name))))
+;; (setq projectile-enable-caching nil)
+#+END_SRC
+
+*** helm-projectile
+    setup helm-projectile
+#+BEGIN_SRC emacs-lisp
+(require 'helm-projectile)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+(setq projectile-switch-project-action
+      'projectile-dired)
+#+END_SRC
+
+*** irony
+    setup irony-mode
+#+BEGIN_SRC emacs-lisp
+(require 'irony)
+(defun bk:irony-mode-hook()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async)
+  (when (eq system-type 'windows-nt)
+    (setq w32-pipe-read-delay 0)))
+(add-hook 'irony-mode-hook 'bk:irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook
+          (lambda()
+            (unless (derived-mode-p 'glsl-mode) (irony-mode))))
+(setq irony-lighter " Irny")
+;; (setq irony-additional-clang-options '("-std=c++11"))
+#+END_SRC
+
+*** company
+    setup company-mode
+    [[*company%20key%20bindings][company key bindings]]
+#+BEGIN_SRC emacs-lisp
+(require 'company)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay nil)
+(setq company-selection-wrap-around t)
+(setq company-lighter-base "Cpny")
+
+;; company auctex
+(company-auctex-init)
+#+END_SRC
+
+*** company-irony
+    setup company-irony back-end
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'company
+  '(progn
+     (require 'company-irony)
+     ;; (require 'company-irony-c-headers) ;; not mature yet
+     (add-to-list 'company-backends 'company-irony)))
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+#+END_SRC
+
+*** company-c-headers
+    setup company-c-headers back-end
+    this back-end should go before irony-mode back-end
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'company
+  '(progn
+     (require 'company-c-headers)
+     (add-to-list 'company-backends 'company-c-headers)
+     (when (eq system-type 'windows-nt)
+       (setq
+        company-c-headers-path-system
+        '("c:/Local/msys64/mingw64/x86_64-w64-mingw32/include/"
+          "c:/Local/msys64/mingw64/include/"
+          "c:/Local/msys64/mingw64/include/c++/5.2.0/"
+          "c:/Local/include/eigen3/")))
+     (when (eq system-type 'gnu/linux)
+       (setq
+        company-c-headers-path-system
+        (append
+         company-c-headers-path-system
+         '("/usr/include/c++/4.9/"
+           "/usr/local/include/eigen3/"
+           "/opt/qt5/5.5/gcc_64/include/"
+           "/home/bk/VersionControl/Modules/libML"))))
+     (setq
+      company-c-headers-path-user
+      '("." ".."))))
+#+END_SRC
+
+*** cmake
+    setup cmake-mode
+#+BEGIN_SRC emacs-lisp
+(autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
+(add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+#+END_SRC
+
+*** flycheck
+    setup flycheck
+#+BEGIN_SRC emacs-lisp
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(eval-after-load 'flycheck
+  '(progn
+     (require 'flycheck-irony)
+     (add-hook 'flycheck-mode-hook #'flycheck-irony-setup)
+     (require 'flycheck-google-cpplint)
+     (flycheck-add-next-checker
+      'irony
+      '(warning . c/c++-googlelint))))
+#+END_SRC
+
+*** yasnippet
+    setup yasnippet
+#+BEGIN_SRC emacs-lisp
+(defconst bk:snippet-dir
+  (file-name-as-directory
+   (expand-file-name "bk-snippets" user-emacs-directory)))
+(unless (file-exists-p bk:snippet-dir)
+  (make-directory bk:snippet-dir))
+(setq yas-snippet-dirs (list bk:snippet-dir))
+(yas-global-mode 1)
+#+END_SRC
+
+*** auctex
+    setup auctex-mode
+#+BEGIN_SRC emacs-lisp
+(add-hook 'TeX-mode-hook 'linum-mode)
+(add-hook 'TeX-mode-hook 'flyspell-mode)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(setq TeX-PDF-mode t)
+(setq TeX-source-correlate-mode t)
+(when (eq system-type 'windows-nt)
+  (setq
+   TeX-view-program-list
+   '(("Sumatra PDF"
+      ("\"C:/Program Files (x86)/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+       (mode-io-correlate " -forward-search %b %n ")
+       " %o"))))
+  (eval-after-load 'tex
+    '(progn
+       (assq-delete-all 'output-pdf TeX-view-program-selection)
+       (add-to-list 'TeX-view-program-selection
+                    '(output-pdf "Sumatra PDF")))))
+#+END_SRC
+
+*** smartparens
+    setup smartparens
+#+BEGIN_SRC emacs-lisp
+(smartparens-global-mode t)
+(require 'smartparens-config)
+(show-smartparens-global-mode t)
+;; (sp-with-modes '(c-mode c++-mode)
+;;   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
+;;   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
+;;                                             ("* ||\n[i]" "RET"))))
+#+END_SRC
+
+*** paradox
+
+    setup paradox package management
+
+#+BEGIN_SRC emacs-lisp
+(use-package paradox
+  :ensure t
+  :config
+  (setq paradox-github-token
+        (with-temp-buffer
+          (insert-file-contents
+           (expand-file-name ".github_token" user-emacs-directory))
+          (buffer-string)))
+  (setq paradox-automatically-star t
+        paradox-execute-asynchronously t
+        paradox-display-download-count t
+        paradox-column-width-package 24
+        paradox-column-width-version 12))
+#+END_SRC
+
+*** git-gutter
+
+    setup git-gutter, git-gutter-fringe
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-gutter-fringe
+  :ensure t
+  :diminish git-gutter-mode
+  :config
+  (global-git-gutter-mode t))
+#+END_SRC
+
+*** volatile-highlights
+#+BEGIN_SRC emacs-lisp
+(require 'volatile-highlights)
+(volatile-highlights-mode t)
+#+END_SRC
+*** clean-aindent-mode
+#+BEGIN_SRC emacs-lisp
+(require 'clean-aindent-mode)
+(add-hook 'prog-mode-hook 'clean-aindent-mode)
+#+END_SRC
+*** undo tree
+#+BEGIN_SRC emacs-lisp
+(require 'undo-tree)
+(global-undo-tree-mode)
+(setq undo-tree-mode-lighter " UndoT")
+#+END_SRC
+*** recentf
+#+BEGIN_SRC emacs-lisp
+(require 'recentf)
+(recentf-mode)
+(setq recentf-max-menu-items 10
+      recentf-max-saved-items 1000)
+#+END_SRC
+*** google-c-style
+#+BEGIN_SRC emacs-lisp
+(require 'google-c-style)
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
+#+END_SRC
+*** clang-format
+#+BEGIN_SRC emacs-lisp
+(require 'clang-format)
+(defun bk:clang-format-setting()
+  (define-key c-mode-base-map (kbd "C-S-f") 'clang-format-buffer)
+  (setq-local clang-format-style "Google"))
+(add-hook 'c-mode-hook 'bk:clang-format-setting)
+(add-hook 'c++-mode-hook 'bk:clang-format-setting)
+#+END_SRC
+
+
+** Implementations
+*** display buffer
+    setup a display buffer for specific buffers
+    [[*quit%20bottom%20display%20buffer%20key%20binding][quit bottom display buffer key binding]]
+#+BEGIN_SRC emacs-lisp
+(require 'rx)
+(setq
+ display-buffer-alist
+ `(;; Put REPLs and error lists into the bottom side window
+   (,(rx bos (or "*Flycheck errors*" ; Flycheck error list
+                 "*compilation"      ; Compilation buffers
+                 "*Warnings*"        ; Emacs warnings
+                 "*shell"            ; Shell window
+                 ))
+    (display-buffer-reuse-window
+     display-buffer-in-side-window)
+    (side            . bottom)
+    (reusable-frames . visible)
+    (window-height   . 0.25))
+   ("." nil (reusable-frames . visible))))
+
+(defun bk:quit-bottom-side-windows ()
+  "Quit windows at the bottom of the current frame."
+  (interactive)
+  (dolist (window (window-at-side-list nil 'bottom))
+    (quit-window nil window)))
+#+END_SRC
+*** window dedication
+    setup a decicated window configuration
+    [[*window%20dedication%20key%20binding][window dedication key binding]]
+#+BEGIN_SRC emacs-lisp
+;; window dedication
+(defun bk:toggle-current-window-dedication ()
+  "Window dedication."
+  (interactive)
+  (let* ((window (selected-window))
+         (dedicated (window-dedicated-p window)))
+    (set-window-dedicated-p window (not dedicated))
+    (message "Window %sdedicated to %s"
+             (if dedicated "no longer " "")
+             (buffer-name))))
+#+END_SRC
+*** white space display in diff mode
+    important white space in diff mode
+#+BEGIN_SRC emacs-lisp
+(add-hook
+ 'diff-mode-hook
+ (lambda()
+   (setq-local
+    whitespace-style
+    '(face tabs tab-mark trailing
+      indentation::space indentation::tab
+      spaces space-mark newline newline-mark))
+   (whitespace-mode 1)))
+#+END_SRC
+*** useful window title info.
+#+BEGIN_SRC emacs-lisp
+(setq
+ frame-title-format
+ '("" invocation-name ": "
+   (:eval ( if (buffer-file-name)
+              (abbreviate-file-name (buffer-file-name))
+            "%b"))))
+#+END_SRC
+
+*** hidden mode-line
+#+BEGIN_SRC emacs-lisp
+(defvar-local hidden-mode-line-mode nil)
+(defvar-local hide-mode-line nil)
+(define-minor-mode hidden-mode-line-mode
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global t
+  :variable hidden-mode-line-mode
+  :group 'editing-basics
+  (if hidden-mode-line-mode
+      (setq hide-mode-line mode-line-format
+            mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+          hide-mode-line nil))
+  (force-mode-line-update)
+  ;; Apparently force-mode-line-update is not always enough to
+  ;; redisplay the mode-line
+  (redraw-display)
+  (when (and (called-interactively-p 'interactive)
+             hidden-mode-line-mode)
+    (run-with-idle-timer
+     0 nil 'message
+     (concat "Hidden Mode Line Mode enabled.  "
+             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+;; If you want to hide the mode-line in every buffer by default
+;; (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
+#+END_SRC
+
+
+** Key Bindings
+*** global keys
+**** helm key bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c h") 'helm-command-prefix)
+(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+(global-unset-key (kbd "C-x c"))
+#+END_SRC
+
+**** company key bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-RET") 'company-complete)
+#+END_SRC
+
+**** org key bindings
+#+BEGIN_SRC emacs-lisp
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+#+END_SRC
+
+**** expand region key binding
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-m") 'er/expand-region)
+#+END_SRC
+
+**** duplicate thing key binding
+#+BEGIN_SRC emacs-lisp
+(require 'duplicate-thing)
+(global-set-key (kbd "M-c") 'duplicate-thing)
+#+END_SRC
+
+**** avy and ace-window key bindings
+#+BEGIN_SRC emacs-lisp
+;; avy and ace-window
+(global-set-key (kbd "C-c j") 'avy-goto-word-or-subword-1)
+(global-set-key (kbd "C-x o") 'ace-window)
+#+END_SRC
+
+**** quit bottom display buffer key binding
+#+BEGIN_SRC emacs-lisp
+;; see available keys at window.el.gz's bottom
+(global-set-key (kbd "C-c q") 'bk:quit-bottom-side-windows)
+#+END_SRC
+
+**** window dedication key binding
+#+BEGIN_SRC emacs-lisp
+(global-set-key [pause] 'bk:toggle-current-window-dedication)
+#+END_SRC
+
+**** useful meta key bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\M-9" 'backward-sexp)
+(global-set-key "\M-0" 'forward-sexp)
+(global-set-key "\M-1" 'delete-other-windows)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+#+END_SRC
+
+**** editing key bindings
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "<kana>") 'toggle-input-method)
+#+END_SRC
+
+**** iedit key bindings
+#+BEGIN_SRC emacs-lisp
+(require 'iedit)
+(global-set-key (kbd "C-;") 'iedit-mode)
+#+END_SRC
+
+**** multiple cursors key bindings
+#+BEGIN_SRC emacs-lisp
+;; multiple-cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-s-c") 'mc/edit-lines) ;
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+#+END_SRC
+
+*** mode specific keys
+**** helm mini buffer key definitions
+#+BEGIN_SRC emacs-lisp
+;; rebind tab to run persistent action
+(define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+;; make TAB works in terminal
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+;; list actions using C-z
+(define-key helm-map (kbd "C-z") 'helm-select-action)
+#+END_SRC
+
+
+** Alias
+*** simplifying y-or-n prompt
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+
+** Platform Dependent Setup
+*** windows
+#+BEGIN_SRC emacs-lisp
+(when (eq system-type 'windows-nt)
+  (setenv "GIT_ASKPASS" "git-gui--askpass"))
+#+END_SRC
+
+
+* not used configuration

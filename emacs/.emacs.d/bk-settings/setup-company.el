@@ -7,7 +7,7 @@
 
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
-(global-set-key (kbd "M-RET") 'company-complete)
+
 (setq company-idle-delay nil)
 (setq company-selection-wrap-around t)
 (setq company-lighter-base "Cpny")
@@ -20,8 +20,7 @@
      ;; (require 'company-irony-c-headers) ;; not mature yet
      ;; (add-to-list 'company-backends
      ;;              '(company-irony :with company-yasnippet))
-     (add-to-list 'company-backends 'company-irony));; progn
-  );; eval after load
+     (add-to-list 'company-backends 'company-irony)))
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 
 ;; company c headers
@@ -36,10 +35,7 @@
         '("c:/Local/msys64/mingw64/x86_64-w64-mingw32/include/"
           "c:/Local/msys64/mingw64/include/"
           "c:/Local/msys64/mingw64/include/c++/5.2.0/"
-          "c:/Local/include/eigen3/"))
-       (setq
-        company-c-headers-path-user
-        '("." "..")))
+          "c:/Local/include/eigen3/")))
      (when (eq system-type 'gnu/linux)
        (setq
         company-c-headers-path-system
@@ -48,14 +44,15 @@
          '("/usr/include/c++/4.9/"
            "/usr/local/include/eigen3/"
            "/opt/qt5/5.5/gcc_64/include/"
-           "/home/bk/VersionControl/Modules/libML")))
-       (setq
-        company-c-headers-path-user
-        '("." "..")))) ;; progn
-  ) ;; eval-after-load
+           "/home/bk/VersionControl/Modules/libML"))))
+     (setq
+      company-c-headers-path-user
+      '("." ".."))))
 
 ;; company auctex
 (company-auctex-init)
+
+(global-set-key (kbd "M-RET") 'company-complete)
 
 (provide 'setup-company)
 ;;; setup-company.el ends here

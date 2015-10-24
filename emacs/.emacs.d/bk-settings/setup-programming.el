@@ -3,8 +3,6 @@
 ;;; Code:
 
 (message "[bk:setup-programming.el is loading...]")
-;; line number visualization only in programming mode
-(add-hook 'prog-mode-hook 'linum-mode)
 
 ;; useless whitespace is highlighted in programming mode
 (add-hook
@@ -15,8 +13,8 @@
    (setq-local whitespace-style '(face tabs trailing lines-tail))
    (setq-local whitespace-line-column  80)
    (whitespace-mode 1)))
-
-;; make .h file to cpp mode
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'linum-mode)
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; google-c-style-guide
@@ -29,7 +27,6 @@
 (defun bk:clang-format-setting()
   (define-key c-mode-base-map (kbd "C-S-f") 'clang-format-buffer)
   (setq-local clang-format-style "Google"))
-
 (add-hook 'c-mode-hook 'bk:clang-format-setting)
 (add-hook 'c++-mode-hook 'bk:clang-format-setting)
 
@@ -40,8 +37,8 @@
 ;; (require 'stickyfunc-enhance)
 
 ;; speed bar option
-(require 'speedbar)
-(setq speedbar-show-unknown-files t)
+;; (require 'speedbar)
+;; (setq speedbar-show-unknown-files t)
 
 (provide 'setup-programming)
 ;;; setup-programming.el ends here

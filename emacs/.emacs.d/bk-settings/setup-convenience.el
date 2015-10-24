@@ -2,24 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
-;; useful meta bind1
-(global-set-key "\M-9" 'backward-sexp)
-(global-set-key "\M-0" 'forward-sexp)
-(global-set-key "\M-1" 'delete-other-windows)
-
 ;; update any changes made on file to the current buffer
 (message "[bk:setup-convenience.el is loading...]")
-
-;; kill buffer directly
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
-
-;; avy and ace-window
-(global-set-key (kbd "C-c j") 'avy-goto-word-or-subword-1)
-(global-set-key (kbd "C-x o") 'ace-window)
-
-;; show ibuffer in another window
-(require 'ibuffer)
-(setq ibuffer-use-other-window t)
 
 ;; expand (selection) region
 (require 'expand-region)
@@ -37,6 +21,18 @@
              (buffer-name))))
 
 (global-set-key [pause] 'bk:toggle-current-window-dedication)
+
+;; useful meta bind1
+(global-set-key "\M-9" 'backward-sexp)
+(global-set-key "\M-0" 'forward-sexp)
+(global-set-key "\M-1" 'delete-other-windows)
+
+;; kill buffer directly
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+
+;; avy and ace-window
+(global-set-key (kbd "C-c j") 'avy-goto-word-or-subword-1)
+(global-set-key (kbd "C-x o") 'ace-window)
 
 (provide 'setup-convenience)
 ;;; setup-convenience.el ends here

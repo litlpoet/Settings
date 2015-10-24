@@ -4,9 +4,9 @@
 
 ;; flycheck
 (message "[bk:setup-flycheck.el is loading...]")
+
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
-
 (eval-after-load 'flycheck
   '(progn
      (require 'flycheck-irony)
@@ -14,17 +14,7 @@
      (require 'flycheck-google-cpplint)
      (flycheck-add-next-checker
       'irony
-      '(warning . c/c++-googlelint))
-     );; progn
-  );; eval-after-load
-
-;; flycheck-google-cpplint
-;; (eval-after-load 'flycheck
-;;   '(progn
-;;      (require 'flycheck-google-cpplint)
-;;      (flycheck-add-next-checker
-;;       'irony
-;;       '(warning . c/c++-googlelint))))
+      '(warning . c/c++-googlelint))))
 
 (provide 'setup-flycheck)
 ;;; setup-flycheck.el ends here

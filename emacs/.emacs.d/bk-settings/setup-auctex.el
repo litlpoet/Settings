@@ -8,14 +8,11 @@
 ;;; Code:
 (message "[bk:setup-auctex.el is loading...]")
 
-;; linum mode
 (add-hook 'TeX-mode-hook 'linum-mode)
 (add-hook 'TeX-mode-hook 'flyspell-mode)
-
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
-
 (setq TeX-PDF-mode t)
 (setq TeX-source-correlate-mode t)
 (when (eq system-type 'windows-nt)

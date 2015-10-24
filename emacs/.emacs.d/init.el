@@ -1,87 +1,71 @@
 ;;; init.el --- emacs initialization script          -*- lexical-binding: t; -*-
 
+;;; Commentary:
 ;; Copyright (C) 2015  bk
-
 ;; Author: bk <bk@T530>
 ;; Keywords: lisp
 
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-;;; Commentary:
-
 ;;; Code:
+;; Turn off mouse interface early in startup to avoid momentary display
+(when window-system
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1)
+  (toggle-frame-fullscreen))
 
-;; add melpa to package-list
+;; Set-up package
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
-;; make customize setting sperated from this .emacs file
-;; note: try to use customize for built-in packages
-;;       except 'theme' related packages
-(setq custom-file
-      (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
-;; (package-user-selected-packages-install) ;; no such a funcion yet
+;; Set-up use-package
+;; use-package is used to configure the rest of the packages.
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-(defconst root-dir (file-name-directory load-file-name)
-  "The root directory of the .emacs.")
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
+;; (setq use-package-verbose t)
 
-(defconst bk:setting-load-path
-  (expand-file-name "bk-settings" user-emacs-directory)
-  "The load path for bk's setting.")
+(defvar bk:init.org-message-depth 2
+  "What depth of init.org headers to message at startup.")
 
-(defconst bk-setting-directory
-  (file-name-as-directory bk:setting-load-path)
-  "The directory for bk's setting.")
+(with-temp-buffer
+  (insert-file
+   (expand-file-name "init.org" user-emacs-directory))
+  (goto-char (point-min))
+  (search-forward "\n* init.el")
+  (while (not (eobp))
+    (forward-line 1)
+    (cond
+     ;; Report Headers
+     ((looking-at
+       (format "\\*\\{2,%s\\} +.*$"
+               bk:init.org-message-depth))
+      (message "%s" (match-string 0)))
+     ;; Evaluate Code Blocks
+     ((looking-at "^#\\+BEGIN_SRC +emacs-lisp *$")
+      (let ((l (match-end 0)))
+        (search-forward "\n#+END_SRC")
+        (eval-region l (match-beginning 0))))
+     ;; Finish on the next level-1 header
+     ((looking-at "^\\* ")
+      (goto-char (point-max))))))
 
-;; only y-or-n prompt
-(defalias 'yes-or-no-p 'y-or-n-p)
+;; (defconst bk:setting-load-path
+;;   (expand-file-name "bk-settings" user-emacs-directory)
+;;   "The load path for bk's setting.")
 
-;; add my setting modules path
-(add-to-list 'load-path bk:setting-load-path)
+;; (defconst bk:setting-directory
+;;   (file-name-as-directory bk:setting-load-path)
+;;   "The directory for bk's setting.")
 
-;; load my module
-(require 'setup-packages) ;; should be done first
+;; (add-to-list 'load-path bk:setting-load-path)
 
-;; setup packages
-(require 'setup-helm)
-(require 'setup-projectile)
-(require 'setup-irony)
-(require 'setup-company)
-(require 'setup-cmake)
-(require 'setup-flycheck)
-(require 'setup-yasnippet)
-(require 'setup-org)
-(require 'setup-auctex)
-(require 'setup-smartparens)
-(require 'setup-paradox)
-(require 'setup-gitgutter)
-
-;; setup global and modes
-(require 'setup-display-buffer)
-(require 'setup-convenience)
-(require 'setup-editing)
-(require 'setup-faces-and-ui)
-(require 'setup-files)
-(require 'setup-programming)
-(require 'setup-auto-insert)
-
-;; environmental variables
-(when (eq system-type 'windows-nt)
-  (setenv "GIT_ASKPASS" "git-gui--askpass"))
-
-(provide 'init)
+;; (provide 'init)
 ;;; init.el ends here
