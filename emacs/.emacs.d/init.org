@@ -359,6 +359,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
     setup smartparens
 
 #+BEGIN_SRC emacs-lisp
+;; (smartparens-global-mode t)
 ;; (require 'smartparens-config)
 ;; (show-smartparens-global-mode t)
 ;; (sp-with-modes '(c-mode c++-mode)
@@ -368,9 +369,10 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
-  :config
+  :init
+  (smartparens-global-mode t)
   (require 'smartparens-config)
-  (smartparens-global-mode t))
+  (show-smartparens-global-mode t))
 #+END_SRC
 
 *** paradox
@@ -432,7 +434,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
-  :config
+  :init
   (global-undo-tree-mode))
 #+END_SRC
 
@@ -464,6 +466,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+BEGIN_SRC emacs-lisp
 (use-package clang-format
   :ensure t
+  :defer t
   :init
   (add-hook 'c-mode-hook 'bk:clang-format-setting)
   (add-hook 'c++-mode-hook 'bk:clang-format-setting)
@@ -471,6 +474,38 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
   (defun bk:clang-format-setting()
     (define-key c-mode-base-map (kbd "C-S-f") 'clang-format-buffer)
     (setq-local clang-format-style "Google")))
+#+END_SRC
+
+*** iedit
+
+#+BEGIN_SRC emacs-lisp
+(use-package iedit
+  :ensure t
+  :bind ("C-;" . iedit-mode))
+#+END_SRC
+
+*** expand-region
+
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :ensure t
+  :bind ("M-2" . er/expand-region))
+#+END_SRC
+
+*** duplicate-thing
+
+#+BEGIN_SRC emacs-lisp
+(use-package duplicate-thing
+  :ensure t
+  :bind ("M-c" . duplicate-thing))
+#+END_SRC
+
+*** macrostep
+
+#+BEGIN_SRC emacs-lisp
+(use-package macrostep
+  :ensure t
+  :bind ("C-c e m" . macrostep-expand))
 #+END_SRC
 
 
@@ -594,17 +629,6 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 (define-key global-map "\C-ca" 'org-agenda)
 #+END_SRC
 
-**** expand region key binding
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-m") 'er/expand-region)
-#+END_SRC
-
-**** duplicate thing key binding
-#+BEGIN_SRC emacs-lisp
-(require 'duplicate-thing)
-(global-set-key (kbd "M-c") 'duplicate-thing)
-#+END_SRC
-
 **** avy and ace-window key bindings
 #+BEGIN_SRC emacs-lisp
 ;; avy and ace-window
@@ -635,12 +659,6 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "<kana>") 'toggle-input-method)
-#+END_SRC
-
-**** iedit key bindings
-#+BEGIN_SRC emacs-lisp
-(require 'iedit)
-(global-set-key (kbd "C-;") 'iedit-mode)
 #+END_SRC
 
 **** multiple cursors key bindings

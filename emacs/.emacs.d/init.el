@@ -36,7 +36,7 @@
 (require 'bind-key)
 (setq use-package-verbose t)
 
-(defvar bk:init.org-message-depth 2
+(defvar bk:init.org-message-depth 3
   "What depth of init.org headers to message at startup.")
 
 (with-temp-buffer

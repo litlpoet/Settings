@@ -42,7 +42,7 @@
  '(mark-ring-max 5000)
  '(package-selected-packages
    (quote
-    (org git-gutter-fringe paradox hungry-delete rainbow-delimiters company-auctex magit helm-ag glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors clang-format cpputils-cmake cmake-mode cmake-font-lock helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode smartparens volatile-highlights duplicate-thing anaphora dash f s company async helm)))
+    (smartparens macrostep org git-gutter-fringe paradox hungry-delete rainbow-delimiters company-auctex magit helm-ag glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors clang-format cpputils-cmake cmake-mode cmake-font-lock helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode volatile-highlights duplicate-thing anaphora dash f s company async helm)))
  '(safe-local-variable-values
    (quote
     ((eval setq-local projectile-project-run-cmd
