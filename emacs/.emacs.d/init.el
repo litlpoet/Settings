@@ -10,13 +10,13 @@
 
 ;; Turn off mouse interface early in startup to avoid momentary display
 (when window-system
+  (toggle-frame-fullscreen)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-  (tooltip-mode -1)
-  (toggle-frame-fullscreen))
+  (tooltip-mode -1))
 
-;; Set-up package
+;; Package archives
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
@@ -24,19 +24,20 @@
              '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
-;; Set-up use-package
-;; use-package is used to configure the rest of the packages.
+;; Custom
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
+;; use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
+(eval-when-compile (require 'use-package))
 (require 'diminish)
 (require 'bind-key)
-(setq use-package-verbose t)
+;; (setq use-package-verbose t)
 
-(defvar bk:init.org-message-depth 3
+(defvar bk:init.org-message-depth 2
   "What depth of init.org headers to message at startup.")
 
 (with-temp-buffer
@@ -61,22 +62,18 @@
      ((looking-at "^\\* ")
       (goto-char (point-max))))))
 
-;; (defconst bk:setting-load-path
-;;   (expand-file-name "bk-settings" user-emacs-directory)
-;;   "The load path for bk's setting.")
-;; (add-to-list 'load-path bk:setting-load-path)
-
 (when window-system
-  (let ((elapsed (float-time (time-subtract (current-time)
-                                            bk:emacs-start-time))))
+  (let
+      ((elapsed
+        (float-time (time-subtract (current-time) bk:emacs-start-time))))
     (message "Loading %s...done (%.3fs)" load-file-name elapsed))
   (add-hook 'after-init-hook
             `(lambda ()
-               (let ((elapsed (float-time (time-subtract (current-time)
-                                                         bk:emacs-start-time))))
+               (let ((elapsed
+                      (float-time (time-subtract (current-time)
+                                                 bk:emacs-start-time))))
                  (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed)))
-            t))
+                          ,load-file-name elapsed))) t))
 
 ;; (provide 'init)
 ;;; init.el ends here

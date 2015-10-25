@@ -17,7 +17,6 @@
  '(compilation-scroll-output t)
  '(current-language-environment "UTF-8")
  '(custom-safe-themes t)
- '(default-frame-alist (quote ((font . "Source Code Pro-15"))))
  '(delete-old-versions t)
  '(delete-selection-mode t)
  '(dired-dwim-target t)
@@ -31,7 +30,7 @@
  '(global-mark-ring-max 5000)
  '(ibuffer-use-other-window t)
  '(indent-tabs-mode nil)
- '(inhibit-startup-echo-area-message "\"hi~ bk.\"")
+ '(inhibit-startup-echo-area-message "hi~ bk.")
  '(inhibit-startup-screen t)
  '(initial-scratch-message "")
  '(ispell-dictionary "en")
@@ -68,7 +67,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(iedit-occurrence ((t (:inherit highlight :inverse-video t))))
  '(magit-diff-file-heading ((t (:inverse-video t :weight extra-bold)))))
 
 ;;; custom.el ends here
