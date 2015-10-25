@@ -9,16 +9,22 @@
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
-  :config (load-theme 'sanityinc-tomorrow-night t)
-  (use-package smart-mode-line
-    :ensure t
-    :init
-    (setq sml/mode-width 'right)
-    (setq sml/theme 'dark)
-    :config
-    (sml/setup)
-    (set-face-attribute `mode-line nil :box nil)
-    (set-face-attribute `mode-line-inactive nil :box nil)))
+  :config (load-theme 'sanityinc-tomorrow-night t))
+(use-package smart-mode-line
+  :ensure t
+  :init
+  (setq sml/mode-width 'right)
+  (setq sml/theme 'dark)
+  (setq sml/name-width 35)
+  (setq sml/extra-filler 7)
+  (add-hook 'after-init-hook
+            '(lambda()
+               (sml/setup)
+               (set-face-attribute `mode-line nil
+                                   :family "Envy Code R"
+                                   :box nil
+                                   :height 1.0)
+               (set-face-attribute `mode-line-inactive nil :box nil))))
 #+END_SRC
 
 *** set encoding
@@ -32,7 +38,9 @@
 
 *** set fonts
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'default-frame-alist '(font . "Source Code Pro-15"))
+(if (eq system-type 'windows-nt)
+    (add-to-list 'default-frame-alist '(font . "Source Code Pro-15"))
+  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-14")))
 (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
 #+END_SRC
 
@@ -53,19 +61,11 @@
 (if (eq system-type 'windows-nt)
     (setq dired-listing-switches "-lha")
   (setq dired-listing-switches "-lha --group-directories-first"))
-(add-hook 'dired-mode-hook 'auto-revert-mode)
+;; (add-hook 'dired-mode-hook 'auto-revert-mode)
 #+END_SRC
 
 *** prog-mode
 #+BEGIN_SRC emacs-lisp
-(add-hook
- 'prog-mode-hook
- (lambda()
-   (interactive)
-   (setq-local show-trailing-whitespace 1)
-   (setq-local whitespace-style '(face tabs trailing lines-tail))
-   (setq-local whitespace-line-column  80)
-   (whitespace-mode 1)))
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 ;; (add-hook 'prog-mode-hook 'linum-mode)
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
@@ -73,64 +73,97 @@
 
 *** auto-insert
 #+BEGIN_SRC emacs-lisp
-(defconst bk:auto-insert-dir
-  (file-name-as-directory
-   (expand-file-name "bk-inserts" user-emacs-directory)))
-(setq auto-insert-directory bk:auto-insert-dir)
+  (defun bk:format-include-guard-fallback ()
+    "Generate an include guard string with file name."
+    (let ((filename
+           (file-name-nondirectory
+            (file-name-sans-extension buffer-file-name)))
+          (ext
+           (file-name-extension buffer-file-name)))
+      (replace-regexp-in-string
+       "[^A-Z0-9_]" "_"
+       (upcase (concat filename "_" ext "_")))))
 
-(defvar bk:auto-insert-alist
-  '(;; file pattern . ["filename-to-insert" insertion-function] or
-    ;; (file pattern . description) . action (see `auto-insert-alist').
-    (("\\.[hH]\\(h\\|pp\\)?$" . "C/C++ header") . bk:generate-include-guard)))
+  (defun bk:format-include-guard ()
+    "Format an include guard, using projectile-project-root.
+  If not in a projectile project use `bk:format-include-guard-fallback'."
+    (if (projectile-project-p)
+        (let ((filename
+               (subseq
+                (file-name-sans-extension buffer-file-name)
+                (length (projectile-project-root))))
+              (ext (file-name-extension buffer-file-name)))
+          (replace-regexp-in-string
+           "[^A-Z0-9_]" "_"
+           (upcase (concat filename "_" ext "_"))))
+      (bk:format-include-guard-fallback)))
 
-(defun bk:format-include-guard-fallback ()
-  "Generate an include guard string with file name."
-  (let ((filename
-         (file-name-nondirectory
-          (file-name-sans-extension buffer-file-name)))
-        (ext
-         (file-name-extension buffer-file-name)))
-    (replace-regexp-in-string
-     "[^A-Z0-9_]" "_"
-     (upcase (concat filename "_" ext "_")))))
+  (defun bk:generate-include-guard ()
+    "Generate an include guard (should be in a C/C++ file),
+   used by `auto-insert-mode'."
+    (insert "guard")
+    (yas/expand))
 
-(defun bk:format-include-guard ()
-  "Format an include guard, using projectile-project-root.
-If not in a projectile project use `bk:format-include-guard-fallback'."
-  (if (projectile-project-p)
-      (let ((filename
-             (subseq
-              (file-name-sans-extension buffer-file-name)
-              (length (projectile-project-root))))
-            (ext (file-name-extension buffer-file-name)))
-        (replace-regexp-in-string
-         "[^A-Z0-9_]" "_"
-         (upcase (concat filename "_" ext "_"))))
-    (bk:format-include-guard-fallback)))
+  (defconst bk:auto-insert-dir
+    (file-name-as-directory
+     (expand-file-name "bk-inserts" user-emacs-directory)))
 
-(defun bk:generate-include-guard ()
-  "Generate an include guard (should be in a C/C++ file),
- used by `auto-insert-mode'."
-  (insert "guard")
-  (yas/expand))
+  (defvar bk:auto-insert-alist
+    '(;; file pattern . ["filename-to-insert" insertion-function] or
+      ;; (file pattern . description) . action (see `auto-insert-alist').
+      (("\\.[hH]\\(h\\|pp\\)?$" . "C/C++ header") . bk:generate-include-guard)))
 
-(setq auto-insert-directory bk:auto-insert-dir)
-(dolist (elem bk:auto-insert-alist)
-  (add-to-list 'auto-insert-alist elem))
+  (auto-insert-mode t)
+  (setq auto-insert-directory bk:auto-insert-dir)
+  (dolist (elem bk:auto-insert-alist)
+    (add-to-list 'auto-insert-alist elem))
+  (setq auto-insert-query nil)
+#+END_SRC
+
+*** auto-revert
+#+BEGIN_SRC emacs-lisp
+(use-package auto-revert
+  :diminish auto-revert-mode
+  :config
+  (setq auto-revert-verbose nil)
+  (global-auto-revert-mode))
 #+END_SRC
 
 *** whitespace
 #+BEGIN_SRC emacs-lisp
 (use-package whitespace
   :defer t
-  :diminish whitespace-mode)
+  :diminish whitespace-mode
+  :init
+  (add-hook 'diff-mode-hook
+            '(lambda()
+               (setq-local
+                whitespace-style '(face
+                                   tabs
+                                   tab-mark
+                                   trailing
+                                   indentation::space
+                                   indentation::tab
+                                   spaces
+                                   space-mark
+                                   newline
+                                   newline-mark))
+               (whitespace-mode 1)))
+  (add-hook 'prog-mode-hook
+            '(lambda()
+               (setq-local show-trailing-whitespace 1)
+               (setq-local whitespace-style '(face
+                                              tabs
+                                              trailing
+                                              lines-tail))
+               (setq-local whitespace-line-column 80)
+               (whitespace-mode 1))))
 #+END_SRC
 
 
 ** External Package Setup
 *** global core packages
 **** org
-     setup org-mode
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :ensure t
@@ -147,7 +180,6 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 **** projectile
-     setup projectile and helm-projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
@@ -160,7 +192,6 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 **** helm
-     setup helm and helm-ag.
 #+BEGIN_SRC emacs-lisp 
 (use-package helm
   :ensure t
@@ -186,46 +217,42 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
         helm-M-x-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-recentf-fuzzy-match t)
-  (unbind-key "C-x c")
   (helm-autoresize-mode t)
-  ;; rebind tab to run persistent action
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
-  ;; make TAB works in terminal
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
-  ;; list actions using C-z
-  (define-key helm-map (kbd "C-z") 'helm-select-action)
+  (unbind-key "C-x c")
+  (bind-key "<tab>" 'helm-execute-persistent-action helm-map)
+  (bind-key "C-i" 'helm-execute-persistent-action helm-map)
+  (bind-key "C-z" 'helm-select-action helm-map)
   (use-package helm-ag
     :ensure t
     :config
-    (setq helm-ag-insert-at-point 'symbol)))
-#+END_SRC
-
-**** helm-projectile
-     setup helm-projectile
-#+BEGIN_SRC emacs-lisp
-(use-package helm-projectile
-  :ensure t
-  :config
-  (helm-projectile-on)
-  (setq projectile-completion-system 'helm)
-  (setq projectile-switch-project-action 'projectile-dired))
+    (setq helm-ag-insert-at-point 'symbol))
+  (use-package helm-projectile
+    :ensure t
+    :config
+    (helm-projectile-on)
+    (setq projectile-completion-system 'helm)
+    (setq projectile-switch-project-action 'projectile-dired)))
 #+END_SRC
 
 **** company
-     setup company-mode
-     [[*company%20key%20bindings][company key bindings]]
 #+BEGIN_SRC emacs-lisp
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay nil)
-(setq company-selection-wrap-around t)
-;; company auctex
-(company-auctex-init)
+(use-package company
+  :ensure t
+  :defer t
+  :bind ("<tab>" . company-indent-or-complete-common)
+  :diminish company-mode
+  :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
+  (setq company-selection-wrap-around t)
+  (setq company-show-numbers t)
+  (setq company-idle-delay nil)
+  (use-package company-auctex
+    :ensure t
+    :config
+    (company-auctex-init)))
 #+END_SRC
-**** company key bindings
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "M-RET") 'company-complete)
-#+END_SRC
+
 **** flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
@@ -233,6 +260,10 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
   :defer t
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode)
+  (add-hook 'org-src-mode-hook
+            '(lambda()
+               (setq-local flycheck-disabled-checkers
+                           '(emacs-lisp-checkdoc))))
   :config
   (use-package flycheck-irony
     :ensure t
@@ -266,11 +297,11 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+BEGIN_SRC emacs-lisp
 (use-package recentf
   :ensure t
+  :commands recentf-mode
   :init
   (setq recentf-max-menu-items 10
         recentf=max-saved-items 1000)
-  :config
-  (recentf-mode))
+  (add-hook 'after-init-hook 'recentf-mode))
 #+END_SRC
 
 **** undo-tree
@@ -298,7 +329,6 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 
 *** global helper packages
 **** smartparens
-     setup smartparens
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
@@ -311,7 +341,6 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 **** clean-aindent-mode
-
 #+BEGIN_SRC emacs-lisp
 (use-package clean-aindent-mode
   :ensure t
@@ -347,15 +376,13 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+BEGIN_SRC emacs-lisp
 (use-package multiple-cursors
   :ensure t
-  :bind (("C-x C-m" . mc/mark-all-dwim)
-         ("M-3" . mc/mark-next-like-this)
+  :bind (("M-3" . mc/mark-next-like-this)
          ("M-4" . mc/mark-previous-like-this)
          ("M-#" . mc/unmark-next-like-this)
          ("M-$" . mc/unmark-previous-like-this)))
 #+END_SRC
 
-**** git-gutter
-     setup git-gutter, git-gutter-fringe
+**** git-gutter-fringe
 #+BEGIN_SRC emacs-lisp
 (use-package git-gutter-fringe
   :ensure t
@@ -376,7 +403,6 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 
 *** mode-specific packages
 **** paradox
-     setup paradox package management
 #+BEGIN_SRC emacs-lisp
 (use-package paradox
   :ensure t
@@ -395,43 +421,38 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+END_SRC
 
 **** irony
-
-     setup irony-mode
-
 #+BEGIN_SRC emacs-lisp
-(require 'irony)
-(defun bk:irony-mode-hook()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async)
-  (when (eq system-type 'windows-nt)
-    (setq w32-pipe-read-delay 0)))
-(add-hook 'irony-mode-hook 'bk:irony-mode-hook)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook
-          (lambda()
-            (unless (derived-mode-p 'glsl-mode) (irony-mode))))
-;; (setq irony-additional-clang-options '("-std=c++11"))
+(use-package irony
+  :ensure t
+  :defer t
+  :init
+  (defun bk:irony-mode-hook()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async)
+    (when (eq system-type 'windows-nt)
+      (setq w32-pipe-read-delay 0)))
+  (add-hook 'irony-mode-hook 'bk:irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook
+            '(lambda()
+               (unless (derived-mode-p 'glsl-mode) (irony-mode)))))
 #+END_SRC
 
 **** company-irony
-     setup company-irony back-end
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
   '(progn
      (require 'company-irony)
      ;; (require 'company-irony-c-headers) ;; not mature yet
-     (add-to-list 'company-backends 'company-irony)))
-(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+     (add-to-list 'company-backends 'company-irony)
+     (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)))
 #+END_SRC
 
 **** company-c-headers
-
-     setup company-c-headers back-end
-     this back-end should go before irony-mode back-end
-
+     this back-end should go before company-irony (using 'add-to-list')
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
   '(progn
@@ -453,13 +474,10 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
            "/usr/local/include/eigen3/"
            "/opt/qt5/5.5/gcc_64/include/"
            "/home/bk/VersionControl/Modules/libML"))))
-     (setq
-      company-c-headers-path-user
-      '("." ".."))))
+     (setq company-c-headers-path-user '("." ".."))))
 #+END_SRC
 
 **** google-c-style
-
 #+BEGIN_SRC emacs-lisp
 (use-package google-c-style
   :ensure t
@@ -473,24 +491,22 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 #+BEGIN_SRC emacs-lisp
 (use-package clang-format
   :ensure t
-  :defer t
+  :commands clang-format-buffer
   :init
   (add-hook 'c-mode-hook 'bk:clang-format-setting)
   (add-hook 'c++-mode-hook 'bk:clang-format-setting)
   (defun bk:clang-format-setting()
-    (define-key c-mode-base-map (kbd "C-S-f") 'clang-format-buffer)
+    (bind-key "C-S-f" 'clang-format-buffer c-mode-base-map)
     (setq-local clang-format-style "Google")))
 #+END_SRC
 
-**** cmake
-     setup cmake-mode
+**** cmake-mode and cmake-font-lock
 #+BEGIN_SRC emacs-lisp
 (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
 (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
 #+END_SRC
 
 **** auctex
-     setup auctex-mode
 #+BEGIN_SRC emacs-lisp
 (add-hook 'TeX-mode-hook 'linum-mode)
 (add-hook 'TeX-mode-hook 'flyspell-mode)
@@ -523,9 +539,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 
 
 ** Implementations
-*** display buffer
-    setup a display buffer for specific buffers
-    [[*quit%20bottom%20display%20buffer%20key%20binding][quit bottom display buffer key binding]]
+*** buffer specific display window
 #+BEGIN_SRC emacs-lisp
 (require 'rx)
 (setq
@@ -542,41 +556,33 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
     (reusable-frames . visible)
     (window-height   . 0.25))
    ("." nil (reusable-frames . visible))))
-
 (defun bk:quit-bottom-side-windows ()
   "Quit windows at the bottom of the current frame."
   (interactive)
   (dolist (window (window-at-side-list nil 'bottom))
     (quit-window nil window)))
+(bind-key "C-c q" 'bk:quit-bottom-side-windows)
 #+END_SRC
+
 *** window dedication
     setup a decicated window configuration
-    [[*window%20dedication%20key%20binding][window dedication key binding]]
 #+BEGIN_SRC emacs-lisp
-;; window dedication
 (defun bk:toggle-current-window-dedication ()
   "Window dedication."
   (interactive)
   (let* ((window (selected-window))
          (dedicated (window-dedicated-p window)))
     (set-window-dedicated-p window (not dedicated))
-    (message "Window %sdedicated to %s"
+    (message "Window %s dedicated to %s"
              (if dedicated "no longer " "")
              (buffer-name))))
+(bind-key [pause] 'bk:toggle-current-window-dedication)
 #+END_SRC
 
 *** white space display in diff mode
     important white space in diff mode
 #+BEGIN_SRC emacs-lisp
-(add-hook
- 'diff-mode-hook
- (lambda()
-   (setq-local
-    whitespace-style
-    '(face tabs tab-mark trailing
-      indentation::space indentation::tab
-      spaces space-mark newline newline-mark))
-   (whitespace-mode 1)))
+
 #+END_SRC
 
 *** useful window title info.
@@ -584,66 +590,49 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 (setq
  frame-title-format
  '("" invocation-name ": "
-   (:eval ( if (buffer-file-name)
-              (abbreviate-file-name (buffer-file-name))
-            "%b"))))
+   (:eval
+    (if (buffer-file-name)
+        (abbreviate-file-name (buffer-file-name))
+      "%b"))))
 #+END_SRC
 
 *** hidden mode-line
 #+BEGIN_SRC emacs-lisp
-(defvar-local hidden-mode-line-mode nil)
+(defvar-local toggle-mode-line nil)
 (defvar-local hide-mode-line nil)
-(define-minor-mode hidden-mode-line-mode
+(define-minor-mode toggle-mode-line
   "Minor mode to hide the mode-line in the current buffer."
   :init-value nil
   :global t
-  :variable hidden-mode-line-mode
+  :variable toggle-mode-line
   :group 'editing-basics
-  (if hidden-mode-line-mode
+  (if toggle-mode-line
       (setq hide-mode-line mode-line-format
             mode-line-format nil)
     (setq mode-line-format hide-mode-line
           hide-mode-line nil))
   (force-mode-line-update)
-  ;; Apparently force-mode-line-update is not always enough to
-  ;; redisplay the mode-line
   (redraw-display)
   (when (and (called-interactively-p 'interactive)
-             hidden-mode-line-mode)
+             toggle-mode-line)
     (run-with-idle-timer
      0 nil 'message
-     (concat "Hidden Mode Line Mode enabled.  "
-             "Use M-x hidden-mode-line-mode to make the mode-line appear."))))
+     (concat "Hidden mode line mode enabled.  "
+             "Use M-x toggle-mode-line to make the mode-line appear."))))
 ;; If you want to hide the mode-line in every buffer by default
-;; (add-hook 'after-change-major-mode-hook 'hidden-mode-line-mode)
+;; (add-hook 'after-change-major-mode-hook 'toggle-mode-line)
 #+END_SRC
 
 
 ** Key Bindings
 *** global keys
-**** quit bottom display buffer key binding
 #+BEGIN_SRC emacs-lisp
-;; see available keys at window.el.gz's bottom
-(global-set-key (kbd "C-c q") 'bk:quit-bottom-side-windows)
-#+END_SRC
-
-**** window dedication key binding
-#+BEGIN_SRC emacs-lisp
-(global-set-key [pause] 'bk:toggle-current-window-dedication)
-#+END_SRC
-
-**** useful meta key bindings
-#+BEGIN_SRC emacs-lisp
-(global-set-key "\M-9" 'backward-sexp)
-(global-set-key "\M-0" 'forward-sexp)
-(global-set-key "\M-1" 'delete-other-windows)
-(global-set-key (kbd "C-x k") 'kill-this-buffer)
-#+END_SRC
-
-**** editing key bindings
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "<kana>") 'toggle-input-method)
+(bind-key "M-9"    'backward-sexp)
+(bind-key "M-0"    'forward-sexp)
+(bind-key "M-1"    'delete-other-windows)
+(bind-key "C-x k"  'kill-this-buffer)
+(bind-key "RET"    'newline-and-indent)
+(bind-key "<kana>" 'toggle-input-method)
 #+END_SRC
 
 
@@ -694,6 +683,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
 (require 'bind-key)
 (setq use-package-verbose t)
 #+END_SRC
+
 
 ** check package installation
 
