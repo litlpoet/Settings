@@ -12,7 +12,6 @@
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(compilation-scroll-output t)
- '(current-language-environment "UTF-8")
  '(custom-safe-themes t)
  '(delete-old-versions t)
  '(delete-selection-mode t)
@@ -20,7 +19,7 @@
  '(dired-recursive-copies (quote always))
  '(dired-recursive-deletes (quote always))
  '(fill-column 80)
- '(fringe-mode (quote (8 . 3)) nil (fringe))
+ '(fringe-mode (quote (nil . 0)) nil (fringe))
  '(global-hl-line-mode t)
  '(global-hl-line-sticky-flag nil)
  '(global-mark-ring-max 5000)
@@ -37,10 +36,12 @@
  '(mark-ring-max 5000)
  '(package-selected-packages
    (quote
-    (use-package color-theme-sanityinc-tomorrow smart-mode-line smartparens macrostep org git-gutter-fringe paradox hungry-delete rainbow-delimiters company-auctex magit helm-ag glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors clang-format cpputils-cmake cmake-mode cmake-font-lock helm-projectile google-c-style company-irony flycheck-irony irony flycheck flycheck-google-cpplint iedit recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode volatile-highlights duplicate-thing anaphora dash f s company async helm)))
+    (gitignore-mode markdown-mode malinka helm-mode irony god-mode cmake-ide rtags use-package color-theme-sanityinc-tomorrow smart-mode-line smartparens macrostep org git-gutter-fringe paradox hungry-delete rainbow-delimiters company-auctex magit helm-ag glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors clang-format cpputils-cmake cmake-mode cmake-font-lock helm-projectile google-c-style company-irony flycheck-irony flycheck flycheck-google-cpplint iedit recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode volatile-highlights duplicate-thing anaphora dash f s company async helm)))
  '(safe-local-variable-values
    (quote
-    ((eval setq-local projectile-project-run-cmd
+    ((eval setq-local cmake-ide-dir
+           (expand-file-name "~/VersionControl/Research/sketchimo/build/"))
+     (eval setq-local projectile-project-run-cmd
            (expand-file-name "~/VersionControl/Research/interpolation/build/interpolation"))
      (projectile-project-compilation-cmd . "make -j 8 -C \"~/VersionControl/Research/interpolation/build\"")
      (eval setq-local projectile-project-run-cmd

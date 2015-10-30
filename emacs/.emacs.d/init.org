@@ -9,9 +9,11 @@
 #+BEGIN_SRC emacs-lisp
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
-  :config (load-theme 'sanityinc-tomorrow-night t))
+  :defer t
+  :init (load-theme 'sanityinc-tomorrow-night t))
 (use-package smart-mode-line
   :ensure t
+  :defer t
   :init
   (setq sml/mode-width 'right)
   (setq sml/theme 'dark)
@@ -30,6 +32,7 @@
 *** set encoding
 #+BEGIN_SRC emacs-lisp
 (setq locale-coding-system 'utf-8)
+(set-language-environment 'UTF-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
@@ -122,11 +125,11 @@
 
 *** auto-revert
 #+BEGIN_SRC emacs-lisp
-(use-package auto-revert
+(use-package autorevert
   :diminish auto-revert-mode
   :config
   (setq auto-revert-verbose nil)
-  (global-auto-revert-mode))
+  (global-auto-revert-mode t))
 #+END_SRC
 
 *** whitespace
@@ -160,30 +163,32 @@
                (whitespace-mode 1))))
 #+END_SRC
 
+*** abbrev
+#+BEGIN_SRC emacs-lisp
+(use-package abbrev
+  :defer t
+  :diminish abbrev-mode)
+#+END_SRC
+
+*** flyspell
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell
+  :defer t
+  :init
+  (setq flyspell-mode-line-string " FlyS")
+  (add-hook 'org-mode-hook 'flyspell-mode)
+  (add-hook 'TeX-mode-hook 'flyspell-mode))
+#+END_SRC
+
 
 ** External Package Setup
 *** global core packages
-**** org
-#+BEGIN_SRC emacs-lisp
-(use-package org
-  :ensure t
-  :bind (("C-c l" . org-store-link)
-         ("C-c a" . org-agenda))
-  :init
-  (setq org-log-done t
-        org-src-fontify-natively t
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t
-        org-src-tab-acts-natively t)
-  (add-hook 'org-mode-hook 'flyspell-mode))
-#+END_SRC
-
-**** projectile
+**** (proj) projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
   :init
+  ;; (setq projectile-keymap-prefix (kbd "C-c C-p"))
   (setq projectile-indexing-method 'alien)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
@@ -191,69 +196,153 @@
   (projectile-global-mode))
 #+END_SRC
 
-**** helm
+**** (navi) helm
 #+BEGIN_SRC emacs-lisp 
 (use-package helm
   :ensure t
-  :bind (("C-c h" . helm-command-prefix)
-         ("C-x b" . helm-mini)
-         ("C-x C-f" . helm-find-files)
-         ("M-x" . helm-M-x)
-         ("M-y" . helm-show-kill-ring))
+  :defer t
   :commands (helm-execute-persistent-action
              helm-select-action)
   :diminish helm-mode
   :init
   (require 'helm-config)
-  (helm-mode 1)
-  :config
+  (setq
+   helm-split-window-in-side-p t
+   helm-move-to-line-cycle-in-source t
+   helm-ff-search-library-in-sexp t
+   helm-scroll-amount 1
+   helm-ff-file-name-history-use-recentf t
+   helm-M-x-fuzzy-match t
+   helm-buffers-fuzzy-matching t
+   helm-recentf-fuzzy-match t
+   helm-command-prefix-key "C-c h")
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t))
-  (setq helm-split-window-in-side-p t
-        helm-move-to-line-cycle-in-source t
-        helm-ff-search-library-in-sexp t
-        helm-scroll-amount 8
-        helm-ff-file-name-history-use-recentf t
-        helm-M-x-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t)
+  (bind-key "C-x b" 'helm-mini)
+  (bind-key "C-x C-f" 'helm-find-files)
+  (bind-key "M-x" 'helm-M-x)
+  (bind-key "M-y" 'helm-show-kill-ring)
+  (helm-mode 1)
   (helm-autoresize-mode t)
-  (unbind-key "C-x c")
+  :config
+  ;; helm-map is enabled maybe after (helm-mode) is activated!
   (bind-key "<tab>" 'helm-execute-persistent-action helm-map)
   (bind-key "C-i" 'helm-execute-persistent-action helm-map)
-  (bind-key "C-z" 'helm-select-action helm-map)
-  (use-package helm-ag
-    :ensure t
-    :config
-    (setq helm-ag-insert-at-point 'symbol))
-  (use-package helm-projectile
-    :ensure t
-    :config
-    (helm-projectile-on)
-    (setq projectile-completion-system 'helm)
-    (setq projectile-switch-project-action 'projectile-dired)))
+  (bind-key "C-z" 'helm-select-action helm-map))
 #+END_SRC
 
-**** company
+**** (navi) helm-ag
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'helm
+  '(use-package helm-ag
+     :ensure t
+     :init
+     (setq helm-ag-insert-at-point 'symbol)))
+#+END_SRC
+
+**** (navi) helm-projectile
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'helm
+  '(use-package helm-projectile
+     :ensure t
+     :init
+     (helm-projectile-on)
+     ;; helm-projectile-on will change below params if activated later
+     (setq projectile-completion-system 'helm)
+     (setq projectile-switch-project-action 'projectile-dired)))
+#+END_SRC
+
+**** (navi) avy
+#+BEGIN_SRC emacs-lisp
+(use-package avy
+  :ensure t
+  :bind ("C-c j" . avy-goto-word-or-subword-1))
+#+END_SRC
+
+**** (navi) ace-window
+#+BEGIN_SRC emacs-lisp
+(use-package ace-window
+  :ensure t
+  :bind ("C-x o" . ace-window))
+#+END_SRC
+
+**** (navi) god-mode
+#+BEGIN_SRC emacs-lisp
+(use-package god-mode
+  :ensure t
+  :bind ("<escape>" . god-local-mode)
+  :init
+  (defun bk:update-god-mode-face ()
+    (setq cursor-type
+          (if (or god-local-mode buffer-read-only)
+              'box 'bar))
+    (cond (god-local-mode (set-face-background 'highlight "#382a2e"))
+          (t (set-face-background 'highlight "#282a2e")))
+    (cond (god-local-mode (set-face-background 'mode-line "#150000"))
+          (t (set-face-background 'mode-line "black"))))
+  (add-hook 'god-mode-enabled-hook 'bk:update-god-mode-face)
+  (add-hook 'god-mode-disabled-hook 'bk:update-god-mode-face)
+  :config
+  (add-to-list 'god-exempt-major-modes 'helm-mode)
+  (add-to-list 'god-exempt-major-modes 'paradox-menu-mode)
+  (bind-key "z" 'repeat god-local-mode-map)
+  (bind-key "i" 'god-local-mode god-local-mode-map)
+  (use-package god-mode-isearch
+    :config
+    (bind-key "<escape>" 'god-mode-isearch-activate isearch-mode-map)
+    (bind-key "<escape>" 'god-mode-isearch-disable god-mode-isearch-map)))
+
+#+END_SRC
+**** (cmpl) company
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
   :defer t
-  :bind ("<tab>" . company-indent-or-complete-common)
+  :bind ("C-c c" . company-indent-or-complete-common)
   :diminish company-mode
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :config
   (setq company-selection-wrap-around t)
-  (setq company-show-numbers t)
-  (setq company-idle-delay nil)
-  (use-package company-auctex
-    :ensure t
-    :config
-    (company-auctex-init)))
+  (setq company-backends (delete 'company-semantic company-backends))
+  (setq company-backends (delete 'company-clang company-backends)))
 #+END_SRC
 
-**** flycheck
+**** (cmpl) yasnippet
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :diminish yas-minor-mode
+  :init
+  (defconst bk:snippet-dir
+    (file-name-as-directory
+     (expand-file-name "bk-snippets" user-emacs-directory)))
+  (if (file-exists-p bk:snippet-dir)
+      (setq yas-snippet-dirs (list bk:snippet-dir)))
+  :config
+  (yas-global-mode 1))
+#+END_SRC
+
+**** (file) recentf-ext
+#+BEGIN_SRC emacs-lisp
+(use-package recentf-ext
+  :ensure t
+  :defer 2
+  :init
+  (setq recentf-max-saved-items 200))
+#+END_SRC
+
+**** (file) undo-tree
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :config
+  (global-undo-tree-mode))
+#+END_SRC
+
+**** (lint) flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t
@@ -277,58 +366,8 @@
      '(warning . c/c++-googlelint))))
 #+END_SRC
 
-**** yasnippet
-#+BEGIN_SRC emacs-lisp
-(use-package yasnippet
-  :ensure t
-  :defer t
-  :diminish yas-minor-mode
-  :init
-  (defconst bk:snippet-dir
-    (file-name-as-directory
-     (expand-file-name "bk-snippets" user-emacs-directory)))
-  (if (file-exists-p bk:snippet-dir)
-      (setq yas-snippet-dirs (list bk:snippet-dir)))
-  :config
-  (yas-global-mode 1))
-#+END_SRC
-
-**** recentf
-#+BEGIN_SRC emacs-lisp
-(use-package recentf
-  :ensure t
-  :commands recentf-mode
-  :init
-  (setq recentf-max-menu-items 10
-        recentf=max-saved-items 1000)
-  (add-hook 'after-init-hook 'recentf-mode))
-#+END_SRC
-
-**** undo-tree
-#+BEGIN_SRC emacs-lisp
-(use-package undo-tree
-  :ensure t
-  :diminish undo-tree-mode
-  :config
-  (global-undo-tree-mode))
-#+END_SRC
-
-**** avy
-#+BEGIN_SRC emacs-lisp
-(use-package avy
-  :ensure t
-  :bind ("C-c j" . avy-goto-word-or-subword-1))
-#+END_SRC
-
-**** ace-window
-#+BEGIN_SRC emacs-lisp
-(use-package ace-window
-  :ensure t
-  :bind ("C-x o" . ace-window))
-#+END_SRC
-
 *** global helper packages
-**** smartparens
+**** (edit) smartparens
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
@@ -336,11 +375,28 @@
   :diminish smartparens-mode
   :init
   (require 'smartparens-config)
+  (bind-key "C-M-w" 'sp-copy-sexp smartparens-mode-map)
+  (bind-key "M-<delete>" 'sp-unwrap-sexp  smartparens-mode-map)
+  (bind-key "M-<backspace>" 'sp-backward-unwrap-sexp smartparens-mode-map)
+  (bind-key "M-D" 'sp-splice-sexp smartparens-mode-map)
+  (bind-key "M-F" 'sp-forward-symbol smartparens-mode-map)
+  (bind-key "M-B" 'sp-backward-symbol smartparens-mode-map)
+  (sp-with-modes '(c-mode c++-mode)
+    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+  (sp-local-pair 'c++-mode "/*" "*/"
+                 :post-handlers '((" | " "SPC")
+                                  ("* ||\n[i]" "RET")))
   (smartparens-global-mode t)
-  (show-smartparens-global-mode t))
+  (show-smartparens-global-mode t)
+  :config
+  (set-face-attribute 'show-paren-match nil
+                      :weight 'extra-bold
+                      :underline "yellow"
+                      :foreground "gold"
+                      :background nil))
 #+END_SRC
 
-**** clean-aindent-mode
+**** (edit) clean-aindent-mode
 #+BEGIN_SRC emacs-lisp
 (use-package clean-aindent-mode
   :ensure t
@@ -349,7 +405,7 @@
   (add-hook 'prog-mode-hook 'clean-aindent-mode))
 #+END_SRC
 
-**** iedit
+**** (edit) iedit
 #+BEGIN_SRC emacs-lisp
 (use-package iedit
   :ensure t
@@ -358,31 +414,31 @@
   (set-face-inverse-video 'iedit-occurrence t))
 #+END_SRC
 
-**** expand-region
+**** (edit) expand-region
 #+BEGIN_SRC emacs-lisp
 (use-package expand-region
   :ensure t
   :bind ("M-2" . er/expand-region))
 #+END_SRC
 
-**** duplicate-thing
+**** (edit) duplicate-thing
 #+BEGIN_SRC emacs-lisp
 (use-package duplicate-thing
   :ensure t
   :bind ("M-c" . duplicate-thing))
 #+END_SRC
 
-**** multiple-cursors
+**** (edit) multiple-cursors
 #+BEGIN_SRC emacs-lisp
 (use-package multiple-cursors
   :ensure t
-  :bind (("M-3" . mc/mark-next-like-this)
-         ("M-4" . mc/mark-previous-like-this)
-         ("M-#" . mc/unmark-next-like-this)
-         ("M-$" . mc/unmark-previous-like-this)))
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-." . mc/unmark-next-like-this)
+         ("C-," . mc/unmark-previous-like-this)))
 #+END_SRC
 
-**** git-gutter-fringe
+**** (viz) git-gutter-fringe
 #+BEGIN_SRC emacs-lisp
 (use-package git-gutter-fringe
   :ensure t
@@ -391,18 +447,18 @@
   (global-git-gutter-mode t))
 #+END_SRC
 
-**** volatile-highlights
+**** (viz) volatile-highlights
 #+BEGIN_SRC emacs-lisp
 (use-package volatile-highlights
   :ensure t
   :diminish volatile-highlights-mode
   :config
-  (set-face-inverse-video 'vhl/default-face t)
+  (set-face-background 'vhl/default-face "light slate gray")
   (volatile-highlights-mode t))
 #+END_SRC
 
 *** mode-specific packages
-**** paradox
+**** (elpa) paradox
 #+BEGIN_SRC emacs-lisp
 (use-package paradox
   :ensure t
@@ -420,7 +476,31 @@
         paradox-column-width-version 12))
 #+END_SRC
 
-**** irony
+**** (org) org
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :ensure t
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda))
+  :init
+  (setq org-log-done t
+        org-src-fontify-natively t
+        org-src-window-setup 'current-window
+        org-src-strip-leading-and-trailing-blank-lines t
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t))
+#+END_SRC
+
+**** (tex) company-auctex
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'company
+  '(use-package company-auctex
+     :ensure t
+     :init
+     (company-auctex-init)))
+#+END_SRC
+
+**** (c++) irony
 #+BEGIN_SRC emacs-lisp
 (use-package irony
   :ensure t
@@ -430,54 +510,54 @@
     (define-key irony-mode-map [remap completion-at-point]
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async)
-    (when (eq system-type 'windows-nt)
-      (setq w32-pipe-read-delay 0)))
+      'irony-completion-at-point-async))
   (add-hook 'irony-mode-hook 'bk:irony-mode-hook)
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook
             '(lambda()
-               (unless (derived-mode-p 'glsl-mode) (irony-mode)))))
+               (unless (derived-mode-p 'glsl-mode) (irony-mode))))
+  (when (eq system-type 'windows-nt)
+    (setq w32-pipe-read-delay 0)))
 #+END_SRC
 
-**** company-irony
+**** (c++) rtags
+#+BEGIN_SRC emacs-lisp
+(use-package rtags
+  :ensure t
+  :defer t
+  :init
+  (setq
+   rtags-completions-enabled t
+   rtags-jump-to-first-match nil
+   rtags-other-window-window-size-percentage 50)
+  (add-hook 'rtags-after-find-file-hook 'recenter-top-bottom)
+  ;; (rtags-enable-standard-keybindings c-mode-base-map (kbd "C-c C-r"))
+  (rtags-enable-standard-keybindings c-mode-base-map))
+#+END_SRC
+
+**** (c++) company-rtags
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
-  '(progn
-     (require 'company-irony)
-     ;; (require 'company-irony-c-headers) ;; not mature yet
-     (add-to-list 'company-backends 'company-irony)
-     (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)))
+  '(use-package company-rtags
+     :commands company-rtags
+     :init
+     (add-to-list 'company-backends 'company-rtags)))
 #+END_SRC
 
-**** company-c-headers
-     this back-end should go before company-irony (using 'add-to-list')
+**** (c++) company-irony
+     use company-irony only with key input
+     (looks unstable sometimes with idle completion)
 #+BEGIN_SRC emacs-lisp
-(eval-after-load 'company
-  '(progn
-     (require 'company-c-headers)
-     (add-to-list 'company-backends 'company-c-headers)
-     (when (eq system-type 'windows-nt)
-       (setq
-        company-c-headers-path-system
-        '("c:/Local/msys64/mingw64/x86_64-w64-mingw32/include/"
-          "c:/Local/msys64/mingw64/include/"
-          "c:/Local/msys64/mingw64/include/c++/5.2.0/"
-          "c:/Local/include/eigen3/")))
-     (when (eq system-type 'gnu/linux)
-       (setq
-        company-c-headers-path-system
-        (append
-         company-c-headers-path-system
-         '("/usr/include/c++/4.9/"
-           "/usr/local/include/eigen3/"
-           "/opt/qt5/5.5/gcc_64/include/"
-           "/home/bk/VersionControl/Modules/libML"))))
-     (setq company-c-headers-path-user '("." ".."))))
+(use-package company-irony
+  :ensure t
+  :commands company-irony
+  :init
+  (bind-key "M-<RET>" 'company-irony c-mode-map)
+  (bind-key "M-<RET>" 'company-irony c++-mode-map))
 #+END_SRC
 
-**** google-c-style
+**** (c++) google-c-style
 #+BEGIN_SRC emacs-lisp
 (use-package google-c-style
   :ensure t
@@ -487,29 +567,51 @@
   (add-hook 'c-mode-common-hook 'google-make-newline-indent))
 #+END_SRC
 
-**** clang-format
+**** (c++) clang-format
 #+BEGIN_SRC emacs-lisp
 (use-package clang-format
   :ensure t
   :commands clang-format-buffer
   :init
-  (add-hook 'c-mode-hook 'bk:clang-format-setting)
-  (add-hook 'c++-mode-hook 'bk:clang-format-setting)
+  (bind-key "C-c C-f" 'clang-format-buffer c-mode-base-map)
   (defun bk:clang-format-setting()
-    (bind-key "C-S-f" 'clang-format-buffer c-mode-base-map)
-    (setq-local clang-format-style "Google")))
+    (setq-local clang-format-style "Google"))
+  (add-hook 'c-mode-common-hook 'bk:clang-format-setting))
 #+END_SRC
 
-**** cmake-mode and cmake-font-lock
+**** (c++) cmake-mode and cmake-font-lock
 #+BEGIN_SRC emacs-lisp
 (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
 (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
 #+END_SRC
 
-**** auctex
+**** (c++) malinka
+#+BEGIN_SRC emacs-lisp
+(use-package malinka
+  :defer t
+  :init
+  (setq malinka-print-debug? t
+        malinka-print-warning? t)
+  (add-hook 'c-mode-common-hook 'malinka-mode)
+  :config
+  (message "manlika config started!!!!!!")
+  (malinka-define-project
+   :name "sketchimo"
+   :root-directory "/home/bk/VersionControl/Research/sketchimo"
+   :build-directory "/home/bk/VersionControl/Research/sketchimo/build"
+   :configure-cmd "cmake .."
+   :compile-cmd "make -j 8")
+  (malinka-define-project
+   :name "interpolation"
+   :root-directory "/home/bk/VersionControl/Research/interpolation"
+   :build-directory "/home/bk/VersionControl/Research/interpolation/build"
+   :configure-cmd "cmake .."
+   :compile-cmd "make -j 8"))
+#+END_SRC
+
+**** (latex) auctex
 #+BEGIN_SRC emacs-lisp
 (add-hook 'TeX-mode-hook 'linum-mode)
-(add-hook 'TeX-mode-hook 'flyspell-mode)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -529,7 +631,7 @@
                     '(output-pdf "Sumatra PDF")))))
 #+END_SRC
 
-**** macrostep
+**** (elisp) macrostep
 #+BEGIN_SRC emacs-lisp
 (use-package macrostep
   :ensure t
@@ -549,6 +651,7 @@
                  "*compilation"      ; Compilation buffers
                  "*Warnings*"        ; Emacs warnings
                  "*shell"            ; Shell window
+                 "*rdm*"             ; rdm (rtags server)
                  ))
     (display-buffer-reuse-window
      display-buffer-in-side-window)
@@ -633,6 +736,11 @@
 (bind-key "C-x k"  'kill-this-buffer)
 (bind-key "RET"    'newline-and-indent)
 (bind-key "<kana>" 'toggle-input-method)
+;; for god-mode nice keybindings
+(bind-key "C-x C-1" 'delete-other-windows)
+(bind-key "C-x C-2" 'split-window-below)
+(bind-key "C-x C-3" 'split-window-right)
+(bind-key "C-x C-0" 'delete-window)
 #+END_SRC
 
 
@@ -651,8 +759,8 @@
 #+END_SRC
 
 
-* not used configuration
-** preparation
+* Disabled configuration
+** Preparation
 *** control package archives
 #+BEGIN_SRC emacs-lisp
 (require 'package)
@@ -684,11 +792,10 @@
 (setq use-package-verbose t)
 #+END_SRC
 
+*** check package installation
 
-** check package installation
-
-   1) Check if all packages are installed.
-   2) If some packages are missing, install them automatically
+    1) Check if all packages are installed.
+    2) If some packages are missing, install them automatically
 
 #+BEGIN_SRC emacs-lisp 
 (require 'cl)
@@ -707,3 +814,65 @@
       (package-install p))))
 #+END_SRC
 
+
+** Built-in Package Setup
+
+
+** External Package Setup
+*** mode-specific packages
+**** company-irony
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'company
+  '(progn
+     (require 'company-irony)
+     ;; (require 'company-irony-c-headers) ;; not mature yet
+     (add-to-list 'company-backends 'company-irony)
+     (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)))
+#+END_SRC
+
+**** company-c-headers
+     this back-end should go before company-irony (using 'add-to-list')
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'company
+  '(progn
+     (require 'company-c-headers)
+     (add-to-list 'company-backends 'company-c-headers)
+     (when (eq system-type 'windows-nt)
+       (setq
+        company-c-headers-path-system
+        '("c:/Local/msys64/mingw64/x86_64-w64-mingw32/include/"
+          "c:/Local/msys64/mingw64/include/"
+          "c:/Local/msys64/mingw64/include/c++/5.2.0/"
+          "c:/Local/include/eigen3/")))
+     (when (eq system-type 'gnu/linux)
+       (setq
+        company-c-headers-path-system
+        (append
+         company-c-headers-path-system
+         '("/usr/include/c++/4.9/"
+           "/usr/local/include/eigen3/"
+           "/opt/qt5/5.5/gcc_64/include/"
+           "/home/bk/VersionControl/Modules/libML"))))
+     (setq company-c-headers-path-user '("." ".."))))
+#+END_SRC
+
+**** (c++) cmake-ide
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'rtags
+  '(use-package cmake-ide
+     :ensure t
+     :defer t
+     :init (cmake-ide-setup)))
+#+END_SRC
+
+
+** Implementations
+
+
+** Key Bindings
+
+
+** Alias
+
+
+** Platform Dependent Setup
