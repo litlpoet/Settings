@@ -26,7 +26,8 @@
                                    :family "Envy Code R"
                                    :box nil
                                    :height 1.0)
-               (set-face-attribute `mode-line-inactive nil :box nil))))
+               (set-face-attribute `mode-line-inactive nil :box nil)
+               (set-face-background 'fringe "#1d1f21"))))
 #+END_SRC
 
 *** set encoding
@@ -43,7 +44,7 @@
 #+BEGIN_SRC emacs-lisp
 (if (eq system-type 'windows-nt)
     (add-to-list 'default-frame-alist '(font . "Source Code Pro-15"))
-  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-14")))
+  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-15")))
 (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
 #+END_SRC
 
@@ -69,7 +70,6 @@
 
 *** prog-mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 ;; (add-hook 'prog-mode-hook 'linum-mode)
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
@@ -126,8 +126,9 @@
 *** auto-revert
 #+BEGIN_SRC emacs-lisp
 (use-package autorevert
+  :defer t
   :diminish auto-revert-mode
-  :config
+  :init
   (setq auto-revert-verbose nil)
   (global-auto-revert-mode t))
 #+END_SRC
@@ -188,7 +189,7 @@
 (use-package projectile
   :ensure t
   :init
-  ;; (setq projectile-keymap-prefix (kbd "C-c C-p"))
+  (setq projectile-keymap-prefix (kbd "C-M-p"))
   (setq projectile-indexing-method 'alien)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
@@ -201,27 +202,25 @@
 (use-package helm
   :ensure t
   :defer t
-  :commands (helm-execute-persistent-action
-             helm-select-action)
   :diminish helm-mode
+  :bind (("C-x b"   . helm-mini)
+         ("C-x C-f" . helm-find-files)
+         ("M-x"     . helm-M-x)
+         ("M-y"     . helm-show-kill-ring))
   :init
   (require 'helm-config)
   (setq
-   helm-split-window-in-side-p t
-   helm-move-to-line-cycle-in-source t
-   helm-ff-search-library-in-sexp t
-   helm-scroll-amount 1
+   helm-split-window-in-side-p           t
+   helm-move-to-line-cycle-in-source     t
+   helm-ff-search-library-in-sexp        t
+   helm-scroll-amount                    1
    helm-ff-file-name-history-use-recentf t
-   helm-M-x-fuzzy-match t
-   helm-buffers-fuzzy-matching t
-   helm-recentf-fuzzy-match t
-   helm-command-prefix-key "C-c h")
+   helm-M-x-fuzzy-match                  t
+   helm-buffers-fuzzy-matching           t
+   helm-recentf-fuzzy-match              t
+   helm-command-prefix-key         "C-c h")
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t))
-  (bind-key "C-x b" 'helm-mini)
-  (bind-key "C-x C-f" 'helm-find-files)
-  (bind-key "M-x" 'helm-M-x)
-  (bind-key "M-y" 'helm-show-kill-ring)
   (helm-mode 1)
   (helm-autoresize-mode t)
   :config
@@ -270,9 +269,9 @@
 #+BEGIN_SRC emacs-lisp
 (use-package god-mode
   :ensure t
-  :bind ("<escape>" . god-local-mode)
+  :bind ("<escape>" . god-mode-all)
   :init
-  (defun bk:update-god-mode-face ()
+  (defun bk:toggle-god-mode-face ()
     (setq cursor-type
           (if (or god-local-mode buffer-read-only)
               'box 'bar))
@@ -280,17 +279,17 @@
           (t (set-face-background 'highlight "#282a2e")))
     (cond (god-local-mode (set-face-background 'mode-line "#150000"))
           (t (set-face-background 'mode-line "black"))))
-  (add-hook 'god-mode-enabled-hook 'bk:update-god-mode-face)
-  (add-hook 'god-mode-disabled-hook 'bk:update-god-mode-face)
+  (add-hook 'god-mode-enabled-hook 'bk:toggle-god-mode-face)
+  (add-hook 'god-mode-disabled-hook 'bk:toggle-god-mode-face)
   :config
   (add-to-list 'god-exempt-major-modes 'helm-mode)
   (add-to-list 'god-exempt-major-modes 'paradox-menu-mode)
-  (bind-key "z" 'repeat god-local-mode-map)
+  (bind-key "z" 'repeat         god-local-mode-map)
   (bind-key "i" 'god-local-mode god-local-mode-map)
   (use-package god-mode-isearch
     :config
     (bind-key "<escape>" 'god-mode-isearch-activate isearch-mode-map)
-    (bind-key "<escape>" 'god-mode-isearch-disable god-mode-isearch-map)))
+    (bind-key "<escape>" 'god-mode-isearch-disable  god-mode-isearch-map)))
 
 #+END_SRC
 **** (cmpl) company
@@ -301,9 +300,10 @@
   :bind ("C-c c" . company-indent-or-complete-common)
   :diminish company-mode
   :init
+  (setq company-selection-wrap-around t)
   (add-hook 'after-init-hook 'global-company-mode)
   :config
-  (setq company-selection-wrap-around t)
+  ;; backends loaded after company required
   (setq company-backends (delete 'company-semantic company-backends))
   (setq company-backends (delete 'company-clang company-backends)))
 #+END_SRC
@@ -352,18 +352,7 @@
   (add-hook 'org-src-mode-hook
             '(lambda()
                (setq-local flycheck-disabled-checkers
-                           '(emacs-lisp-checkdoc))))
-  :config
-  (use-package flycheck-irony
-    :ensure t
-    :init
-    (add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-  (use-package flycheck-google-cpplint
-    :ensure t
-    :config
-    (flycheck-add-next-checker
-     'irony
-     '(warning . c/c++-googlelint))))
+                           '(emacs-lisp-checkdoc)))))
 #+END_SRC
 
 *** global helper packages
@@ -457,6 +446,15 @@
   (volatile-highlights-mode t))
 #+END_SRC
 
+**** (viz) rainbow-delimiters
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+#+END_SRC
+
 *** mode-specific packages
 **** (elpa) paradox
 #+BEGIN_SRC emacs-lisp
@@ -532,8 +530,7 @@
    rtags-jump-to-first-match nil
    rtags-other-window-window-size-percentage 50)
   (add-hook 'rtags-after-find-file-hook 'recenter-top-bottom)
-  ;; (rtags-enable-standard-keybindings c-mode-base-map (kbd "C-c C-r"))
-  (rtags-enable-standard-keybindings c-mode-base-map))
+  (rtags-enable-standard-keybindings c-mode-base-map (kbd "C-M-r")))
 #+END_SRC
 
 **** (c++) company-rtags
@@ -558,6 +555,27 @@
      (bind-key "M-<RET>" 'company-irony c++-mode-map)))
 #+END_SRC
 
+**** (c++) flycheck-irony
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'flycheck
+  '(use-package flycheck-irony
+     :ensure t
+     :init
+     (add-to-list 'flycheck-checkers 'irony)))
+#+END_SRC
+
+**** (c++) flycheck-google-cpplint
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'flycheck-irony
+  '(use-package flycheck-google-cpplint
+     :ensure t
+     :config
+     (message "flycheck-google-cpplint loaded")
+     ;; c/c++-googlelint checker enabled
+     ;; after loading the package
+     (flycheck-add-next-checker 
+      'irony '(warning . c/c++-googlelint))))
+#+END_SRC
 **** (c++) google-c-style
 #+BEGIN_SRC emacs-lisp
 (use-package google-c-style
@@ -748,7 +766,17 @@
 (bind-key "C-x C-3" 'split-window-right)
 (bind-key "C-x C-0" 'delete-window)
 #+END_SRC
+**** hydra keys
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :ensure t
+  :init
+  (defhydra hydra-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out")))
 
+#+END_SRC
 
 ** Alias
 *** simplifying y-or-n prompt
