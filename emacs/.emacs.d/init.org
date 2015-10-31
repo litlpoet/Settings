@@ -549,12 +549,13 @@
      use company-irony only with key input
      (looks unstable sometimes with idle completion)
 #+BEGIN_SRC emacs-lisp
-(use-package company-irony
-  :ensure t
-  :commands company-irony
-  :init
-  (bind-key "M-<RET>" 'company-irony c-mode-map)
-  (bind-key "M-<RET>" 'company-irony c++-mode-map))
+(eval-after-load 'company
+  '(use-package company-irony
+     :ensure t
+     :commands company-irony
+     :init
+     (bind-key "M-<RET>" 'company-irony c-mode-map)
+     (bind-key "M-<RET>" 'company-irony c++-mode-map)))
 #+END_SRC
 
 **** (c++) google-c-style
@@ -588,6 +589,7 @@
 **** (c++) malinka
 #+BEGIN_SRC emacs-lisp
 (use-package malinka
+  :ensure t
   :defer t
   :init
   (setq malinka-print-debug? t
@@ -600,13 +602,17 @@
    :root-directory "/home/bk/VersionControl/Research/sketchimo"
    :build-directory "/home/bk/VersionControl/Research/sketchimo/build"
    :configure-cmd "cmake .."
-   :compile-cmd "make -j 8")
+   :compile-cmd "make -j 8"
+   :test-cmd ""
+   :run-cmd "./build/sketchimo")
   (malinka-define-project
    :name "interpolation"
    :root-directory "/home/bk/VersionControl/Research/interpolation"
    :build-directory "/home/bk/VersionControl/Research/interpolation/build"
    :configure-cmd "cmake .."
-   :compile-cmd "make -j 8"))
+   :compile-cmd "make -j 8"
+   :test-cmd ""
+   :run-cmd ""))
 #+END_SRC
 
 **** (latex) auctex
