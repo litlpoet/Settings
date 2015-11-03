@@ -28,6 +28,8 @@
                                    :height 1.0)
                (set-face-attribute `mode-line-inactive nil :box nil)
                (set-face-background 'fringe "#1d1f21"))))
+(add-hook 'after-init-hook 'toggle-frame-fullscreen)
+(setq inhibit-startup-screen t)
 #+END_SRC
 
 *** set encoding
@@ -43,19 +45,30 @@
 *** set fonts
 #+BEGIN_SRC emacs-lisp
 (if (eq system-type 'windows-nt)
-    (add-to-list 'default-frame-alist '(font . "Source Code Pro-15"))
-  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-15")))
+    (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
+  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-14")))
 (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
 #+END_SRC
 
-*** set backup directory
+*** set backup
 #+BEGIN_SRC emacs-lisp
 (defconst bk:backup-directory
   (expand-file-name "tmp" user-emacs-directory)
   "The temporary directory")
 (unless (file-exists-p bk:backup-directory)
     (make-directory bk:backup-directory t))
-(setq backup-directory-alist `(("." . ,bk:backup-directory)))
+(setq backup-directory-alist `(("." . ,bk:backup-directory))
+      backup-by-copying   t
+      kept-new-versions   5
+      kept-old-versions   3
+      auto-save-timeout   120
+      delete-old-versions t)
+#+END_SRC
+
+*** set cursor
+#+BEGIN_SRC emacs-lisp
+(blink-cursor-mode 0)
+(setq-default cursor-type 'bar)
 #+END_SRC
 
 
@@ -65,6 +78,9 @@
 (if (eq system-type 'windows-nt)
     (setq dired-listing-switches "-lha")
   (setq dired-listing-switches "-lha --group-directories-first"))
+(setq dired-dwim-target       t
+      dired-recursive-copies  'always
+      dired-recursive-deletes 'always)
 ;; (add-hook 'dired-mode-hook 'auto-revert-mode)
 #+END_SRC
 
@@ -76,51 +92,51 @@
 
 *** auto-insert
 #+BEGIN_SRC emacs-lisp
-  (defun bk:format-include-guard-fallback ()
-    "Generate an include guard string with file name."
-    (let ((filename
-           (file-name-nondirectory
-            (file-name-sans-extension buffer-file-name)))
-          (ext
-           (file-name-extension buffer-file-name)))
-      (replace-regexp-in-string
-       "[^A-Z0-9_]" "_"
-       (upcase (concat filename "_" ext "_")))))
+(defun bk:format-include-guard-fallback ()
+  "Generate an include guard string with file name."
+  (let ((filename
+         (file-name-nondirectory
+          (file-name-sans-extension buffer-file-name)))
+        (ext
+         (file-name-extension buffer-file-name)))
+    (replace-regexp-in-string
+     "[^A-Z0-9_]" "_"
+     (upcase (concat filename "_" ext "_")))))
 
-  (defun bk:format-include-guard ()
-    "Format an include guard, using projectile-project-root.
+(defun bk:format-include-guard ()
+  "Format an include guard, using projectile-project-root.
   If not in a projectile project use `bk:format-include-guard-fallback'."
-    (if (projectile-project-p)
-        (let ((filename
-               (subseq
-                (file-name-sans-extension buffer-file-name)
-                (length (projectile-project-root))))
-              (ext (file-name-extension buffer-file-name)))
-          (replace-regexp-in-string
-           "[^A-Z0-9_]" "_"
-           (upcase (concat filename "_" ext "_"))))
-      (bk:format-include-guard-fallback)))
+  (if (projectile-project-p)
+      (let ((filename
+             (subseq
+              (file-name-sans-extension buffer-file-name)
+              (length (projectile-project-root))))
+            (ext (file-name-extension buffer-file-name)))
+        (replace-regexp-in-string
+         "[^A-Z0-9_]" "_"
+         (upcase (concat filename "_" ext "_"))))
+    (bk:format-include-guard-fallback)))
 
-  (defun bk:generate-include-guard ()
-    "Generate an include guard (should be in a C/C++ file),
+(defun bk:generate-include-guard ()
+  "Generate an include guard (should be in a C/C++ file),
    used by `auto-insert-mode'."
-    (insert "guard")
-    (yas/expand))
+  (insert "guard")
+  (yas/expand))
 
-  (defconst bk:auto-insert-dir
-    (file-name-as-directory
-     (expand-file-name "bk-inserts" user-emacs-directory)))
+(defconst bk:auto-insert-dir
+  (file-name-as-directory
+   (expand-file-name "bk-inserts" user-emacs-directory)))
 
-  (defvar bk:auto-insert-alist
-    '(;; file pattern . ["filename-to-insert" insertion-function] or
-      ;; (file pattern . description) . action (see `auto-insert-alist').
-      (("\\.[hH]\\(h\\|pp\\)?$" . "C/C++ header") . bk:generate-include-guard)))
+(defvar bk:auto-insert-alist
+  '(;; file pattern . ["filename-to-insert" insertion-function] or
+    ;; (file pattern . description) . action (see `auto-insert-alist').
+    (("\\.[hH]\\(h\\|pp\\)?$" . "C/C++ header") . bk:generate-include-guard)))
 
-  (auto-insert-mode t)
-  (setq auto-insert-directory bk:auto-insert-dir)
-  (dolist (elem bk:auto-insert-alist)
-    (add-to-list 'auto-insert-alist elem))
-  (setq auto-insert-query nil)
+(auto-insert-mode t)
+(setq auto-insert-directory bk:auto-insert-dir)
+(dolist (elem bk:auto-insert-alist)
+  (add-to-list 'auto-insert-alist elem))
+(setq auto-insert-query nil)
 #+END_SRC
 
 *** auto-revert
@@ -189,7 +205,6 @@
 (use-package projectile
   :ensure t
   :init
-  (setq projectile-keymap-prefix (kbd "C-M-p"))
   (setq projectile-indexing-method 'alien)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
@@ -203,7 +218,8 @@
   :ensure t
   :defer t
   :diminish helm-mode
-  :bind (("C-x b"   . helm-mini)
+  :bind (("C-c h"   . helm-command-prefix)
+         ("C-x b"   . helm-mini)
          ("C-x C-f" . helm-find-files)
          ("M-x"     . helm-M-x)
          ("M-y"     . helm-show-kill-ring))
@@ -217,14 +233,14 @@
    helm-ff-file-name-history-use-recentf t
    helm-M-x-fuzzy-match                  t
    helm-buffers-fuzzy-matching           t
-   helm-recentf-fuzzy-match              t
-   helm-command-prefix-key         "C-c h")
+   helm-recentf-fuzzy-match              t)
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t))
   (helm-mode 1)
   (helm-autoresize-mode t)
   :config
   ;; helm-map is enabled maybe after (helm-mode) is activated!
+  (unbind-key "C-x c")
   (bind-key "<tab>" 'helm-execute-persistent-action helm-map)
   (bind-key "C-i" 'helm-execute-persistent-action helm-map)
   (bind-key "C-z" 'helm-select-action helm-map))
@@ -265,33 +281,16 @@
   :bind ("C-x o" . ace-window))
 #+END_SRC
 
-**** (navi) god-mode
+**** (navi) which-key
 #+BEGIN_SRC emacs-lisp
-(use-package god-mode
+(use-package which-key
   :ensure t
-  :bind ("<escape>" . god-mode-all)
+  :defer t
+  :diminish which-key-mode
   :init
-  (defun bk:toggle-god-mode-face ()
-    (setq cursor-type
-          (if (or god-local-mode buffer-read-only)
-              'box 'bar))
-    (cond (god-local-mode (set-face-background 'highlight "#382a2e"))
-          (t (set-face-background 'highlight "#282a2e")))
-    (cond (god-local-mode (set-face-background 'mode-line "#150000"))
-          (t (set-face-background 'mode-line "black"))))
-  (add-hook 'god-mode-enabled-hook 'bk:toggle-god-mode-face)
-  (add-hook 'god-mode-disabled-hook 'bk:toggle-god-mode-face)
-  :config
-  (add-to-list 'god-exempt-major-modes 'helm-mode)
-  (add-to-list 'god-exempt-major-modes 'paradox-menu-mode)
-  (bind-key "z" 'repeat         god-local-mode-map)
-  (bind-key "i" 'god-local-mode god-local-mode-map)
-  (use-package god-mode-isearch
-    :config
-    (bind-key "<escape>" 'god-mode-isearch-activate isearch-mode-map)
-    (bind-key "<escape>" 'god-mode-isearch-disable  god-mode-isearch-map)))
-
+  (add-hook 'after-init-hook 'which-key-mode))
 #+END_SRC
+
 **** (cmpl) company
 #+BEGIN_SRC emacs-lisp
 (use-package company
@@ -421,10 +420,10 @@
 #+BEGIN_SRC emacs-lisp
 (use-package multiple-cursors
   :ensure t
-  :bind (("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-." . mc/unmark-next-like-this)
-         ("C-," . mc/unmark-previous-like-this)))
+  :bind (("C-." . mc/mark-next-like-this)
+         ("C-," . mc/mark-previous-like-this)
+         ("C->" . mc/unmark-next-like-this)
+         ("C-<" . mc/unmark-previous-like-this)))
 #+END_SRC
 
 **** (viz) git-gutter-fringe
@@ -528,9 +527,20 @@
   (setq
    rtags-completions-enabled t
    rtags-jump-to-first-match nil
-   rtags-other-window-window-size-percentage 50)
-  (add-hook 'rtags-after-find-file-hook 'recenter-top-bottom)
-  (rtags-enable-standard-keybindings c-mode-base-map (kbd "C-M-r")))
+   rtags-other-window-window-size-percentage 50
+   rtags-use-filename-completion nil)
+  (rtags-enable-standard-keybindings c-mode-base-map)
+  :config
+  (set-face-attribute 'rtags-errline nil
+                      :underline '(:color "red" :style wave)
+                      :background nil)
+  (set-face-attribute 'rtags-fixitline nil
+                      :underline '(:color "orange" :style wave)
+                      :background nil)
+  (set-face-attribute 'rtags-skippedline nil
+                      :foreground "gray3"
+                      :background nil)
+  )
 #+END_SRC
 
 **** (c++) company-rtags
@@ -610,18 +620,14 @@
   :ensure t
   :defer t
   :init
-  (setq malinka-print-debug? t
-        malinka-print-warning? t)
   (add-hook 'c-mode-common-hook 'malinka-mode)
   :config
-  (message "manlika config started!!!!!!")
   (malinka-define-project
    :name "sketchimo"
    :root-directory "/home/bk/VersionControl/Research/sketchimo"
    :build-directory "/home/bk/VersionControl/Research/sketchimo/build"
    :configure-cmd "cmake .."
    :compile-cmd "make -j 8"
-   :test-cmd ""
    :run-cmd "./build/sketchimo")
   (malinka-define-project
    :name "interpolation"
@@ -629,8 +635,14 @@
    :build-directory "/home/bk/VersionControl/Research/interpolation/build"
    :configure-cmd "cmake .."
    :compile-cmd "make -j 8"
-   :test-cmd ""
-   :run-cmd ""))
+   :run-cmd "./build/interpolation")
+  (malinka-define-project
+   :name "mocap"
+   :root-directory "/home/bk/VersionControl/Research/mocap"
+   :build-directory "/home/bk/VersionControl/Research/mocap/build"
+   :configure-cmd "cmake .."
+   :compile-cmd "make -j 8"
+   :run-cmd "./build/mocap"))
 #+END_SRC
 
 **** (latex) auctex
@@ -675,7 +687,7 @@
                  "*compilation"      ; Compilation buffers
                  "*Warnings*"        ; Emacs warnings
                  "*shell"            ; Shell window
-                 "*rdm*"             ; rdm (rtags server)
+                 "*RTags"            ; RTags
                  ))
     (display-buffer-reuse-window
      display-buffer-in-side-window)
@@ -706,12 +718,6 @@
 (bind-key [pause] 'bk:toggle-current-window-dedication)
 #+END_SRC
 
-*** white space display in diff mode
-    important white space in diff mode
-#+BEGIN_SRC emacs-lisp
-
-#+END_SRC
-
 *** useful window title info.
 #+BEGIN_SRC emacs-lisp
 (setq
@@ -721,33 +727,6 @@
     (if (buffer-file-name)
         (abbreviate-file-name (buffer-file-name))
       "%b"))))
-#+END_SRC
-
-*** hidden mode-line
-#+BEGIN_SRC emacs-lisp
-(defvar-local toggle-mode-line nil)
-(defvar-local hide-mode-line nil)
-(define-minor-mode toggle-mode-line
-  "Minor mode to hide the mode-line in the current buffer."
-  :init-value nil
-  :global t
-  :variable toggle-mode-line
-  :group 'editing-basics
-  (if toggle-mode-line
-      (setq hide-mode-line mode-line-format
-            mode-line-format nil)
-    (setq mode-line-format hide-mode-line
-          hide-mode-line nil))
-  (force-mode-line-update)
-  (redraw-display)
-  (when (and (called-interactively-p 'interactive)
-             toggle-mode-line)
-    (run-with-idle-timer
-     0 nil 'message
-     (concat "Hidden mode line mode enabled.  "
-             "Use M-x toggle-mode-line to make the mode-line appear."))))
-;; If you want to hide the mode-line in every buffer by default
-;; (add-hook 'after-change-major-mode-hook 'toggle-mode-line)
 #+END_SRC
 
 
@@ -760,26 +739,8 @@
 (bind-key "C-x k"  'kill-this-buffer)
 (bind-key "RET"    'newline-and-indent)
 (bind-key "<kana>" 'toggle-input-method)
-;; for god-mode nice keybindings
-(bind-key "C-x C-1" 'delete-other-windows)
-(bind-key "C-x C-2" 'split-window-below)
-(bind-key "C-x C-3" 'split-window-right)
-(bind-key "C-x C-0" 'delete-window)
 #+END_SRC
-**** hydra keys
-#+BEGIN_SRC emacs-lisp
-(use-package hydra
-  :ensure t
-  :init
-  (defhydra hydra-zoom (global-map "<f2>")
-    "zoom"
-    ("g" text-scale-increase "in")
-    ("l" text-scale-decrease "out")))
-
-#+END_SRC
-
-** Alias
-*** simplifying y-or-n prompt
+*** alias
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
@@ -853,6 +814,35 @@
 
 
 ** External Package Setup
+*** global helper packages
+**** (navi) god-mode
+#+BEGIN_SRC emacs-lisp
+(use-package god-mode
+  :ensure t
+  :bind ("<escape>" . god-mode-all)
+  :init
+  (defun bk:toggle-god-mode-face ()
+    (setq cursor-type
+          (if (or god-local-mode buffer-read-only)
+              'box 'bar))
+    (cond (god-local-mode (set-face-background 'highlight "#382a2e"))
+          (t (set-face-background 'highlight "#282a2e")))
+    (cond (god-local-mode (set-face-background 'mode-line "#150000"))
+          (t (set-face-background 'mode-line "black"))))
+  (add-hook 'god-mode-enabled-hook 'bk:toggle-god-mode-face)
+  (add-hook 'god-mode-disabled-hook 'bk:toggle-god-mode-face)
+  :config
+  (add-to-list 'god-exempt-major-modes 'helm-mode)
+  (add-to-list 'god-exempt-major-modes 'paradox-menu-mode)
+  (bind-key "z" 'repeat         god-local-mode-map)
+  (bind-key "i" 'god-local-mode god-local-mode-map)
+  (use-package god-mode-isearch
+    :config
+    (bind-key "<escape>" 'god-mode-isearch-activate isearch-mode-map)
+    (bind-key "<escape>" 'god-mode-isearch-disable  god-mode-isearch-map)))
+
+#+END_SRC
+
 *** mode-specific packages
 **** company-irony
 #+BEGIN_SRC emacs-lisp
@@ -901,9 +891,48 @@
 
 
 ** Implementations
+*** hidden mode-line
+#+BEGIN_SRC emacs-lisp
+(defvar-local toggle-mode-line nil)
+(defvar-local hide-mode-line nil)
+(define-minor-mode toggle-mode-line
+  "Minor mode to hide the mode-line in the current buffer."
+  :init-value nil
+  :global t
+  :variable toggle-mode-line
+  :group 'editing-basics
+  (if toggle-mode-line
+      (setq hide-mode-line mode-line-format
+            mode-line-format nil)
+    (setq mode-line-format hide-mode-line
+          hide-mode-line nil))
+  (force-mode-line-update)
+  (redraw-display)
+  (when (and (called-interactively-p 'interactive)
+             toggle-mode-line)
+    (run-with-idle-timer
+     0 nil 'message
+     (concat "Hidden mode line mode enabled.  "
+             "Use M-x toggle-mode-line to make the mode-line appear."))))
+;; If you want to hide the mode-line in every buffer by default
+;; (add-hook 'after-change-major-mode-hook 'toggle-mode-line)
+#+END_SRC
+
 
 
 ** Key Bindings
+**** hydra keys
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :ensure t
+  :init
+  (defhydra hydra-zoom (global-map "<f2>")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out")))
+
+#+END_SRC
+
 
 
 ** Alias
