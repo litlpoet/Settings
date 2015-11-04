@@ -7,6 +7,8 @@
 ** Preparation
 *** load themes
 #+BEGIN_SRC emacs-lisp
+(setq inhibit-startup-screen t)
+(add-hook 'after-init-hook 'toggle-frame-fullscreen)
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :defer t
@@ -22,14 +24,13 @@
   (add-hook 'after-init-hook
             '(lambda()
                (sml/setup)
-               (set-face-attribute `mode-line nil
+               (set-face-attribute 'mode-line nil
                                    :family "Envy Code R"
                                    :box nil
                                    :height 1.0)
-               (set-face-attribute `mode-line-inactive nil :box nil)
+               (set-face-attribute 'mode-line-inactive nil
+                                   :box nil)
                (set-face-background 'fringe "#1d1f21"))))
-(add-hook 'after-init-hook 'toggle-frame-fullscreen)
-(setq inhibit-startup-screen t)
 #+END_SRC
 
 *** set encoding
@@ -643,6 +644,16 @@
    :configure-cmd "cmake .."
    :compile-cmd "make -j 8"
    :run-cmd "./build/mocap"))
+#+END_SRC
+
+**** (git) magit
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :config
+  (set-face-attribute 'magit-diff-file-heading nil
+                      :inverse-video t
+                      :weight 'extra-bold))
 #+END_SRC
 
 **** (latex) auctex
