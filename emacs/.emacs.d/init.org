@@ -210,7 +210,9 @@
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
   :config
-  (projectile-global-mode))
+  (projectile-global-mode)
+  (add-to-list 'projectile-other-file-alist '("cc" "h"))
+  (add-to-list 'projectile-other-file-alist '("h" "cc")))
 #+END_SRC
 
 **** (navi) helm
@@ -629,12 +631,17 @@
 #+BEGIN_SRC emacs-lisp
 (use-package clang-format
   :ensure t
-  :commands clang-format-buffer
   :init
   (bind-key "C-c C-f" 'clang-format-buffer c-mode-base-map)
-  (defun bk:clang-format-setting()
-    (setq-local clang-format-style "Google"))
-  (add-hook 'c-mode-common-hook 'bk:clang-format-setting))
+  (defun bk:clang-format-before-save()
+    (interactive)
+    (when (or (eq major-mode 'c-mode)
+              (eq major-mode 'c++-mode)
+              (eq major-mode 'glsl-mode))
+      (clang-format-buffer)))
+  (add-hook 'before-save-hook 'bk:clang-format-before-save)
+  :config
+  (setq-default clang-format-style "Google"))
 #+END_SRC
 
 **** (c++) cmake-mode and cmake-font-lock
