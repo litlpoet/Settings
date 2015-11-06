@@ -678,7 +678,12 @@
    :build-directory "/home/bk/VersionControl/Research/mocap/build"
    :configure-cmd "cmake .."
    :compile-cmd "make -j 8"
-   :run-cmd "./build/mocap"))
+   :run-cmd "./build/mocap")
+  (malinka-define-project
+   :name "beliefbox"
+   :root-directory "/home/bk/VersionControl/Libraries/beliefbox"
+   :build-directory "/home/bk/VersionControl/Libraries/beliefbox"
+   :compile-cmd "make clean && bear make -j 8"))
 #+END_SRC
 
 **** (git) magit
