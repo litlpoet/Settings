@@ -40,7 +40,7 @@
   "What depth of init.org headers to message at startup.")
 
 (with-temp-buffer
-  (insert-file
+  (insert-file-contents
    (expand-file-name "init.org" user-emacs-directory))
   (goto-char (point-min))
   (search-forward "\n* init.el")

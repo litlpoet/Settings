@@ -177,8 +177,9 @@
                                               tabs
                                               trailing
                                               lines-tail))
-               (setq-local whitespace-line-column 80)
-               (whitespace-mode 1))))
+               (whitespace-mode 1)))
+  :config
+  (set-face-foreground 'whitespace-line nil))
 #+END_SRC
 
 *** abbrev
