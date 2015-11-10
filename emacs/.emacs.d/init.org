@@ -300,7 +300,6 @@
 (use-package company
   :ensure t
   :defer t
-  :bind ("C-c c" . company-indent-or-complete-common)
   :diminish company-mode
   :init
   (setq company-selection-wrap-around t)
@@ -509,15 +508,66 @@
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :ensure t
-  :bind (("C-c l" . org-store-link)
-         ("C-c a" . org-agenda))
+  :bind (("C-c a" . org-agenda)
+         ("C-c c" . org-capture)
+         ("C-c l" . org-store-link)
+         ("<f12>" . org-clock-goto)
+         ("C-<f12>" . org-clock-in))
   :init
-  (setq org-log-done t
-        org-src-fontify-natively t
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t
-        org-src-tab-acts-natively t))
+  (setq
+   org-src-fontify-natively t
+   org-src-window-setup 'current-window
+   org-src-strip-leading-and-trailing-blank-lines t
+   org-src-preserve-indentation t
+   org-src-tab-acts-natively t
+   org-agenda-files '("~/Clouds/Dropbox/Org"))
+  (setq
+   org-use-fast-todo-selection t
+   org-treat-S-cursor-todo-selection-as-state-change nil
+   org-todo-keywords
+   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+     (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELED(c@/!)" "PHONE" "MEETING"))
+   org-todo-state-tags-triggers
+   '(("CANCELLED" ("CANCELLED" . t))
+     ("WAITING" ("WAITING" . t))
+     ("HOLD" ("WAITING") ("HOLD" . t))
+     (done ("WAITING") ("HOLD"))
+     ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+     ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+     ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+  (setq
+   org-capture-templates
+   '(("t" "todo" entry
+      (file "~/Clouds/Dropbox/Org/refile.org")
+      "* TODO %?\n%U\n%a\n"
+      :clock-in t :clock-resume t)
+     ("r" "respond" entry
+      (file "~/Clouds/Dropbox/Org/refile.org")
+      "* NEXT Respond to %:from on %:subject\nSCHEDULED: %t\n%U\n%a\n"
+      :clock-in t :clock-resume t :immediate-finish t)
+     ("n" "note" entry
+      (file "~/Clouds/Dropbox/Org/refile.org")
+      "* %? :NOTE:\n%U\n%a\n"
+      :clock-in t :clock-resume t)
+     ("j" "Journal" entry
+      (file+datetree "~/Clouds/Dropbox/Org/diary.org")
+      "* %?\n%U\n"
+      :clock-in t :clock-resume t)
+     ("w" "org-protocol" entry
+      (file "~/Clouds/Dropbox/Org/refile.org")
+      "* TODO Review %c\n%U\n"
+      :immediate-finish t)
+     ("m" "Meeting" entry
+      (file "~/Clouds/Dropbox/Org/refile.org")
+      "* MEETING with %? :MEETING:\n%U"
+      :clock-in t :clock-resume t)
+     ("p" "Phone call" entry
+      (file "~/Clouds/Dropbox/Org/refile.org")
+      "* PHONE %? :PHONE:\n%U"
+      :clock-in t :clock-resume t)
+     ("h" "Habit" entry
+      (file "~/Clouds/Dropbox/Org/refile.org")
+      "* NEXT %?\n%U\n%a\nSCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a .+1d/3d>>\")\n:PROPERTIES:\n:STYLE: habit\n:REPEAT_TO_STATE: NEXT\n:END:\n"))))
 #+END_SRC
 
 **** (tex) company-auctex
