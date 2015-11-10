@@ -14,6 +14,7 @@ emacs/.emacs.d/tmp
 emacs/.emacs.d/.mc-lists.el
 emacs/.emacs.d/tramp
 emacs/.emacs.d/.github_token
+emacs/.emacs.d/.org-id-locations
 emacs/.emacs.d/bookmarks
 *.*#
 *.cache
