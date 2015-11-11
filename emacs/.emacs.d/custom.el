@@ -25,7 +25,7 @@
  '(mark-ring-max 5000)
  '(package-selected-packages
    (quote
-    (which-key malinka gitignore-mode markdown-mode helm-mode irony god-mode cmake-ide rtags use-package color-theme-sanityinc-tomorrow smart-mode-line smartparens macrostep org git-gutter-fringe paradox hungry-delete rainbow-delimiters company-auctex magit helm-ag glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors clang-format cmake-mode cmake-font-lock helm-projectile google-c-style company-irony flycheck-irony flycheck flycheck-google-cpplint iedit recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode volatile-highlights duplicate-thing anaphora dash f s company async helm)))
+    (atom-one-dark-theme which-key malinka gitignore-mode markdown-mode helm-mode irony god-mode cmake-ide rtags use-package color-theme-sanityinc-tomorrow smart-mode-line smartparens macrostep org git-gutter-fringe paradox hungry-delete rainbow-delimiters company-auctex magit helm-ag glsl-mode company-math auctex company-c-headers company-irony-c-headers ace-window avy multiple-cursors clang-format cmake-mode cmake-font-lock helm-projectile google-c-style company-irony flycheck-irony flycheck flycheck-google-cpplint iedit recentf-ext epl pkg-info dired+ ibuffer-vc projectile expand-region yasnippet undo-tree clean-aindent-mode volatile-highlights duplicate-thing anaphora dash f s company async helm)))
  '(safe-local-variable-values
    (quote
     ((eval setq-local projectile-project-run-cmd

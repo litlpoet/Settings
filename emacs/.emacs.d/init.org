@@ -9,10 +9,14 @@
 #+BEGIN_SRC emacs-lisp
 (setq inhibit-startup-screen t)
 (add-hook 'after-init-hook 'toggle-frame-fullscreen)
-(use-package color-theme-sanityinc-tomorrow
+(use-package atom-one-dark-theme
   :ensure t
   :defer t
-  :init (load-theme 'sanityinc-tomorrow-night t))
+  :init (load-theme 'atom-one-dark t))
+;; (use-package color-theme-sanityinc-tomorrow
+;;   :ensure t
+;;   :defer t
+;;   :init (load-theme 'sanityinc-tomorrow-night t))
 (use-package smart-mode-line
   :ensure t
   :defer t
