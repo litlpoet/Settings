@@ -33,8 +33,11 @@
                                    :box nil
                                    :height 1.0)
                (set-face-attribute 'mode-line-inactive nil
-                                   :box nil)
-               (set-face-background 'fringe "#1d1f21"))))
+                                   :family "Envy Code R"
+                                   :box nil
+                                   :height 1.0)
+               (set-face-attribute 'fringe nil
+                    :inherit 'default-face))))
 #+END_SRC
 
 *** set encoding
