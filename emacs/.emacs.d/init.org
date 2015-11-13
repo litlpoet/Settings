@@ -558,7 +558,16 @@
      (done ("WAITING") ("HOLD"))
      ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
      ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
-     ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+     ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))
+   org-todo-keyword-faces
+   '(("TODO" :foreground "red" :weight bold)
+     ("NEXT" :foreground "blue" :weight bold)
+     ("DONE" :foreground "forest green" :weight bold)
+     ("WAITING" :foreground "orange" :weight bold)
+     ("HOLD" :foreground "magenta" :weight bold)
+     ("CANCELLED" :foreground "forest green" :weight bold)
+     ("MEETING" :foreground "forest green" :weight bold)
+     ("PHONE" :foreground "forest green" :weight bold)))
   (setq
    org-capture-templates
    '(("t" "todo" entry
