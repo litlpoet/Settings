@@ -1,6 +1,6 @@
 #+AUTHOR: Byungkuk Choi
 #+email: litlpoet@gmail.com
-#+STARTUP: fninline content
+#+STARTUP: fninline content indent hidestars
 #+SEQ_TODO: TODO READY DONE
 
 * init.el
@@ -37,7 +37,7 @@
                                    :box nil
                                    :height 1.0)
                (set-face-attribute 'fringe nil
-                    :inherit 'default-face))))
+                                   :inherit 'default-face))))
 #+END_SRC
 
 *** set encoding
@@ -67,7 +67,7 @@
   (expand-file-name "tmp" user-emacs-directory)
   "The temporary directory")
 (unless (file-exists-p bk:backup-directory)
-    (make-directory bk:backup-directory t))
+  (make-directory bk:backup-directory t))
 (setq backup-directory-alist `(("." . ,bk:backup-directory))
       backup-by-copying   t
       kept-new-versions   5
@@ -221,9 +221,9 @@
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
   :config
-  (projectile-global-mode)
-  (add-to-list 'projectile-other-file-alist '("cc" "h"))
-  (add-to-list 'projectile-other-file-alist '("h" "cc")))
+  (projectile-global-mode))
+;; (add-to-list 'projectile-other-file-alist '("cc" "h"))
+;; (add-to-list 'projectile-other-file-alist '("h" "cc")))
 #+END_SRC
 
 **** (navi) helm
@@ -792,18 +792,9 @@
   )
 #+END_SRC
 
-**** (c++) company-rtags
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'company
-  '(use-package company-rtags
-     :commands company-rtags
-     :init
-     (add-to-list 'company-backends 'company-rtags)))
-#+END_SRC
-
 **** (c++) company-irony
-     use company-irony only with key input
-     (looks unstable sometimes with idle completion)
+use company-irony only with key input
+(looks unstable sometimes with idle completion)
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
   '(use-package company-irony
@@ -973,7 +964,7 @@
 #+END_SRC
 
 *** window dedication
-    setup a decicated window configuration
+setup a decicated window configuration
 #+BEGIN_SRC emacs-lisp
 (defun bk:toggle-current-window-dedication ()
   "Window dedication."
@@ -1401,8 +1392,8 @@ as the default task."
 #+END_SRC
 
 *** load custom file location
-    Make customize setting separated from the init{.el, .org} files
-    note: try to use customize for built-in packages
+Make customize setting separated from the init{.el, .org} files
+note: try to use customize for built-in packages
 #+BEGIN_SRC emacs-lisp
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
@@ -1423,8 +1414,8 @@ as the default task."
 
 *** check package installation
 
-    1) Check if all packages are installed.
-    2) If some packages are missing, install them automatically
+1) Check if all packages are installed.
+2) If some packages are missing, install them automatically
 
 #+BEGIN_SRC emacs-lisp 
 (require 'cl)
@@ -1461,7 +1452,7 @@ as the default task."
 #+END_SRC
 
 **** company-c-headers
-     this back-end should go before company-irony (using 'add-to-list')
+this back-end should go before company-irony (using 'add-to-list')
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
   '(progn
@@ -1495,6 +1486,14 @@ as the default task."
      :init (cmake-ide-setup)))
 #+END_SRC
 
+**** (c++) company-rtags
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'company
+  '(use-package company-rtags
+     :commands company-rtags
+     :init
+     (add-to-list 'company-backends 'company-rtags)))
+#+END_SRC
 
 ** Implementations
 *** hidden mode-line
