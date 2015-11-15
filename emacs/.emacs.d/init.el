@@ -6,8 +6,6 @@
 ;; Keywords: lisp
 
 ;;; Code:
-(defconst bk:emacs-start-time (current-time))
-
 ;; Turn off mouse interface early in startup to avoid momentary display
 (when window-system
   (menu-bar-mode -1)
@@ -36,43 +34,13 @@
 (require 'bind-key)
 ;; (setq use-package-verbose t)
 
-(defvar bk:init.org-message-depth 2
-  "What depth of init.org headers to message at startup.")
-
-(with-temp-buffer
-  (insert-file-contents
-   (expand-file-name "init.org" user-emacs-directory))
-  (goto-char (point-min))
-  (search-forward "\n* init.el")
-  (while (not (eobp))
-    (forward-line 1)
-    (cond
-     ;; Report Headers
-     ((looking-at
-       (format "\\*\\{2,%s\\} +.*$"
-               bk:init.org-message-depth))
-      (message "%s" (match-string 0)))
-     ;; Evaluate Code Blocks
-     ((looking-at "^#\\+BEGIN_SRC +emacs-lisp *$")
-      (let ((l (match-end 0)))
-        (search-forward "\n#+END_SRC")
-        (eval-region l (match-beginning 0))))
-     ;; Finish on the next level-1 header
-     ((looking-at "^\\* ")
-      (goto-char (point-max))))))
-
-(when window-system
-  (let
-      ((elapsed
-        (float-time (time-subtract (current-time) bk:emacs-start-time))))
-    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
-  (add-hook 'after-init-hook
-            `(lambda ()
-               (let ((elapsed
-                      (float-time (time-subtract (current-time)
-                                                 bk:emacs-start-time))))
-                 (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed))) t))
+(use-package bk-general
+  :load-path "bk-elisp/"
+  :config
+  (bk/install-packages)
+  (bk/load-init-org)
+  (when window-system
+    (bk/report-emacs-boot-time)))
 
 ;; (provide 'init)
 ;;; init.el ends here

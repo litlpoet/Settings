@@ -1,16 +1,15 @@
 #+AUTHOR: Byungkuk Choi
 #+email: litlpoet@gmail.com
 #+STARTUP: fninline content indent hidestars
-#+SEQ_TODO: TODO READY DONE
 
 * init.el
 ** Preparation
 *** load themes
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-screen t)
-(add-hook 'after-init-hook 'toggle-frame-fullscreen)
+(setq custom-safe-themes      t
+      inhibit-startup-screen  t
+      initial-scratch-message nil)
 (use-package atom-one-dark-theme
-  :ensure t
   :defer t
   :init (load-theme 'atom-one-dark t))
 ;; (use-package color-theme-sanityinc-tomorrow
@@ -18,7 +17,6 @@
 ;;   :defer t
 ;;   :init (load-theme 'sanityinc-tomorrow-night t))
 (use-package smart-mode-line
-  :ensure t
   :defer t
   :init
   (setq sml/mode-width 'right)
@@ -37,7 +35,8 @@
                                    :box nil
                                    :height 1.0)
                (set-face-attribute 'fringe nil
-                                   :inherit 'default-face))))
+                                   :inherit 'default-face)
+               (toggle-frame-fullscreen))))
 #+END_SRC
 
 *** set encoding
@@ -63,23 +62,53 @@
 
 *** set backup
 #+BEGIN_SRC emacs-lisp
-(defconst bk:backup-directory
-  (expand-file-name "tmp" user-emacs-directory)
-  "The temporary directory")
-(unless (file-exists-p bk:backup-directory)
-  (make-directory bk:backup-directory t))
-(setq backup-directory-alist `(("." . ,bk:backup-directory))
-      backup-by-copying   t
-      kept-new-versions   5
-      kept-old-versions   3
-      auto-save-timeout   120
-      delete-old-versions t)
+(unless (file-exists-p bk/backup-directory)
+  (make-directory bk/backup-directory t))
+(setq backup-directory-alist `(("." . ,bk/backup-directory))
+      backup-by-copying      t
+      kept-new-versions      5
+      kept-old-versions      3
+      auto-save-timeout      120
+      delete-old-versions    t)
 #+END_SRC
 
-*** set cursor
+*** set display
 #+BEGIN_SRC emacs-lisp
-(blink-cursor-mode 0)
 (setq-default cursor-type 'bar)
+(setq visible-bell               t
+      global-hl-line-sticky-flag nil)
+(set-fringe-mode '(nil . 0))
+(add-hook 'after-init-hook
+          '(lambda ()
+             (column-number-mode t)
+             (blink-cursor-mode 0)
+             (global-hl-line-mode t)))
+#+END_SRC
+
+*** set scroll
+#+BEGIN_SRC emacs-lisp
+(setq scroll-preserve-screen-position t
+      scroll-conservatively           100000
+      scroll-margin                   5)
+#+END_SRC
+
+*** set editing
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-width        2
+              indent-tabs-mode nil
+              fill-column      80)
+(setq global-mark-ring-max 5000
+      mark-ring-max        5000
+      kill-ring-max        5000
+      kill-whole-line      t)
+(add-hook 'after-init-hook
+          '(lambda ()
+             (delete-selection-mode t)))
+#+END_SRC
+
+*** set compilation
+#+BEGIN_SRC emacs-lisp
+(setq compilation-scroll-output t)
 #+END_SRC
 
 
@@ -103,51 +132,15 @@
 
 *** auto-insert
 #+BEGIN_SRC emacs-lisp
-(defun bk:format-include-guard-fallback ()
-  "Generate an include guard string with file name."
-  (let ((filename
-         (file-name-nondirectory
-          (file-name-sans-extension buffer-file-name)))
-        (ext
-         (file-name-extension buffer-file-name)))
-    (replace-regexp-in-string
-     "[^A-Z0-9_]" "_"
-     (upcase (concat filename "_" ext "_")))))
-
-(defun bk:format-include-guard ()
-  "Format an include guard, using projectile-project-root.
-  If not in a projectile project use `bk:format-include-guard-fallback'."
-  (if (projectile-project-p)
-      (let ((filename
-             (subseq
-              (file-name-sans-extension buffer-file-name)
-              (length (projectile-project-root))))
-            (ext (file-name-extension buffer-file-name)))
-        (replace-regexp-in-string
-         "[^A-Z0-9_]" "_"
-         (upcase (concat filename "_" ext "_"))))
-    (bk:format-include-guard-fallback)))
-
-(defun bk:generate-include-guard ()
-  "Generate an include guard (should be in a C/C++ file),
-   used by `auto-insert-mode'."
-  (insert "guard")
-  (yas/expand))
-
-(defconst bk:auto-insert-dir
-  (file-name-as-directory
-   (expand-file-name "bk-inserts" user-emacs-directory)))
-
-(defvar bk:auto-insert-alist
-  '(;; file pattern . ["filename-to-insert" insertion-function] or
-    ;; (file pattern . description) . action (see `auto-insert-alist').
-    (("\\.[hH]\\(h\\|pp\\)?$" . "C/C++ header") . bk:generate-include-guard)))
-
-(auto-insert-mode t)
-(setq auto-insert-directory bk:auto-insert-dir)
-(dolist (elem bk:auto-insert-alist)
-  (add-to-list 'auto-insert-alist elem))
-(setq auto-insert-query nil)
+(use-package bk-impl
+  :load-path "bk-elisp/"
+  :init
+  (setq auto-insert-directory bk/auto-insert-directory
+        auto-insert-query     nil)
+  (auto-insert-mode t)
+  :config
+  (dolist (elem bk/auto-insert-alist)
+    (add-to-list 'auto-insert-alist elem)))
 #+END_SRC
 
 *** auto-revert
@@ -204,7 +197,8 @@
 (use-package flyspell
   :defer t
   :init
-  (setq flyspell-mode-line-string " FlyS")
+  (setq ispell-dictionary         "en"
+        flyspell-mode-line-string " FlyS")
   (add-hook 'org-mode-hook 'flyspell-mode)
   (add-hook 'TeX-mode-hook 'flyspell-mode))
 #+END_SRC
@@ -215,7 +209,6 @@
 **** (proj) projectile
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
-  :ensure t
   :init
   (setq projectile-indexing-method 'alien)
   (setq projectile-mode-line
@@ -229,7 +222,6 @@
 **** (navi) helm
 #+BEGIN_SRC emacs-lisp 
 (use-package helm
-  :ensure t
   :defer t
   :diminish helm-mode
   :bind (("C-c h"   . helm-command-prefix)
@@ -264,7 +256,6 @@
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'helm
   '(use-package helm-ag
-     :ensure t
      :init
      (setq helm-ag-insert-at-point 'symbol)))
 #+END_SRC
@@ -273,7 +264,6 @@
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'helm
   '(use-package helm-projectile
-     :ensure t
      :init
      (helm-projectile-on)
      ;; helm-projectile-on will change below params if activated later
@@ -284,21 +274,18 @@
 **** (navi) avy
 #+BEGIN_SRC emacs-lisp
 (use-package avy
-  :ensure t
   :bind ("C-c j" . avy-goto-word-or-subword-1))
 #+END_SRC
 
 **** (navi) ace-window
 #+BEGIN_SRC emacs-lisp
 (use-package ace-window
-  :ensure t
   :bind ("C-x o" . ace-window))
 #+END_SRC
 
 **** (navi) which-key
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
-  :ensure t
   :defer t
   :diminish which-key-mode
   :init
@@ -308,7 +295,6 @@
 **** (cmpl) company
 #+BEGIN_SRC emacs-lisp
 (use-package company
-  :ensure t
   :defer t
   :diminish company-mode
   :init
@@ -323,7 +309,6 @@
 **** (cmpl) yasnippet
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
-  :ensure t
   :defer t
   :diminish yas-minor-mode
   :init
@@ -339,7 +324,6 @@
 **** (file) recentf-ext
 #+BEGIN_SRC emacs-lisp
 (use-package recentf-ext
-  :ensure t
   :defer 2
   :init
   (setq recentf-max-saved-items 200))
@@ -348,7 +332,6 @@
 **** (file) undo-tree
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
-  :ensure t
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode))
@@ -357,7 +340,6 @@
 **** (lint) flycheck
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
-  :ensure t
   :defer t
   :init
   (add-hook 'after-init-hook #'global-flycheck-mode)
@@ -371,7 +353,6 @@
 **** (navi) god-mode
 #+BEGIN_SRC emacs-lisp
 (use-package god-mode
-  :ensure t
   :bind ("<escape>" . god-mode-all)
   :init
   (defun bk:toggle-god-mode-face ()
@@ -399,7 +380,6 @@
 **** (edit) smartparens
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
-  :ensure t
   :defer t
   :diminish smartparens-mode
   :init
@@ -428,7 +408,6 @@
 **** (edit) clean-aindent-mode
 #+BEGIN_SRC emacs-lisp
 (use-package clean-aindent-mode
-  :ensure t
   :defer t
   :init
   (add-hook 'prog-mode-hook 'clean-aindent-mode))
@@ -437,7 +416,6 @@
 **** (edit) iedit
 #+BEGIN_SRC emacs-lisp
 (use-package iedit
-  :ensure t
   :bind ("C-;" . iedit-mode)
   :config
   (set-face-inverse-video 'iedit-occurrence t))
@@ -446,31 +424,27 @@
 **** (edit) expand-region
 #+BEGIN_SRC emacs-lisp
 (use-package expand-region
-  :ensure t
   :bind ("M-2" . er/expand-region))
 #+END_SRC
 
 **** (edit) duplicate-thing
 #+BEGIN_SRC emacs-lisp
 (use-package duplicate-thing
-  :ensure t
   :bind ("M-c" . duplicate-thing))
 #+END_SRC
 
 **** (edit) multiple-cursors
 #+BEGIN_SRC emacs-lisp
 (use-package multiple-cursors
-  :ensure t
-  :bind (("C-." . mc/mark-next-like-this)
-         ("C-," . mc/mark-previous-like-this)
-         ("C->" . mc/unmark-next-like-this)
-         ("C-<" . mc/unmark-previous-like-this)))
+  :bind (("M-4" . mc/mark-next-like-this)
+         ("M-3" . mc/mark-previous-like-this)
+         ("M-$" . mc/unmark-next-like-this)
+         ("C-#" . mc/unmark-previous-like-this)))
 #+END_SRC
 
 **** (viz) git-gutter-fringe
 #+BEGIN_SRC emacs-lisp
 (use-package git-gutter-fringe
-  :ensure t
   :diminish git-gutter-mode
   :config
   (global-git-gutter-mode t))
@@ -479,7 +453,6 @@
 **** (viz) volatile-highlights
 #+BEGIN_SRC emacs-lisp
 (use-package volatile-highlights
-  :ensure t
   :diminish volatile-highlights-mode
   :config
   (set-face-background 'vhl/default-face "light slate gray")
@@ -489,7 +462,6 @@
 **** (viz) rainbow-delimiters
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
-  :ensure t
   :defer t
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
@@ -499,7 +471,6 @@
 **** (elpa) paradox
 #+BEGIN_SRC emacs-lisp
 (use-package paradox
-  :ensure t
   :defer t
   :init
   (setq paradox-github-token
@@ -514,10 +485,15 @@
         paradox-column-width-version 12))
 #+END_SRC
 
+**** (elisp) macrostep
+#+BEGIN_SRC emacs-lisp
+(use-package macrostep
+  :bind ("C-c e m" . macrostep-expand))
+#+END_SRC
+
 **** (org) org
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure t
   :bind (("C-c a" . org-agenda)
          ("C-c c" . org-capture)
          ("C-c l" . org-store-link)
@@ -737,19 +713,9 @@
   (add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append))
 #+END_SRC
 
-**** (tex) company-auctex
-#+BEGIN_SRC emacs-lisp
-(eval-after-load 'company
-  '(use-package company-auctex
-     :ensure t
-     :init
-     (company-auctex-init)))
-#+END_SRC
-
 **** (c++) irony
 #+BEGIN_SRC emacs-lisp
 (use-package irony
-  :ensure t
   :defer t
   :init
   (defun bk:irony-mode-hook()
@@ -770,7 +736,6 @@
 **** (c++) rtags
 #+BEGIN_SRC emacs-lisp
 (use-package rtags
-  :ensure t
   :defer t
   :init
   (setq
@@ -798,7 +763,6 @@ use company-irony only with key input
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company
   '(use-package company-irony
-     :ensure t
      :commands company-irony
      :init
      (bind-key "M-<RET>" 'company-irony c-mode-map)
@@ -809,7 +773,6 @@ use company-irony only with key input
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'flycheck
   '(use-package flycheck-irony
-     :ensure t
      :init
      (add-to-list 'flycheck-checkers 'irony)))
 #+END_SRC
@@ -818,7 +781,6 @@ use company-irony only with key input
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'flycheck-irony
   '(use-package flycheck-google-cpplint
-     :ensure t
      :config
      (message "flycheck-google-cpplint loaded")
      ;; c/c++-googlelint checker enabled
@@ -826,10 +788,10 @@ use company-irony only with key input
      (flycheck-add-next-checker 
       'irony '(warning . c/c++-googlelint))))
 #+END_SRC
+
 **** (c++) google-c-style
 #+BEGIN_SRC emacs-lisp
 (use-package google-c-style
-  :ensure t
   :commands (google-set-c-style google-make-newline-indent)
   :init
   (add-hook 'c-mode-common-hook 'google-set-c-style)
@@ -839,7 +801,6 @@ use company-irony only with key input
 **** (c++) clang-format
 #+BEGIN_SRC emacs-lisp
 (use-package clang-format
-  :ensure t
   :init
   (bind-key "C-c C-f" 'clang-format-buffer c-mode-base-map)
   (defun bk:clang-format-before-save()
@@ -862,7 +823,6 @@ use company-irony only with key input
 **** (c++) malinka
 #+BEGIN_SRC emacs-lisp
 (use-package malinka
-  :ensure t
   :defer t
   :init
   (add-hook 'c-mode-common-hook 'malinka-mode)
@@ -898,14 +858,13 @@ use company-irony only with key input
 **** (git) magit
 #+BEGIN_SRC emacs-lisp
 (use-package magit
-  :ensure t
   :config
   (set-face-attribute 'magit-diff-file-heading nil
                       :inverse-video t
                       :weight 'extra-bold))
 #+END_SRC
 
-**** (latex) auctex
+**** (tex) auctex
 #+BEGIN_SRC emacs-lisp
 (add-hook 'TeX-mode-hook 'linum-mode)
 (setq TeX-auto-save t)
@@ -927,13 +886,13 @@ use company-irony only with key input
                     '(output-pdf "Sumatra PDF")))))
 #+END_SRC
 
-**** (elisp) macrostep
+**** (tex) company-auctex
 #+BEGIN_SRC emacs-lisp
-(use-package macrostep
-  :ensure t
-  :bind ("C-c e m" . macrostep-expand))
+(eval-after-load 'company
+  '(use-package company-auctex
+     :init
+     (company-auctex-init)))
 #+END_SRC
-
 
 
 ** Implementations
@@ -1365,6 +1324,7 @@ as the default task."
 (bind-key "RET"    'newline-and-indent)
 (bind-key "<kana>" 'toggle-input-method)
 #+END_SRC
+
 *** alias
 #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -1381,58 +1341,6 @@ as the default task."
 
 * Disabled configuration
 ** Preparation
-*** control package archives
-#+BEGIN_SRC emacs-lisp
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/") t)
-(package-initialize)
-#+END_SRC
-
-*** load custom file location
-Make customize setting separated from the init{.el, .org} files
-note: try to use customize for built-in packages
-#+BEGIN_SRC emacs-lisp
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
-#+END_SRC
-
-*** load use-package
-#+BEGIN_SRC emacs-lisp
-;; Set-up use-package
-;; use-package is used to configure the rest of the packages.
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
-(setq use-package-verbose t)
-#+END_SRC
-
-*** check package installation
-
-1) Check if all packages are installed.
-2) If some packages are missing, install them automatically
-
-#+BEGIN_SRC emacs-lisp 
-(require 'cl)
-(defun bk:packages-installed()
-  (loop for p in package-selected-packages
-        when (not (package-installed-p p))
-        do (return nil)
-        finally (return t)))
-
-(unless (bk:packages-installed) ; check for new packages (package versions)
-  (message "%s" "Emacs is now refreshing its package database...")
-  (package-refresh-contents)
-  (message "%s" "done.")
-  (dolist (p package-selected-packages) ; install the missing packages
-    (when (not (package-installed-p p))
-      (package-install p))))
-#+END_SRC
 
 
 ** Built-in Package Setup
@@ -1494,6 +1402,7 @@ this back-end should go before company-irony (using 'add-to-list')
      :init
      (add-to-list 'company-backends 'company-rtags)))
 #+END_SRC
+
 
 ** Implementations
 *** hidden mode-line
