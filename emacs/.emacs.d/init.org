@@ -478,11 +478,11 @@
           (insert-file-contents
            (expand-file-name ".github_token" user-emacs-directory))
           (buffer-string)))
-  (setq paradox-automatically-star t
+  (setq paradox-automatically-star     nil
         paradox-execute-asynchronously t
         paradox-display-download-count t
-        paradox-column-width-package 24
-        paradox-column-width-version 12))
+        paradox-column-width-package   24
+        paradox-column-width-version   20))
 #+END_SRC
 
 **** (elisp) macrostep
@@ -829,29 +829,29 @@ use company-irony only with key input
   :config
   (malinka-define-project
    :name "sketchimo"
-   :root-directory "/home/bk/VersionControl/Research/sketchimo"
-   :build-directory "/home/bk/VersionControl/Research/sketchimo/build"
+   :root-directory "/home/bk/VersionControl/Research/sketchimo/"
+   :build-directory "/home/bk/VersionControl/Research/sketchimo/build/"
    :configure-cmd "cmake .."
    :compile-cmd "make -j 8"
    :run-cmd "./build/sketchimo")
   (malinka-define-project
    :name "interpolation"
-   :root-directory "/home/bk/VersionControl/Research/interpolation"
-   :build-directory "/home/bk/VersionControl/Research/interpolation/build"
+   :root-directory "/home/bk/VersionControl/Research/interpolation/"
+   :build-directory "/home/bk/VersionControl/Research/interpolation/build/"
    :configure-cmd "cmake .."
    :compile-cmd "make -j 8"
    :run-cmd "./build/interpolation")
   (malinka-define-project
    :name "mocap"
-   :root-directory "/home/bk/VersionControl/Research/mocap"
-   :build-directory "/home/bk/VersionControl/Research/mocap/build"
+   :root-directory "/home/bk/VersionControl/Research/mocap/"
+   :build-directory "/home/bk/VersionControl/Research/mocap/build/"
    :configure-cmd "cmake .."
    :compile-cmd "make -j 8"
    :run-cmd "./build/mocap")
   (malinka-define-project
    :name "beliefbox"
-   :root-directory "/home/bk/VersionControl/Libraries/beliefbox"
-   :build-directory "/home/bk/VersionControl/Libraries/beliefbox"
+   :root-directory "/home/bk/VersionControl/Libraries/beliefbox/"
+   :build-directory "/home/bk/VersionControl/Libraries/beliefbox/"
    :compile-cmd "make clean && bear make -j 8"))
 #+END_SRC
 

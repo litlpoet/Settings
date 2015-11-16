@@ -36,21 +36,76 @@
 (defvar bk/init-org-message-depth 2
   "Depth of init.org headers to message at start-up.")
 
+(defvar bk/installed_packages
+  '(ace-window
+    atom-one-dark-theme
+    auctex
+    avy
+    clang-format
+    clean-aindent-mode
+    cmake-font-lock
+    cmake-ide
+    cmake-mode
+    color-theme-sanityinc-tomorrow
+    company
+    company-auctex
+    company-c-headers
+    company-irony
+    company-irony-c-headers
+    company-math
+    dired+
+    duplicate-thing
+    expand-region
+    flycheck
+    flycheck-google-cpplint
+    flycheck-irony
+    git-gutter-fringe
+    gitignore-mode
+    glsl-mode
+    god-mode
+    google-c-style
+    helm
+    helm-ag
+    helm-projectile
+    hungry-delete
+    ibuffer-vc
+    iedit
+    irony
+    macrostep
+    magit
+    malinka
+    markdown-mode
+    multiple-cursors
+    org
+    paradox
+    projectile
+    rainbow-delimiters
+    recentf-ext
+    rtags
+    smart-mode-line
+    smartparens
+    undo-tree
+    use-package
+    volatile-highlights
+    which-key
+    yasnippet)
+  "A list of packages to ensure are installed at lanuch.")
+
 (require 'cl)
 
 (defun bk/packages-installed ()
   "Check if packages are all installed."
-  (loop for p in package-selected-packages
+  (loop for p in bk/installed_packages
         when (not (package-installed-p p))
         do (return nil)
         finally (return t)))
 
 (defun bk/install-packages ()
-  "Install packages in 'package-selected-packages'."
+  "Install packages in 'bk/installed_packages'."
   (unless (bk/packages-installed)
     (message "%s" "Emacs is now refreshing its package database...")
     (package-refresh-contents)
-    (dolist (p package-selected-packages)
+    (dolist (p bk/installed_packages)
       (when (not (package-installed-p p))
         (package-install p)))))
 
