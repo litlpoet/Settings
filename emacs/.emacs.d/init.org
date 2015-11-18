@@ -736,7 +736,8 @@
 **** (c++) rtags
 #+BEGIN_SRC emacs-lisp
 (use-package rtags
-  :defer t
+  :load-path "/usr/local/share/emacs/site-lisp/rtags/"
+  :commands rtags-enable-standard-keybindings
   :init
   (setq
    rtags-other-window-window-size-percentage 50
@@ -746,15 +747,14 @@
   (rtags-enable-standard-keybindings c-mode-base-map)
   :config
   (set-face-attribute 'rtags-errline nil
-                      :underline '(:color "red" :style wave)
+                      :foreground "red"
                       :background nil)
   (set-face-attribute 'rtags-fixitline nil
-                      :underline '(:color "orange" :style wave)
+                      :foreground "orange"
                       :background nil)
   (set-face-attribute 'rtags-skippedline nil
                       :foreground "gray3"
-                      :background nil)
-  )
+                      :background nil))
 #+END_SRC
 
 **** (c++) company-irony
@@ -822,37 +822,38 @@ use company-irony only with key input
 
 **** (c++) malinka
 #+BEGIN_SRC emacs-lisp
-(use-package malinka
-  :defer t
-  :init
-  (add-hook 'c-mode-common-hook 'malinka-mode)
-  :config
-  (malinka-define-project
-   :name "sketchimo"
-   :root-directory "/home/bk/VersionControl/Research/sketchimo/"
-   :build-directory "/home/bk/VersionControl/Research/sketchimo/build/"
-   :configure-cmd "cmake .."
-   :compile-cmd "make -j 8"
-   :run-cmd "./build/sketchimo")
-  (malinka-define-project
-   :name "interpolation"
-   :root-directory "/home/bk/VersionControl/Research/interpolation/"
-   :build-directory "/home/bk/VersionControl/Research/interpolation/build/"
-   :configure-cmd "cmake .."
-   :compile-cmd "make -j 8"
-   :run-cmd "./build/interpolation")
-  (malinka-define-project
-   :name "mocap"
-   :root-directory "/home/bk/VersionControl/Research/mocap/"
-   :build-directory "/home/bk/VersionControl/Research/mocap/build/"
-   :configure-cmd "cmake .."
-   :compile-cmd "make -j 8"
-   :run-cmd "./build/mocap")
-  (malinka-define-project
-   :name "beliefbox"
-   :root-directory "/home/bk/VersionControl/Libraries/beliefbox/"
-   :build-directory "/home/bk/VersionControl/Libraries/beliefbox/"
-   :compile-cmd "make clean && bear make -j 8"))
+(eval-after-load 'rtags
+  '(use-package malinka
+     :defer t
+     :init
+     (add-hook 'c-mode-common-hook 'malinka-mode)
+     :config
+     (malinka-define-project
+      :name "sketchimo"
+      :root-directory "/home/bk/VersionControl/Research/sketchimo/"
+      :build-directory "/home/bk/VersionControl/Research/sketchimo/build/"
+      :configure-cmd "cmake .."
+      :compile-cmd "make -j 8"
+      :run-cmd "./build/sketchimo")
+     (malinka-define-project
+      :name "interpolation"
+      :root-directory "/home/bk/VersionControl/Research/interpolation/"
+      :build-directory "/home/bk/VersionControl/Research/interpolation/build/"
+      :configure-cmd "cmake .."
+      :compile-cmd "make -j 8"
+      :run-cmd "./build/interpolation")
+     (malinka-define-project
+      :name "mocap"
+      :root-directory "/home/bk/VersionControl/Research/mocap/"
+      :build-directory "/home/bk/VersionControl/Research/mocap/build/"
+      :configure-cmd "cmake .."
+      :compile-cmd "make -j 8"
+      :run-cmd "./build/mocap")
+     (malinka-define-project
+      :name "beliefbox"
+      :root-directory "/home/bk/VersionControl/Libraries/beliefbox/"
+      :build-directory "/home/bk/VersionControl/Libraries/beliefbox/"
+      :compile-cmd "make clean && bear make -j 8")))
 #+END_SRC
 
 **** (git) magit
