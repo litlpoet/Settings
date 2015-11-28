@@ -16,6 +16,7 @@ emacs/.emacs.d/tramp
 emacs/.emacs.d/.github_token
 emacs/.emacs.d/.org-id-locations
 emacs/.emacs.d/bookmarks
+emacs/.emacs.d/org-clock-save.el
 *.*#
 *.cache
 
