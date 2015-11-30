@@ -736,7 +736,6 @@
 **** (c++) rtags
 #+BEGIN_SRC emacs-lisp
 (use-package rtags
-  :load-path "/usr/local/share/emacs/site-lisp/rtags/"
   :commands rtags-enable-standard-keybindings
   :init
   (setq

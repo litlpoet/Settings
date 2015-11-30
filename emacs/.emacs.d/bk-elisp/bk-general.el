@@ -54,7 +54,7 @@
     company-irony-c-headers
     company-math
     dired+
-    duplicate-thing
+    ;; duplicate-thing
     expand-region
     flycheck
     flycheck-google-cpplint
