@@ -130,6 +130,11 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 #+END_SRC
 
+*** python-mode 
+#+BEGIN_SRC emacs-lisp
+(setq python-indent-offset 2)
+#+END_SRC
+
 *** auto-insert
 #+BEGIN_SRC emacs-lisp
 (use-package bk-impl
