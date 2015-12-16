@@ -54,7 +54,7 @@
     company-irony-c-headers
     company-math
     dired+
-    ;; duplicate-thing
+    duplicate-thing
     expand-region
     flycheck
     flycheck-google-cpplint
@@ -77,13 +77,14 @@
     markdown-mode
     multiple-cursors
     org
-    paradox
+    ;; paradox
     projectile
     rainbow-delimiters
     recentf-ext
     rtags
     smart-mode-line
     smartparens
+    sublime-themes
     undo-tree
     use-package
     volatile-highlights
