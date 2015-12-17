@@ -1313,6 +1313,10 @@ as the default task."
 (bind-key "C-x k"  'kill-this-buffer)
 (bind-key "RET"    'newline-and-indent)
 (bind-key "<kana>" 'toggle-input-method)
+(bind-key "C-S-<left>" 'shrink-window-horizontally)
+(bind-key "C-S-<right>" 'enlarge-window-horizontally)
+(bind-key "C-S-<down>" 'shrink-window)
+(bind-key "C-S-<up>" 'enlarge-window)
 #+END_SRC
 
 *** alias
