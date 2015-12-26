@@ -29,11 +29,11 @@
             '(lambda()
                (sml/setup)
                (set-face-attribute 'mode-line nil
-                                   :family "Envy Code R"
+                                   ;; :family "Envy Code R"
                                    :box nil
                                    :height 1.0)
                (set-face-attribute 'mode-line-inactive nil
-                                   :family "Envy Code R"
+                                   ;; :family "Envy Code R"
                                    :box nil
                                    :height 1.0)
                (set-face-attribute 'fringe nil
@@ -58,8 +58,8 @@
 #+BEGIN_SRC emacs-lisp
 (if (eq system-type 'windows-nt)
     (add-to-list 'default-frame-alist '(font . "Source Code Pro-14"))
-  (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono-12")))
-(set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
+  (add-to-list 'default-frame-alist '(font . "Noto Sans Mono CJK KR-13")))
+(set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR"))
 #+END_SRC
 
 *** set backup
