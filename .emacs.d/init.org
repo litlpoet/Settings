@@ -23,8 +23,8 @@
   :init
   (setq sml/mode-width 'right)
   (setq sml/theme 'dark)
-  (setq sml/name-width 35)
-  (setq sml/extra-filler 7)
+  ;; (setq sml/name-width 35)
+  ;; (setq sml/extra-filler 7)
   (add-hook 'after-init-hook
             '(lambda()
                (sml/setup)
@@ -224,6 +224,16 @@
   (projectile-global-mode))
 ;; (add-to-list 'projectile-other-file-alist '("cc" "h"))
 ;; (add-to-list 'projectile-other-file-alist '("h" "cc")))
+#+END_SRC
+
+**** (proj) persp-projectile
+#+BEGIN_SRC emacs-lisp
+(use-package persp-projectile
+  :init
+  (persp-mode)
+  ;; :config
+  ;; (define-key projectile-mode-map (kbd "s-s") 'projectile-persp-switch-project)
+  )
 #+END_SRC
 
 **** (navi) helm
@@ -462,7 +472,8 @@
 (use-package volatile-highlights
   :diminish volatile-highlights-mode
   :config
-  (set-face-background 'vhl/default-face "light slate gray")
+  (set-face-attribute 'vhl/default-face nil
+                      :underline "light slate gray")
   (volatile-highlights-mode t))
 #+END_SRC
 
@@ -857,6 +868,7 @@ use company-irony only with key input
 **** (tex) auctex
 #+BEGIN_SRC emacs-lisp
 (add-hook 'TeX-mode-hook 'linum-mode)
+(add-hook 'Tex-mode-hook 'auto-fill-mode)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
@@ -874,6 +886,13 @@ use company-irony only with key input
        (assq-delete-all 'output-pdf TeX-view-program-selection)
        (add-to-list 'TeX-view-program-selection
                     '(output-pdf "Sumatra PDF")))))
+#+END_SRC
+
+**** (tex) latex-pretty-symbol
+#+BEGIN_SRC emacs-lisp
+;; (eval-after-load 'tex
+;;   '(progn
+;;      (require 'latex-pretty-symbols)))
 #+END_SRC
 
 **** (tex) company-auctex

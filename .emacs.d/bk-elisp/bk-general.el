@@ -71,6 +71,8 @@
     ibuffer-vc
     iedit
     irony
+    latex-pretty-symbols
+    latex-preview-pane
     macrostep
     magit
     malinka
@@ -78,6 +80,8 @@
     multiple-cursors
     org
     ;; paradox
+    persp-projectile
+    perspective
     projectile
     rainbow-delimiters
     recentf-ext
