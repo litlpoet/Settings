@@ -228,12 +228,12 @@
 
 **** (proj) persp-projectile
 #+BEGIN_SRC emacs-lisp
-(use-package persp-projectile
-  :init
-  (persp-mode)
-  ;; :config
-  ;; (define-key projectile-mode-map (kbd "s-s") 'projectile-persp-switch-project)
-  )
+;; (use-package persp-projectile
+;;   :init
+;;   (persp-mode)
+;;   ;; :config
+;;   ;; (define-key projectile-mode-map (kbd "s-s") 'projectile-persp-switch-project)
+;;   )
 #+END_SRC
 
 **** (navi) helm
@@ -486,6 +486,23 @@
 #+END_SRC
 
 *** mode-specific packages
+**** (elpa) paradox
+#+BEGIN_SRC emacs-lisp
+(use-package paradox
+  :defer t
+  :init
+  (setq paradox-github-token
+        (with-temp-buffer
+          (insert-file-contents
+           (expand-file-name ".github_token" user-emacs-directory))
+          (buffer-string)))
+  (setq paradox-automatically-star     nil
+        paradox-execute-asynchronously t
+        paradox-display-download-count t
+        paradox-column-width-package   24
+        paradox-column-width-version   20))
+#+END_SRC
+
 **** (elisp) macrostep
 #+BEGIN_SRC emacs-lisp
 (use-package macrostep
@@ -711,6 +728,7 @@
 
   (setq bh/keep-clock-running nil)
 
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   (add-hook 'org-clock-out-hook 'bh/clock-out-maybe 'append))
 #+END_SRC
 
@@ -1362,23 +1380,6 @@ as the default task."
 ** External Package Setup
 *** global helper packages
 *** mode-specific packages
-**** (elpa) paradox
-#+BEGIN_SRC emacs-lisp
-(use-package paradox
-  :defer t
-  :init
-  (setq paradox-github-token
-        (with-temp-buffer
-          (insert-file-contents
-           (expand-file-name ".github_token" user-emacs-directory))
-          (buffer-string)))
-  (setq paradox-automatically-star     nil
-        paradox-execute-asynchronously t
-        paradox-display-download-count t
-        paradox-column-width-package   24
-        paradox-column-width-version   20))
-#+END_SRC
-
 **** (c++) company-irony
 #+BEGIN_SRC emacs-lisp
 (eval-after-load 'company

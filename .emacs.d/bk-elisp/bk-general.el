@@ -41,6 +41,7 @@
     atom-one-dark-theme
     auctex
     avy
+    cdlatex
     clang-format
     clean-aindent-mode
     cmake-font-lock
@@ -79,7 +80,7 @@
     markdown-mode
     multiple-cursors
     org
-    ;; paradox
+    paradox
     persp-projectile
     perspective
     projectile
