@@ -91,7 +91,9 @@
 #+BEGIN_SRC emacs-lisp
 (setq scroll-preserve-screen-position t
       scroll-conservatively           100000
-      scroll-margin                   5)
+      scroll-step                     1
+      scroll-margin                   5
+      redisplay-dont-pause            t)
 #+END_SRC
 
 *** set editing

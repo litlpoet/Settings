@@ -33,7 +33,7 @@
    (expand-file-name "bk-inserts" user-emacs-directory))
   "The auto insert snippet directory.")
 
-(defvar bk/init-org-message-depth 2
+(defvar bk/init-org-message-depth 3
   "Depth of init.org headers to message at start-up.")
 
 (defvar bk/installed_packages

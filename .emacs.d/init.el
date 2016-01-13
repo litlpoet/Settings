@@ -17,8 +17,8 @@
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/") t)
+;; (add-to-list 'package-archives
+;;              '("org" . "http://orgmode.org/elpa/") t)
 (package-initialize)
 
 ;; Custom
@@ -32,7 +32,7 @@
 (eval-when-compile (require 'use-package))
 (require 'diminish)
 (require 'bind-key)
-;; (setq use-package-verbose t)
+(setq use-package-verbose t)
 
 (use-package bk-general
   :load-path "bk-elisp/"
