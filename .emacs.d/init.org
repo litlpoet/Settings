@@ -804,8 +804,9 @@ use company-irony only with key input
      :config
      (message "flycheck-google-cpplint loaded")
      ;; c/c++-googlelint checker enabled
+     (setq flycheck-c/c++-googlelint-executable "cpplint")
      ;; after loading the package
-     (flycheck-add-next-checker 
+     (flycheck-add-next-checker
       'irony '(warning . c/c++-googlelint))))
 #+END_SRC
 
