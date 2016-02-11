@@ -224,10 +224,26 @@
   (setq projectile-indexing-method 'alien)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
+  (setq projectile-other-file-alist
+        '(("cpp" "h" "hpp" "ipp")
+          ("ipp" "h" "hpp" "cpp")
+          ("hpp" "h" "ipp" "cpp")
+          ("cxx" "h" "hxx" "ixx")
+          ("ixx" "h" "hxx" "cxx")
+          ("hxx" "h" "ixx" "cxx")
+          ("c" "h")
+          ("m" "h")
+          ("mm" "h")
+          ("h" "c" "cc" "cpp" "ipp" "hpp" "cxx" "ixx" "hxx" "m" "mm")
+          ("cc" "h" "hh")
+          ("hh" "cc" "cpp")
+          ("vert" "frag")
+          ("frag" "vert")
+          (nil "lock" "gpg")
+          ("lock" "")
+          ("gpg" "")))
   :config
   (projectile-global-mode))
-;; (add-to-list 'projectile-other-file-alist '("cc" "h"))
-;; (add-to-list 'projectile-other-file-alist '("h" "cc")))
 #+END_SRC
 
 **** (proj) persp-projectile
@@ -877,7 +893,14 @@ use company-irony only with key input
       :root-directory "/home/bk/VersionControl/Modules/libML/"
       :build-directory "/home/bk/VersionControl/Modules/libML/build/"
       :configure-cmd "cmake .."
-      :compile-cmd "make -j 8")))
+      :compile-cmd "make -j 8")
+     (malinka-define-project
+      :name "libgp"
+      :root-directory "/home/bk/VersionControl/Folks/libgp/"
+      :build-directory "/home/bk/VersionControl/Folks/libgp/build/"
+      :configure-cmd "cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=on .."
+      :compile-cmd "make -j 8")
+     ))
 #+END_SRC
 
 **** (git) magit
