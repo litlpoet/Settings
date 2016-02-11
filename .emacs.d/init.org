@@ -9,6 +9,7 @@
 (setq custom-safe-themes      t
       inhibit-startup-screen  t
       initial-scratch-message nil)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 (use-package atom-one-dark-theme
   :defer t
   :init (load-theme 'atom-one-dark t))
@@ -36,7 +37,8 @@
                                    :height 1.0)
                (set-face-attribute 'fringe nil
                                    :inherit 'default-face)
-               (toggle-frame-fullscreen))))
+               ;; (toggle-frame-fullscreen)
+               )))
 #+END_SRC
 
 *** set encoding
@@ -870,10 +872,11 @@ use company-irony only with key input
       :compile-cmd "make -j 8"
       :run-cmd "./build/mocap")
      (malinka-define-project
-      :name "beliefbox"
-      :root-directory "/home/bk/VersionControl/Libraries/beliefbox/"
-      :build-directory "/home/bk/VersionControl/Libraries/beliefbox/"
-      :compile-cmd "make clean && bear make -j 8")))
+      :name "libML"
+      :root-directory "/home/bk/VersionControl/Modules/libML/"
+      :build-directory "/home/bk/VersionControl/Modules/libML/build/"
+      :configure-cmd "cmake .."
+      :compile-cmd "make -j 8")))
 #+END_SRC
 
 **** (git) magit
