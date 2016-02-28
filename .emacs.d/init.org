@@ -10,9 +10,12 @@
       inhibit-startup-screen  t
       initial-scratch-message nil)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-(use-package atom-one-dark-theme
+(use-package material-theme
   :defer t
-  :init (load-theme 'atom-one-dark t))
+  :init (load-theme 'material t))
+;; (use-package atom-one-dark-theme
+;;   :defer t
+;;   :init (load-theme 'atom-one-dark t))
 ;; (use-package emacs-color-themes
 ;;   :defer t
 ;;   :init (load-theme 'brin t))
@@ -903,6 +906,14 @@ use company-irony only with key input
      ))
 #+END_SRC
 
+**** (py) elpy
+#+BEGIN_SRC emacs-lisp
+(use-package elpy
+  :init
+  (elpy-enable)
+  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  (add-hook 'elpy-mode-hook 'flycheck-mode))
+#+END_SRC
 **** (git) magit
 #+BEGIN_SRC emacs-lisp
 (use-package magit

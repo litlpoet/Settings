@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;; Copyright (C) 2015  bk
 ;; Author: bk <bk@T530>
-;; Keywords: lisp
+;; Keywords: Lisp
 
 ;;; Code:
 ;; Turn off mouse interface early in startup to avoid momentary display

@@ -56,6 +56,7 @@
     company-math
     dired+
     duplicate-thing
+    elpy
     expand-region
     flycheck
     flycheck-google-cpplint
@@ -78,6 +79,7 @@
     magit
     malinka
     markdown-mode
+    material-theme
     multiple-cursors
     org
     paradox
