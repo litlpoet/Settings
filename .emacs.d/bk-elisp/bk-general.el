@@ -95,6 +95,7 @@
     undo-tree
     use-package
     volatile-highlights
+    web-mode
     which-key
     yasnippet)
   "A list of packages to ensure are installed at lanuch.")
