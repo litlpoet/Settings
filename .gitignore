@@ -8,6 +8,7 @@ recentf
 .emacs.d/elpa
 .emacs.d/eshell
 .emacs.d/irony
+.emacs.d/init.el
 .emacs.d/semanticdb
 .emacs.d/server
 .emacs.d/tmp

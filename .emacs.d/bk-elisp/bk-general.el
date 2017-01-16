@@ -120,6 +120,10 @@
       (when (not (package-installed-p p))
         (package-install p)))))
 
+(defun bk/font-exists-p (font)
+  "Check if FONT exists."
+  (if (null (x-list-fonts font)) nil t))
+
 (defun bk/load-init-org ()
   "Load init.org file."
   (with-temp-buffer
