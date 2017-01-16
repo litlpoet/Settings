@@ -1,0 +1,1 @@
+emacs --batch -l ~/.emacs.d/init-online.el -l ~/vc/ThirdParties/elpa/elpa-mirror/elpa-mirror.el --eval='(setq elpamr-default-output-directory "~/.emacs.d/bk-elpa")' --eval='(elpamr-create-mirror-for-installed)'
