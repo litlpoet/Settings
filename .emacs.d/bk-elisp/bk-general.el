@@ -37,7 +37,8 @@
   "Depth of init.org headers to message at start-up.")
 
 (defvar bk/installed_packages
-  '(ace-window
+  '(
+    ace-window
     atom-one-dark-theme
     auctex
     avy
@@ -64,7 +65,7 @@
     git-gutter-fringe
     gitignore-mode
     glsl-mode
-    god-mode
+    ;; god-mode
     google-c-style
     helm
     helm-ag
@@ -97,7 +98,8 @@
     volatile-highlights
     web-mode
     which-key
-    yasnippet)
+    yasnippet
+    )
   "A list of packages to ensure are installed at lanuch.")
 
 (require 'cl)
