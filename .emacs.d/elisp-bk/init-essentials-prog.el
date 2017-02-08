@@ -1,8 +1,18 @@
 ;; company
 (use-package company :ensure t
-  :commands (global-company-mode)
-  :diminish company-mode
+  ;; :commands (global-company-mode)
+  ;; :diminish company-mode
+  :bind ("M-i" . company-complete)
   :init
+  (setq company-backends
+        '(company-bbdb
+          company-nxml
+          company-css
+          company-cmake
+          company-capf
+          company-files
+          (company-dabbrev-code company-keywords)
+          company-dabbrev))
   (setq company-global-modes
         '(lisp-interaction-mode
           emacs-lisp-mode
