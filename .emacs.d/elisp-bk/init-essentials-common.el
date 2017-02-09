@@ -31,10 +31,10 @@
   :bind (:map smartparens-mode-map
               ("C-M-w" . sp-copy-sexp)
               ("M-<delete>" . sp-unwrap-sexp)
-              ( "M-<backspace>" . sp-backward-unwrap-sexp)
-              ( "M-D" . sp-splice-sexp )
-              ( "M-F" . sp-forward-symbol )
-              ( "M-B" . sp-backward-symbol))
+              ("M-<backspace>" . sp-backward-unwrap-sexp)
+              ("M-D" . sp-splice-sexp )
+              ("M-F" . sp-forward-symbol )
+              ("M-B" . sp-backward-symbol))
   :init
   (require 'smartparens-config)
   (sp-with-modes '(c-mode c++-mode)
