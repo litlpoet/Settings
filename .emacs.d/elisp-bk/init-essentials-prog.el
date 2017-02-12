@@ -5,10 +5,7 @@
   :bind ("M-i" . company-complete)
   :init
   (setq company-backends
-        '(company-bbdb
-          company-nxml
-          company-css
-          company-cmake
+        '(company-nxml
           company-capf
           company-files
           (company-dabbrev-code company-keywords)
@@ -16,6 +13,7 @@
   (setq company-global-modes
         '(lisp-interaction-mode
           emacs-lisp-mode
+          cmake-mode
           c-mode c++-mode))
   (add-hook 'after-init-hook 'global-company-mode))
 

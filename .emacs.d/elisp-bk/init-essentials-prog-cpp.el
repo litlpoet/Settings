@@ -23,7 +23,21 @@
 ;; cmake-font-lock
 (use-package cmake-font-lock :ensure t
   :commands (cmake-font-lock-activate)
-  :init (add-hook 'cmake-mode-hook 'cmake-font-lock-activate))
+  :init
+  (defun bk:company-cmake-hook()
+    ;; put company-cmake to the beginning of company-backends
+    (set (make-local-variable 'company-idle-delay) 0.1)
+    ;; Also, dabbrev in comments and strings is nice.
+    (set (make-local-variable 'company-dabbrev-code-everywhere) t)
+    ;; remove a bunch of backends that interfere in cmake mode.
+    (set
+     (make-local-variable 'company-backends)
+     (cons 'company-cmake
+           (delq 'company-nxml
+                 (mapcar #'identity company-backends))))
+    )
+  (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+  (add-hook 'cmake-mode-hook 'bk:company-cmake-hook))
 
 ;; rtags
 (use-package rtags
@@ -37,24 +51,24 @@
   (rtags-enable-standard-keybindings c-mode-base-map)
   (use-package company-rtags :defer t
     :init
-    (setq
-     rtags-autostart-diagnostics t
-     rtags-completions-enabled   t)
-    (defun company-rtags-hook()
-      ;; put company-rtags to company-backends
-      ;; We want a slight delay completions from company.
+    (setq rtags-autostart-diagnostics t
+          rtags-completions-enabled   t)
+    (defun bk:company-rtags-hook()
+      ;; put company-rtags to the beginning of company-backends
       (set (make-local-variable 'company-idle-delay) 0.1)
-      ;; Also, dabbrev in comments and strings is nice.
+      ;; dabbrev in comments and strings
       (set (make-local-variable 'company-dabbrev-code-everywhere) t)
-      ;; Add our own backend and remove a bunch of backends that
-      ;; interfere in C/C++ mode.
+      ;; remove a bunch of backends that interfere in C/C++ mode.
       (set
        (make-local-variable 'company-backends)
        (cons 'company-rtags
-             (delq 'company-bbdb
-                   (delq 'company-nxml
-                         (delq 'company-css
-                               (mapcar #'identity company-backends)))))))
-    (add-hook 'c-mode-common-hook 'company-rtags-hook)))
+             (delq 'company-nxml
+                   (mapcar #'identity company-backends)))))
+    (add-hook 'c-mode-common-hook 'bk:company-rtags-hook)))
+
+;; cmake-ide
+(use-package cmake-ide :ensure t
+  :commands (cmake-ide-setup)
+  :init (cmake-ide-setup))
 
 (provide 'init-essentials-prog-cpp)
