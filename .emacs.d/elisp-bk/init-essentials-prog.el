@@ -17,6 +17,10 @@
           c-mode c++-mode))
   (add-hook 'after-init-hook 'global-company-mode))
 
+;; fly-check
+(use-package flycheck :ensure t)
+
+
 ;; magit
 (use-package magit :ensure t
   :bind (("C-c s" . magit-status))
