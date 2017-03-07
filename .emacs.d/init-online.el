@@ -1,3 +1,7 @@
+;;; init.el -- bk's emacs starting point
+;;; Commentary:
+
+;;; Code:
 ;; change default appearance as soon as possible
 (when window-system
   (menu-bar-mode -1)
@@ -53,4 +57,7 @@
 (use-package init-essentials-prog-py  :load-path "elisp-bk/")
 
 ;; initialize specialized packages
+
+;;; (provide 'init)
+;;; init.el ends here
 

@@ -1,3 +1,7 @@
+;;; init-essentials-prog.el -- common programming
+;;; Commentary:
+
+;;; Code:
 ;; company
 (use-package company :ensure t
   ;; :commands (global-company-mode)
@@ -18,8 +22,20 @@
   (add-hook 'after-init-hook 'global-company-mode))
 
 ;; fly-check
-(use-package flycheck :ensure t)
-
+(use-package flycheck :ensure t
+  :commands (global-flycheck-mode)
+  :init
+  (setq flycheck-global-modes
+        '(emacs-lisp-mode
+          python-mode
+          c-mode c++-mode))
+  (setq flycheck-check-syntax-automatically
+        '(mode-enabled save))
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :config
+  (use-package flycheck-pos-tip :ensure t
+    :init (with-eval-after-load 'flycheck
+            (flycheck-pos-tip-mode))))
 
 ;; magit
 (use-package magit :ensure t
@@ -38,3 +54,4 @@
   (global-git-gutter-mode t))
 
 (provide 'init-essentials-prog)
+;;; init-essentials-prog ends here
