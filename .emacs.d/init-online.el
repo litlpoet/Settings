@@ -1,5 +1,6 @@
-;;; init.el -- bk's emacs starting point
+;;; init-online.el -- bk's emacs starting point
 ;;; Commentary:
+;; Emacs init.el online version (getting package from web)
 
 ;;; Code:
 ;; change default appearance as soon as possible
@@ -59,5 +60,5 @@
 ;; initialize specialized packages
 
 ;;; (provide 'init)
-;;; init.el ends here
+;;; init-online.el ends here
 
