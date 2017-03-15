@@ -2,6 +2,8 @@
 ;;; Commentary:
 
 ;;; Code:
+(use-package cc-mode)
+
 ;; google-c-style
 (use-package google-c-style :ensure t
   :commands (google-set-c-style google-make-newline-indent)
@@ -79,8 +81,9 @@
     (define-key irony-mode-map [remap completion-at-point]
       'irony-completion-at-point-async)
     (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+      'irony-completion-at-point-async)
+    (irony-cdb-autosetup-compile-options))
+  ;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'bk:irony-mode-hook)
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook
@@ -99,16 +102,28 @@
        (cons 'company-irony
              (delq 'company-nxml
                    (mapcar #'identity company-backends)))))
-    (add-hook 'c-mode-common-hook 'bk:company-irony-hook))
+    (add-hook 'irony-mode-hook 'bk:company-irony-hook))
   (use-package flycheck-irony :ensure t
-    :defer t
+    ;; :defer t
     :init
-    (add-to-list 'flycheck-checkers 'irony)))
+    (defun bk:flycheck-irony-hook()
+      (flycheck-select-checker 'irony))
+    (add-to-list 'flycheck-checkers 'irony)
+    (add-hook 'irony-mode-hook 'bk:flycheck-irony-hook)
+    ;; (eval-after-load 'flycheck
+    ;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+    ;; :config
+    ;; (use-package flycheck-google-cpplint
+    ;;   :ensure t
+    ;;   :config
+    ;;   (flycheck-add-next-checker
+    ;;    'irony '(warning . c/c++-googlelint)))
+    ))
 
 ;; cmake-ide
-(use-package cmake-ide :ensure t
-  :commands (cmake-ide-setup)
-  :init (cmake-ide-setup))
+;; (use-package cmake-ide :ensure t
+;;   :commands (cmake-ide-setup)
+;;   :init (cmake-ide-setup))
 
 (provide 'init-essentials-prog-cpp)
 ;;; init-essentials-prog-cpp.el ends here

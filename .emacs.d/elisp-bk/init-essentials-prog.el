@@ -33,6 +33,10 @@
         '(mode-enabled save))
   (add-hook 'after-init-hook #'global-flycheck-mode)
   :config
+  (setq-default flycheck-disabled-checkers
+                '(c/c++-clang
+                  c/c++-gcc
+                  c/c++-cppcheck))
   (use-package flycheck-pos-tip :ensure t
     :init (with-eval-after-load 'flycheck
             (flycheck-pos-tip-mode))))

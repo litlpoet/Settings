@@ -1,3 +1,7 @@
+;;; init-default.el --- default setting
+;;; Commentary:
+
+;;; Code:
 ;; c code engine variables
 (setq visible-bell                    t
       auto-save-timeout               120
@@ -20,10 +24,10 @@
 ;; frame
 (use-package frame :defer t
   :init (blink-cursor-mode 0))
-  
+
 ;; fringe
 (use-package fringe :defer t
-  :init (set-fringe-mode '(nil . 0)))  
+  :init (set-fringe-mode '(nil . 0)))
 
 ;; hilight line
 (use-package hl-line :defer t
@@ -66,7 +70,8 @@
         kept-new-versions      5
         kept-old-versions      3
         delete-old-versions    t
-        backup-directory-alist `(("." . ,bk:temp-directory))))
+        backup-directory-alist `(("." . ,bk:temp-directory)))
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
 
 ;; dired
 (use-package dired :defer t
@@ -92,7 +97,7 @@
       (setq-local
        whitespace-style
        '(face tabs tab-mark trailing spaces
-              space-mark newline newline-mark              
+              space-mark newline newline-mark
               indentation::space indentation::tab))
       (whitespace-mode 1)))
   (add-hook
@@ -113,5 +118,6 @@
   (global-auto-revert-mode t))
 
 (provide 'init-defaults)
+;;; init-defaults.el ends here
 
 
