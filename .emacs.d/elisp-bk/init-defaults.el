@@ -14,29 +14,37 @@
               indent-tabs-mode nil
               fill-column      80)
 
+;; alias
+(defalias 'yes-or-no-p 'y-or-n-p)
+
 ;; start-up
-(use-package startup :defer t
+(use-package startup
+  :defer t
   :init
   (setq inhibit-startup-screen     t
         initial-scratch-message    nil
         auto-save-list-file-prefix bk:temp-directory))
 
 ;; frame
-(use-package frame :defer t
+(use-package frame
+  :defer t
   :init (blink-cursor-mode 0))
 
 ;; fringe
-(use-package fringe :defer t
+(use-package fringe
+  :defer t
   :init (set-fringe-mode '(nil . 0)))
 
 ;; hilight line
-(use-package hl-line :defer t
+(use-package hl-line
+  :defer t
   :init
   (setq global-hl-line-sticky-frag nil)
   (global-hl-line-mode t))
 
 ;; simple
-(use-package simple :defer t
+(use-package simple
+  :defer t
   :init
   (setq global-mark-ring-max 1000
         mark-ring-max        1000
@@ -45,11 +53,13 @@
   (column-number-mode t))
 
 ;; delsel
-(use-package delsel :defer t
+(use-package delsel
+  :defer t
   :init (delete-selection-mode t))
 
 ;; mule-cmds
-(use-package  mule-cmds :defer t
+(use-package  mule-cmds
+  :defer t
   :init
   (set-language-environment "Korean")
   (prefer-coding-system 'utf-8))
@@ -62,7 +72,8 @@
 ;; ;;     (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR")))
 
 ;; files
-(use-package files :defer t
+(use-package files
+  :defer t
   :init
   (unless (file-exists-p bk:temp-directory)
     (make-directory bk:temp-directory t))
@@ -74,21 +85,25 @@
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
 
 ;; dired
-(use-package dired :defer t
+(use-package dired
+  :defer t
   :init
   (if (eq system-type 'windows-nt)
       (setq dired-listing-switches "-lha")
     (setq dired-listing-switches
           "-lha --group-directories-first"))
+  :config
   (setq dired-dwim-target       t
         dired-recursive-copies  'always
         dired-recursive-deletes 'always))
 
 ;; menu-bar
-(use-package menu-bar :bind ("C-x k" . kill-this-buffer))
+(use-package menu-bar
+  :bind ("C-x k" . kill-this-buffer))
 
 ;; whitespace
-(use-package whitespace :defer t
+(use-package whitespace
+  :defer t
   :diminish whitespace-mode
   :init
   (add-hook
@@ -110,14 +125,22 @@
   :config
   (set-face-foreground 'whitespace-line nil))
 
-(use-package abbrev :defer t :diminish abbrev-mode)
+(use-package abbrev
+  :defer t
+  :diminish abbrev-mode)
 
-(use-package autorevert :defer t :diminish auto-revert-mode
+(use-package autorevert
+  :defer t
+  :diminish auto-revert-mode
   :init
   (setq auto-revert-verbose nil)
   (global-auto-revert-mode t))
 
+(use-package window
+  :bind (("C-S-<left>" . shrink-window-horizontally)
+         ("C-S-<right>" . enlarge-window-horizontally)
+         ("C-S-<down>" . shrink-window)
+         ("C-S-<up>" . enlarge-window)))
+
 (provide 'init-defaults)
 ;;; init-defaults.el ends here
-
-

@@ -59,6 +59,9 @@
 
 ;; initialize specialized packages
 
+;; report load time
+(bk:report-emacs-boot-time)
+
 ;;; (provide 'init)
 ;;; init-online.el ends here
 

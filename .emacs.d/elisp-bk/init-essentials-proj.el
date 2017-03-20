@@ -1,10 +1,20 @@
+;;; init-essentials-proj.el -- project configs
+;;; Commentary:
+
+;;; Code:
 ;; projectile
-(use-package projectile :ensure t :defer t
+(use-package projectile
+  :ensure t
   :commands (projectile-mode)
   :init
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
-  (setq projectile-switch-project-action 'projectile-dired)
+  (setq projectile-switch-project-action
+        '(lambda()
+           (progn
+             (projectile-dired)
+             ;; (neotree-dir (projectile-project-root))
+             )))
   (setq projectile-known-projects-file
         (expand-file-name "projectile-bookmarks.eld" bk:temp-directory))
   (setq projectile-other-file-alist
@@ -25,10 +35,12 @@
           (nil "lock" "gpg")
           ("lock" "")
           ("gpg" "")))
-  (projectile-mode)
+  (add-hook 'after-init-hook 'projectile-mode)
   :config
-  (use-package helm-projectile :ensure t :defer t
+  (use-package helm-projectile
+    :ensure t
     :commands (helm-projectile-on)
     :init (helm-projectile-on)))
 
 (provide 'init-essentials-proj)
+;;; init-essentials-proj.el ends here
