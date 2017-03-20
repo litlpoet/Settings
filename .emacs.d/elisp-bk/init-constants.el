@@ -9,6 +9,11 @@
 	  (convert-standard-filename "temp/"))
   "Directory for temporary files.")
 
+(defconst bk:rtags-lisp-directory
+  ;; "/usr/home/bchoi/cyop/share/emacs/site-lisp/rtags"
+  "/usr/local/share/emacs/site-lisp/rtags/"
+  "Directory for rtags Lisp files.")
+
 (defun bk:report-emacs-boot-time ()
   "Report Emacs boot time."
   (let

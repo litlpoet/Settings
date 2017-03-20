@@ -47,7 +47,7 @@
 
 ;; rtags
 (use-package rtags
-  :load-path "/usr/local/share/emacs/site-lisp/rtags/"
+  :load-path (bk:rtags-lisp-directory)
   :commands (rtags-enable-standard-keybindings)
   :init
   (setq
