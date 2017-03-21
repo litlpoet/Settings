@@ -74,7 +74,8 @@
   )
 
 ;; irony-mode
-(use-package irony :ensure t
+(use-package irony
+  :ensure t
   :commands (irony-mode irony-completion-at-point-async)
   :init
   (defun bk:irony-mode-hook()
@@ -83,14 +84,14 @@
     (define-key irony-mode-map [remap complete-symbol]
       'irony-completion-at-point-async)
     (irony-cdb-autosetup-compile-options))
-  ;; (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'bk:irony-mode-hook)
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook
             '(lambda()
                (unless (derived-mode-p 'glsl-mode) (irony-mode))))
   :config
-  (use-package company-irony :ensure t
+  (use-package company-irony
+    :ensure t
     :commands (company-irony)
     :init
     (defun bk:company-irony-hook()
@@ -99,16 +100,18 @@
       ;; remove a bunch of backends that interfere in C/C++ mode.
       (set
        (make-local-variable 'company-backends)
-       (cons 'company-irony
-             (delq 'company-nxml
-                   (mapcar #'identity company-backends)))))
+       '((company-irony company-yasnippet)
+         company-capf company-files
+         (company-dabbrev-code company-keywords)
+          company-dabbrev)))
     (add-hook 'irony-mode-hook 'bk:company-irony-hook))
-  (use-package flycheck-irony :ensure t
-    ;; :defer t
+  (use-package flycheck-irony
+    :ensure t
+    :commands (flycheck-irony-setup)
     :init
+    (flycheck-irony-setup)
     (defun bk:flycheck-irony-hook()
       (flycheck-select-checker 'irony))
-    (add-to-list 'flycheck-checkers 'irony)
     (add-hook 'irony-mode-hook 'bk:flycheck-irony-hook)
     ;; (eval-after-load 'flycheck
     ;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
@@ -118,6 +121,7 @@
     ;;   :config
     ;;   (flycheck-add-next-checker
     ;;    'irony '(warning . c/c++-googlelint)))
+    ;;   )
     ))
 
 ;; cmake-ide
