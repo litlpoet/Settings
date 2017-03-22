@@ -28,7 +28,8 @@
 (require 'bind-key)
 
 ;; custom
-(use-package custom :defer t
+(use-package custom
+  :defer t
   :init
   (setq custom-safe-themes t)
   (setq custom-file
@@ -36,20 +37,18 @@
   (load custom-file))
 
 ;; main theme
-(use-package material-theme :ensure t :defer t
+(use-package material-theme
+  :ensure t
+  :defer t
   :init (load-theme 'material t))
 
 ;; (for dev) macrostep
-(use-package macrostep :ensure t
+(use-package macrostep
+  :ensure t
   :bind ("C-c e m" . macrostep-expand))
 
-;; load constant variables
-(use-package init-constants :load-path "elisp-bk/")
-
-;; initialize default (built-in) packages
-(use-package init-defaults :load-path "elisp-bk/")
-
-;; initialize essential (external) packages
+(use-package init-constants           :load-path "elisp-bk/")
+(use-package init-defaults            :load-path "elisp-bk/")
 (use-package init-essentials-common   :load-path "elisp-bk/")
 (use-package init-essentials-navi     :load-path "elisp-bk/")
 (use-package init-essentials-proj     :load-path "elisp-bk/")

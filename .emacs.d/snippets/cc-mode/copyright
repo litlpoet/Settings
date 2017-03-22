@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: copyright
+# key: copyright
+# --
+// Copyright (C) 2017 BK$0

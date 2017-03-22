@@ -2,10 +2,20 @@
 ;;; Commentary:
 
 ;;; Code:
+
+;; yasnippet
+(use-package yasnippet
+  :ensure t
+  :diminish yas-minor-mode
+  :commands (yas-global-mode)
+  :init
+  (add-hook 'after-init-hook
+            '(lambda()
+               (yas-global-mode 1))))
+
 ;; company
-(use-package company :ensure t
-  ;; :commands (global-company-mode)
-  ;; :diminish company-mode
+(use-package company
+  :ensure t
   :bind ("M-i" . company-complete)
   :init
   (setq company-backends
@@ -62,6 +72,13 @@
   :init
   (setq git-gutter:lighter nil)
   (global-git-gutter-mode t))
+
+;; clean-aindent-mode
+(use-package clean-aindent-mode
+  :ensure t
+  :commands (clean-aindent-mode)
+  :init
+  (add-hook 'prog-mode-hook 'clean-aindent-mode))
 
 (provide 'init-essentials-prog)
 ;;; init-essentials-prog ends here

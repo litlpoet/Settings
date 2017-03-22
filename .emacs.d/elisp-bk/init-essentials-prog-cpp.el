@@ -56,26 +56,28 @@
    rtags-jump-to-first-match                 nil
    rtags-use-filename-completion             nil)
   (rtags-enable-standard-keybindings c-mode-base-map)
-  ;; (use-package company-rtags :defer t
-  ;;   :init
-  ;;   (setq rtags-completions-enabled   t)
-  ;;   (defun bk:company-rtags-hook()
-  ;;     ;; put company-rtags to the beginning of company-backends
-  ;;     (set (make-local-variable 'company-idle-delay) 0.1)
-  ;;     ;; dabbrev in comments and strings
-  ;;     (set (make-local-variable 'company-dabbrev-code-everywhere) t)
-  ;;     ;; remove a bunch of backends that interfere in C/C++ mode.
-  ;;     (set
-  ;;      (make-local-variable 'company-backends)
-  ;;      (cons 'company-rtags
-  ;;            (delq 'company-nxml
-  ;;                  (mapcar #'identity company-backends)))))
-  ;;   (add-hook 'c-mode-common-hook 'bk:company-rtags-hook))
-  )
+  (use-package company-rtags
+    :defer t
+    :if (not bk:use-irony)
+    :init
+    (setq rtags-completions-enabled   t)
+    (defun bk:company-rtags-hook()
+      ;; put company-rtags to the beginning of company-backends
+      (set (make-local-variable 'company-idle-delay) 0.1)
+      ;; dabbrev in comments and strings
+      (set (make-local-variable 'company-dabbrev-code-everywhere) t)
+      ;; remove a bunch of backends that interfere in C/C++ mode.
+      (set
+       (make-local-variable 'company-backends)
+       (cons 'company-rtags
+             (delq 'company-nxml
+                   (mapcar #'identity company-backends)))))
+    (add-hook 'c-mode-common-hook 'bk:company-rtags-hook)))
 
 ;; irony-mode
 (use-package irony
   :ensure t
+  :if bk:use-irony
   :commands (irony-mode irony-completion-at-point-async)
   :init
   (defun bk:irony-mode-hook()
@@ -113,8 +115,6 @@
     (defun bk:flycheck-irony-hook()
       (flycheck-select-checker 'irony))
     (add-hook 'irony-mode-hook 'bk:flycheck-irony-hook)
-    ;; (eval-after-load 'flycheck
-    ;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
     ;; :config
     ;; (use-package flycheck-google-cpplint
     ;;   :ensure t

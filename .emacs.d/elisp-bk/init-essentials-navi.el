@@ -46,6 +46,13 @@
   :ensure t
   :bind ("C-x C-d" . helm-browse-project))
 
+;; (navi) helm-ag
+(use-package helm-ag
+  :ensure t
+  :defer t
+  :init
+  (setq helm-ag-insert-at-point 'symbol))
+
 ;; (navi) ace-window
 (use-package ace-window
   :ensure t

@@ -37,10 +37,12 @@
 
 ;; hilight line
 (use-package hl-line
-  :defer t
+  :commands (global-hl-line-mode)
   :init
   (setq global-hl-line-sticky-frag nil)
-  (global-hl-line-mode t))
+  (add-hook 'after-init-hook
+            '(lambda()
+               (global-hl-line-mode t))))
 
 ;; simple
 (use-package simple
@@ -103,7 +105,7 @@
 
 ;; whitespace
 (use-package whitespace
-  :defer t
+  :commands (whitespace-mode)
   :diminish whitespace-mode
   :init
   (add-hook
@@ -125,22 +127,41 @@
   :config
   (set-face-foreground 'whitespace-line nil))
 
+;; abbrev
 (use-package abbrev
   :defer t
   :diminish abbrev-mode)
 
+;; autorevert
 (use-package autorevert
-  :defer t
+  :commands (global-auto-revert-mode)
   :diminish auto-revert-mode
   :init
-  (setq auto-revert-verbose nil)
-  (global-auto-revert-mode t))
+  (add-hook 'after-init-hook
+            '(lambda()
+               (setq auto-revert-verbose nil)
+               (global-auto-revert-mode t))))
 
+;; window
 (use-package window
   :bind (("C-S-<left>" . shrink-window-horizontally)
          ("C-S-<right>" . enlarge-window-horizontally)
          ("C-S-<down>" . shrink-window)
          ("C-S-<up>" . enlarge-window)))
+
+;; auto-insert
+(use-package autoinsert
+  :commands (auto-insert-mode)
+  :init
+  (add-hook 'after-init-hook
+            '(lambda()
+               (setq auto-insert-query nil)
+               (auto-insert-mode t)))
+  :config
+  (use-package impl-autoinsert)
+  (dolist (elem bk:auto-insert-alist)
+    (add-to-list 'auto-insert-alist elem)))
+
 
 (provide 'init-defaults)
 ;;; init-defaults.el ends here
