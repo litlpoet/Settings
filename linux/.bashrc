@@ -22,7 +22,7 @@ alias lla='ll -a'
 # Simple default PS1
 # \u = user
 # \A = time
-PS1='[\u@\h \w]\n\$ '
+PS1='[\u@\h]:\w\n\$ '
 
 # >>>>BEGIN ADDED BY CNCHI INSTALLER<<<< #
 # BROWSER=/usr/bin/google-chrome-stable

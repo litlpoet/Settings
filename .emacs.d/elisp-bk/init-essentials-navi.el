@@ -4,36 +4,33 @@
 ;;; Code:
 ;; (navi) helm
 (use-package helm
-  :defer t
   :ensure t
+  :diminish helm-mode
+  :bind (("C-c h"   . helm-command-prefix)
+         ("C-x b"   . helm-mini)
+         ("C-x f"   . helm-multi-files)
+         ("C-x C-f" . helm-find-files)
+         ("M-x"     . helm-M-x)
+         ("M-y"     . helm-show-kill-ring)
+         :map helm-map
+         ("<tab>" . helm-execute-persistent-action)
+         ("C-i"   . helm-execute-persistent-action)
+         ("C-z"   . helm-select-action))
   :init
-  (use-package helm-config
-    :demand t
-    :bind (("C-c h"   . helm-command-prefix)
-           ("C-x b"   . helm-mini)
-           ("C-x f"   . helm-multi-files)
-           ("C-x C-f" . helm-find-files)
-           ("M-x"     . helm-M-x)
-           ("M-y"     . helm-show-kill-ring)
-           :map helm-map
-           ("<tab>" . helm-execute-persistent-action)
-           ("C-i"   . helm-execute-persistent-action)
-           ("C-z"   . helm-select-action))
-    :config
-    (use-package helm-mode
-      :diminish helm-mode
-      :init
-      (helm-mode 1))
-    (helm-autoresize-mode t)
-    (setq
-     helm-split-window-in-side-p           t
-     helm-move-to-line-cycle-in-source     t
-     helm-ff-search-library-in-sexp        t
-     helm-scroll-amount                    1
-     helm-ff-file-name-history-use-recentf t
-     helm-M-x-fuzzy-match                  t
-     helm-buffers-fuzzy-matching           t
-     helm-recentf-fuzzy-match              t)))
+  (require 'helm-config)
+  :config
+  (helm-autoresize-mode t)
+  (setq
+   helm-split-window-in-side-p           t
+   helm-split-window-default-side        'below
+   helm-move-to-line-cycle-in-source     t
+   helm-ff-search-library-in-sexp        t
+   helm-scroll-amount                    1
+   helm-ff-file-name-history-use-recentf t
+   helm-M-x-fuzzy-match                  t
+   helm-buffers-fuzzy-matching           t
+   helm-recentf-fuzzy-match              t)
+  (helm-mode 1))
 
 ;; (navi) helm-descbinds
 (use-package helm-descbinds
@@ -52,6 +49,12 @@
   :defer t
   :init
   (setq helm-ag-insert-at-point 'symbol))
+
+;; (navi) helm-swoop
+(use-package helm-swoop
+  :ensure t
+  :bind
+  ("C-c h C-s" . helm-swoop))
 
 ;; (navi) ace-window
 (use-package ace-window

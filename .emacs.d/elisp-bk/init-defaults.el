@@ -3,16 +3,20 @@
 
 ;;; Code:
 ;; c code engine variables
-(setq visible-bell                    t
+(setq visible-bell                    nil
+      ring-bell-function              'ignore
+      highlight-nonselected-windows   nil
       auto-save-timeout               120
       scroll-preserve-screen-position t
       scroll-conservatively           100000
       scroll-step                     1
       scroll-margin                   5)
-(setq-default cursor-type      'bar
-              tab-width        2
-              indent-tabs-mode nil
-              fill-column      80)
+
+(setq-default cursor-type                     'bar
+              tab-width                       2
+              indent-tabs-mode                nil
+              fill-column                     80
+              cursor-in-non-selected-windows  nil)
 
 ;; alias
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -27,13 +31,15 @@
 
 ;; frame
 (use-package frame
-  :defer t
-  :init (blink-cursor-mode 0))
+  :commands (blink-cursor-mode)
+  :init
+  (blink-cursor-mode 0))
 
 ;; fringe
 (use-package fringe
-  :defer t
-  :init (set-fringe-mode '(nil . 0)))
+  :commands (set-fringe-mode)
+  :init
+  (set-fringe-mode '(nil . 0)))
 
 ;; hilight line
 (use-package hl-line
@@ -46,7 +52,7 @@
 
 ;; simple
 (use-package simple
-  :defer t
+  :commands (column-number-mode)
   :init
   (setq global-mark-ring-max 1000
         mark-ring-max        1000
@@ -56,7 +62,7 @@
 
 ;; delsel
 (use-package delsel
-  :defer t
+  :commands (delete-selection-mode)
   :init (delete-selection-mode t))
 
 ;; mule-cmds
@@ -64,7 +70,7 @@
   :defer t
   :init
   (set-language-environment "Korean")
-  (prefer-coding-system 'utf-8))
+  (prefer-coding-system     'utf-8))
 ;; (set-selection-coding-system 'utf-8)
 
 ;; ;; fonts
@@ -83,7 +89,8 @@
         kept-new-versions      5
         kept-old-versions      3
         delete-old-versions    t
-        backup-directory-alist `(("." . ,bk:temp-directory)))
+        backup-directory-alist `(("." . ,bk:temp-directory))
+        confirm-kill-emacs     'y-or-n-p)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
 
 ;; dired

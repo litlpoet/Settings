@@ -56,11 +56,14 @@
    rtags-jump-to-first-match                 nil
    rtags-use-filename-completion             nil)
   (rtags-enable-standard-keybindings c-mode-base-map)
+  (use-package rtags-helm
+    :init
+    (setq rtags-use-helm t))
   (use-package company-rtags
     :defer t
     :if (not bk:use-irony)
     :init
-    (setq rtags-completions-enabled   t)
+    (setq rtags-completions-enabled t)
     (defun bk:company-rtags-hook()
       ;; put company-rtags to the beginning of company-backends
       (set (make-local-variable 'company-idle-delay) 0.1)

@@ -5,8 +5,8 @@
 ;; (file) recentf-ext
 (use-package recentf-ext
   :ensure t
-  :config
-  (setq recentf-max-saved-items 50
+  :init
+  (setq recentf-max-saved-items 10
         recentf-save-file
         (expand-file-name "recentf" bk:temp-directory)))
 
@@ -78,8 +78,23 @@
   :init
   (global-anzu-mode +1))
 
-(use-package rainbow-delimiters :ensure t :defer t
-  :init (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+;; (vis) rainbow-delimiters
+(use-package rainbow-delimiters
+  :ensure t
+  :commands (rainbow-delimiters-mode)
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+;; (start) dash-board
+(use-package dashboard
+  :ensure t
+  :init
+  (setq dashboard-startup-banner 'logo
+        dashboard-items          '((projects  . 5)
+                                   (recents   . 5)
+                                   (bookmarks . 5)))
+  :config
+  (dashboard-setup-startup-hook))
 
 (provide 'init-essentials-common)
 ;;; init-essentials-common.el ends here
