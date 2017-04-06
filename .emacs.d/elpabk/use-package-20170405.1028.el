@@ -7,7 +7,7 @@
 ;; Created: 17 Jun 2012
 ;; Modified: 17 Oct 2016
 ;; Version: 2.3
-;; Package-Version: 20170319.12
+;; Package-Version: 20170405.1028
 ;; Package-Requires: ((bind-key "1.0") (diminish "0.44"))
 ;; Keywords: dotemacs startup speed config package
 ;; URL: https://github.com/jwiegley/use-package
@@ -86,13 +86,18 @@ The check is performed by looking for the module using `locate-library'."
   :type 'boolean
   :group 'use-package)
 
+(defcustom use-package-always-defer-install nil
+  "If non-nil, assume `:defer-install t` unless `:defer-install nil` is given."
+  :type 'boolean
+  :group 'use-package)
+
 (defcustom use-package-always-ensure nil
   "Treat every package as though it had specified `:ensure SEXP`."
   :type 'sexp
   :group 'use-package)
 
 (defcustom use-package-always-pin nil
-  "Treat every package as though it had specified `:pin SYM."
+  "Treat every package as though it had specified `:pin SYM`."
   :type 'symbol
   :group 'use-package)
 
@@ -239,6 +244,9 @@ when the packages are actually requested."
 (defcustom use-package-defaults
   '((:config '(t) t)
     (:ensure use-package-always-ensure use-package-always-ensure)
+    (:defer-install
+     use-package-always-defer-install
+     use-package-always-defer-install)
     (:pin use-package-always-pin use-package-always-pin))
   "Alist of default values for `use-package' keywords.
 Each entry in the alist is a list of three elements. The first
@@ -771,7 +779,8 @@ If the package is installed, its entry is removed from
 
 (defsubst use-package-normalize-value (label arg)
   "Normalize a value."
-  (cond ((symbolp arg)
+  (cond ((null arg) nil)
+        ((symbolp arg)
          `(symbol-value ',arg))
         ((functionp arg)
          `(funcall #',arg))
@@ -957,12 +966,34 @@ If RECURSED is non-nil, recurse into sublists."
    ((use-package-is-pair arg key-pred val-pred)
     (list arg))
    ((and (not recursed) (listp arg) (listp (cdr arg)))
-    (mapcar #'(lambda (x)
-                (let ((ret (use-package-normalize-pairs
-                            key-pred val-pred name label x t)))
-                  (if (listp ret)
-                      (car ret)
-                    ret))) arg))
+    (let ((last-item nil))
+      (mapcar #'(lambda (x)
+                  (prog1
+                      (let ((ret (use-package-normalize-pairs
+                                  key-pred val-pred name label x t)))
+                        ;; Currently, the handling of keyword
+                        ;; arguments by `use-package' and `bind-key'
+                        ;; is non-uniform and undocumented. As a
+                        ;; result, `use-package-normalize-pairs' (as
+                        ;; it is currently implemented) does not
+                        ;; correctly handle the keyword-argument
+                        ;; syntax of `bind-keys'. A permanent solution
+                        ;; to this problem will require a careful
+                        ;; consideration of the desired
+                        ;; keyword-argument interface for
+                        ;; `use-package' and `bind-key'. However, in
+                        ;; the meantime, we have a quick patch to fix
+                        ;; a serious bug in the handling of keyword
+                        ;; arguments. Namely, the code below would
+                        ;; normally unwrap lists that were passed as
+                        ;; keyword arguments (for example, the
+                        ;; `:filter' argument in `:bind') without
+                        ;; the (not (keywordp last-item)) clause. See
+                        ;; #447 for further discussion.
+                        (if (and (listp ret) (not (keywordp last-item)))
+                            (car ret)
+                          ret))
+                    (setq last-item x))) arg)))
    (t arg)))
 
 (defun use-package-normalize-binder (name keyword args)
@@ -1271,7 +1302,7 @@ deferred until the prefix key sequence is pressed."
                        `(,@(when (eq (plist-get state :defer-install) :ensure)
                              `((use-package-install-deferred-package
                                 'name :after)))
-                         '(require (quote ,name) nil t))))))
+                         (require (quote ,name) nil t))))))
      body)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -38,10 +38,10 @@
 ;;;###autoload
 (defun bk:format-include-guard ()
   "Format an include guard, using projectile-project-root.
-If not in a projectile project use `bk/format-include-guard-fallback'."
+If not in a projectile project use `bk:format-include-guard-fallback'."
   (if (projectile-project-p)
       (let ((filename
-             (subseq
+             (cl-subseq
               (file-name-sans-extension buffer-file-name)
               (length (projectile-project-root))))
             (ext (file-name-extension buffer-file-name)))
