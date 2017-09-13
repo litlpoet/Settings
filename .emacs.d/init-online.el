@@ -13,8 +13,8 @@
 ;; invoke packages
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/")
-	     t)  ;; last 't' puts 'melpa' at the end of the list
+             '("melpa" . "http://melpa.org/packages/")
+             t)  ;; last 't' puts 'melpa' at the end of the list
 (package-initialize)
 
 ;; use package setup
@@ -37,10 +37,18 @@
   (load custom-file))
 
 ;; main theme
-(use-package material-theme
+;; (use-package material-theme
+;;   :ensure t
+;;   :defer t
+;;   :init (load-theme 'material t))
+(use-package base16-theme
   :ensure t
   :defer t
-  :init (load-theme 'material t))
+  :init
+  (load-theme 'base16-default-dark t)
+  (set-face-attribute 'fringe nil :background nil)
+  (set-face-background 'vertical-border "#282828")
+  (set-face-foreground 'vertical-border (face-background 'vertical-border)))
 
 ;; (for dev) macrostep
 (use-package macrostep

@@ -24,8 +24,3 @@ alias lla='ll -a'
 # \A = time
 PS1='[\u@\h]:\w\n\$ '
 
-# >>>>BEGIN ADDED BY CNCHI INSTALLER<<<< #
-BROWSER=/usr/bin/google-chrome-stable
-# EDITOR=/usr/bin/nano
-# >>>>>END ADDED BY CNCHI INSTALLER<<<<< #
-

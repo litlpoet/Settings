@@ -4,6 +4,9 @@
 ;;; Code:
 (use-package cc-mode)
 
+;; modern c++ font-lock
+(use-package modern-cpp-font-lock :ensure t)
+
 ;; google-c-style
 (use-package google-c-style :ensure t
   :commands (google-set-c-style google-make-newline-indent)
@@ -22,9 +25,7 @@
               (eq major-mode 'c++-mode)
               (eq major-mode 'glsl-mode))
       (clang-format-buffer)))
-  (add-hook 'before-save-hook 'bk:clang-format-before-save)
-  :config
-  (setq-default clang-format-style "Google"))
+  (add-hook 'before-save-hook 'bk:clang-format-before-save))
 
 ;; cmake-font-lock
 (use-package cmake-font-lock :ensure t
@@ -56,9 +57,9 @@
    rtags-jump-to-first-match                 nil
    rtags-use-filename-completion             nil)
   (rtags-enable-standard-keybindings c-mode-base-map)
-  (use-package rtags-helm
-    :init
-    (setq rtags-use-helm t))
+  ;; (use-package rtags-helm
+  ;;   :init
+  ;;   (setq rtags-use-helm t))
   (use-package company-rtags
     :defer t
     :if (not bk:use-irony)

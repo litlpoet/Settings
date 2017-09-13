@@ -15,7 +15,7 @@
 (setq-default cursor-type                     'bar
               tab-width                       2
               indent-tabs-mode                nil
-              fill-column                     80
+              fill-column                     100
               cursor-in-non-selected-windows  nil)
 
 ;; alias
@@ -73,7 +73,8 @@
   (prefer-coding-system     'utf-8))
 ;; (set-selection-coding-system 'utf-8)
 
-;; ;; fonts
+;; fonts
+(set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR"))
 ;; ;; (if (bk/font-exists-p "Noto Sans Mono CJK KR-12")
 ;; ;;     (add-to-list 'default-frame-alist '(font . "Noto Sans Mono CJK KR-12")))
 ;; ;; (if (bk/font-exists-p "Noto Sans Mono CJK KR")
@@ -128,6 +129,7 @@
    'prog-mode-hook
    '(lambda()
       (setq-local show-trailing-whitespace 1)
+      (setq-local whitespace-line-column   100)
       (setq-local whitespace-style
                   '(face tabs trailing lines-tail))
       (whitespace-mode 1)))

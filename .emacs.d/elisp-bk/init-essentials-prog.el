@@ -52,8 +52,11 @@
                   c/c++-cppcheck))
   (use-package flycheck-pos-tip
     :ensure t
-    :init (with-eval-after-load 'flycheck
-            (flycheck-pos-tip-mode))))
+    :init
+    (with-eval-after-load 'flycheck
+      (flycheck-pos-tip-mode))
+    :config
+    (setq flycheck-pos-tip-timeout 20)))
 
 ;; magit
 (use-package magit

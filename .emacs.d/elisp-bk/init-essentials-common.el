@@ -90,9 +90,9 @@
   :ensure t
   :init
   (setq dashboard-startup-banner 'logo
-        dashboard-items          '((projects  . 5)
-                                   (recents   . 5)
-                                   (bookmarks . 5)))
+        dashboard-items          '((bookmarks . 7)
+                                   (projects  . 7)
+                                   (recents   . 7)))
   :config
   (dashboard-setup-startup-hook))
 

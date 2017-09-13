@@ -7,7 +7,7 @@
 
 (defconst bk:temp-directory
   (concat user-emacs-directory
-	  (convert-standard-filename "temp/"))
+          (convert-standard-filename "temp/"))
   "Directory for temporary files.")
 
 (defconst bk:use-irony t
