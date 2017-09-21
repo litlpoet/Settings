@@ -13,7 +13,8 @@
 ;; (edit) iedit
 (use-package iedit
   :ensure t
-  :bind ("C-;" . iedit-mode)
+  :bind (("C-;" . iedit-mode)
+	 ("C-:" . iedit-mode-toggle-on-function))
   :config (set-face-inverse-video 'iedit-occurrence t))
 
 ;; (edit) expand-region
