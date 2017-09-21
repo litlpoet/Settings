@@ -57,6 +57,7 @@
 
 (use-package init-constants           :load-path "elisp-bk/")
 (use-package init-defaults            :load-path "elisp-bk/")
+(use-package impl-autoinsert          :load-path "elisp-bk/")
 (use-package init-essentials-common   :load-path "elisp-bk/")
 (use-package init-essentials-navi     :load-path "elisp-bk/")
 (use-package init-essentials-proj     :load-path "elisp-bk/")
