@@ -5,7 +5,7 @@
 ;; (file) recentf-ext
 (use-package recentf-ext
   :ensure t
-  :init
+  :config
   (setq recentf-max-saved-items 10
         recentf-save-file
         (expand-file-name "recentf" bk:temp-directory)))
@@ -14,7 +14,7 @@
 (use-package iedit
   :ensure t
   :bind (("C-;" . iedit-mode)
-	 ("C-:" . iedit-mode-toggle-on-function))
+         ("C-:" . iedit-mode-toggle-on-function))
   :config (set-face-inverse-video 'iedit-occurrence t))
 
 ;; (edit) expand-region
@@ -71,7 +71,7 @@
                       :underline "light slate gray")
   (volatile-highlights-mode t))
 
-;; (vis) anzu
+;; (viz) anzu
 (use-package anzu
   :ensure t
   :defer t
@@ -79,22 +79,30 @@
   :init
   (global-anzu-mode +1))
 
-;; (vis) rainbow-delimiters
+;; (viz) rainbow-delimiters
 (use-package rainbow-delimiters
   :ensure t
   :commands (rainbow-delimiters-mode)
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
+;; (viz) highlight-indent-guides
+(use-package highlight-indent-guides
+  :ensure t
+  :commands (highlight-indent-guides-mode)
+  :init
+  (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character))
+
 ;; (start) dash-board
 (use-package dashboard
   :ensure t
-  :init
+  :config
   (setq dashboard-startup-banner 'logo
         dashboard-items          '((bookmarks . 7)
                                    (projects  . 7)
                                    (recents   . 7)))
-  :config
   (dashboard-setup-startup-hook))
 
 (provide 'init-essentials-common)
