@@ -6,9 +6,7 @@
 (use-package recentf-ext
   :ensure t
   :config
-  (setq recentf-max-saved-items 10
-        recentf-save-file
-        (expand-file-name "recentf" bk:temp-directory)))
+  (setq recentf-max-saved-items 10))
 
 ;; (edit) iedit
 (use-package iedit
@@ -74,7 +72,7 @@
 ;; (viz) anzu
 (use-package anzu
   :ensure t
-  :defer t
+  :commands (global-anzu-mode)
   :diminish anzu-mode
   :init
   (global-anzu-mode +1))
@@ -87,13 +85,13 @@
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 ;; (viz) highlight-indent-guides
-(use-package highlight-indent-guides
-  :ensure t
-  :commands (highlight-indent-guides-mode)
-  :init
-  (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character))
+;; (use-package highlight-indent-guides
+;;   :ensure t
+;;   :commands (highlight-indent-guides-mode)
+;;   :init
+;;   (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
+;;   :config
+;;   (setq highlight-indent-guides-method 'column))
 
 ;; (start) dash-board
 (use-package dashboard

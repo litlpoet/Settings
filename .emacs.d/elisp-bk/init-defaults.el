@@ -36,29 +36,31 @@
   (blink-cursor-mode 0))
 
 ;; fringe
-(use-package fringe
-  :commands (set-fringe-mode)
-  :init
-  (set-fringe-mode '(nil . 0)))
+;; (use-package fringe
+;;   :commands (set-fringe-mode)
+;;   :init
+;;   (set-fringe-mode '(nil . 0)))
 
 ;; hilight line
 (use-package hl-line
   :commands (global-hl-line-mode)
   :init
-  (setq global-hl-line-sticky-frag nil)
   (add-hook 'after-init-hook
             '(lambda()
-               (global-hl-line-mode t))))
+               (global-hl-line-mode t)))
+  :config
+  (setq global-hl-line-sticky-frag nil))
 
 ;; simple
 (use-package simple
   :commands (column-number-mode)
   :init
+  (column-number-mode t)
+  :config
   (setq global-mark-ring-max 1000
         mark-ring-max        1000
         kill-ring-max        1000
-        kill-whole-line      t)
-  (column-number-mode t))
+        kill-whole-line      t))
 
 ;; delsel
 (use-package delsel
@@ -153,10 +155,10 @@
 
 ;; window
 (use-package window
-  :bind (("C-S-<left>" . shrink-window-horizontally)
+  :bind (("C-S-<left>"  . shrink-window-horizontally)
          ("C-S-<right>" . enlarge-window-horizontally)
-         ("C-S-<down>" . shrink-window)
-         ("C-S-<up>" . enlarge-window)))
+         ("C-S-<down>"  . shrink-window)
+         ("C-S-<up>"    . enlarge-window)))
 
 ;; auto-insert
 (use-package autoinsert
