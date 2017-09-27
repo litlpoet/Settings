@@ -68,13 +68,17 @@
                       :inverse-video t
                       :weight 'extra-bold))
 
-;; git-gutter-fringe
-(use-package git-gutter-fringe
-  :ensure t
-  :commands (global-git-gutter-mode)
-  :init
-  (setq git-gutter:lighter nil)
-  (global-git-gutter-mode t))
+;; git-gutter
+;; (use-package git-gutter
+;;   :ensure t
+;;   :commands (global-git-gutter-mode)
+;;   :init
+;;   (add-hook 'after-init-hook
+;;             '(lambda()
+;;                (global-git-gutter-mode t)))
+;;   :config
+;;   (setq-default git-gutter:lighter      nil
+;;                 git-gutter:window-width 2))
 
 ;; clean-aindent-mode
 (use-package clean-aindent-mode
@@ -82,6 +86,19 @@
   :commands (clean-aindent-mode)
   :init
   (add-hook 'prog-mode-hook 'clean-aindent-mode))
+
+(use-package writeroom-mode
+  :ensure t
+  :commands (global-writeroom-mode)
+  :init
+  (add-hook 'after-init-hook #'global-writeroom-mode)
+  :config
+  (setq writeroom-major-modes
+        '(text-mode prog-mode cmake-mode))
+  (setq writeroom-width                100
+        writeroom-maximize-window      nil
+        writeroom-extra-line-spacing   5
+        writeroom-bottom-divider-width 0))
 
 (provide 'init-essentials-prog)
 ;;; init-essentials-prog ends here

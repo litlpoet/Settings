@@ -6,6 +6,9 @@
 ;; change default appearance as soon as possible
 
 ;; invoke packages
+(defconst bk:emacs-start-time (current-time)
+  "Emacs start time.")
+
 (require 'package)
 (add-to-list
  'package-archives
@@ -13,8 +16,44 @@
  t)  ;; last 't' puts 'melpa' at the end of the list
 (package-initialize)
 
+(defconst bk:is-online t
+  "If Emacs have access on internet, set nil if not.")
+
+(defconst bk:use-irony t
+  "Use irony for code linting and completion, if nil use r-tags.")
+
+(defconst bk:temp-directory
+  (concat user-emacs-directory
+          (convert-standard-filename "temp/"))
+  "Directory for temporary files.")
+
+(defconst bk:rtags-lisp-directory
+  "/usr/local/share/emacs/site-lisp/rtags/"
+  "Directory for rtags Lisp files.")
+
 (load
  (expand-file-name "init-common.el" user-emacs-directory))
-;;; (provide 'init)
+
+;; report load time
+(let ((elapsed (float-time
+                (time-subtract
+                 (current-time)
+                 bk:emacs-start-time))))
+  (message
+   "Loading %s...done (%.3fs) [init.el]"
+   load-file-name elapsed))
+(add-hook
+ 'after-init-hook
+ `(lambda ()
+    (let ((elapsed (float-time
+                    (time-subtract
+                     (current-time)
+                     bk:emacs-start-time))))
+      (message
+       "Loading %s...done (%.3fs) [after-init]"
+       ,load-file-name elapsed)))
+ t)
+
+;;; (provide 'init-online)
 ;;; init-online.el ends here
 
