@@ -10,12 +10,12 @@
           (convert-standard-filename "temp/"))
   "Directory for temporary files.")
 
-(defconst bk:use-irony t
+(defconst bk:use-irony nil
   "Use irony for code linting and completion, if nil use r-tags.")
 
 (defconst bk:rtags-lisp-directory
-  ;; "/usr/home/bchoi/cyop/share/emacs/site-lisp/rtags"
-  "/usr/local/share/emacs/site-lisp/rtags/"
+  "/usr/home/bchoi/cyop/share/emacs/site-lisp/rtags"
+  ;; "/usr/local/share/emacs/site-lisp/rtags/"
   "Directory for rtags Lisp files.")
 
 (defun bk:report-emacs-boot-time ()
