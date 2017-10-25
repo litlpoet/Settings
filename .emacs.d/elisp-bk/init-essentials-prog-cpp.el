@@ -55,7 +55,8 @@
    rtags-autostart-diagnostics               t
    rtags-other-window-window-size-percentage 50
    rtags-jump-to-first-match                 nil
-   rtags-use-filename-completion             nil)
+   rtags-use-filename-completion             nil
+   rtags-display-result-backend              'ivy)
   (rtags-enable-standard-keybindings c-mode-base-map)
   ;; (use-package rtags-helm
   ;;   :init
