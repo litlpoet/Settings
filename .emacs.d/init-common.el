@@ -44,9 +44,9 @@
   :defer t
   :init
   (load-theme 'base16-default-dark t)
-  (set-face-attribute  'fringe nil :background nil)
-  (set-face-background 'vertical-border (face-background 'modeline-inactive))
-  (set-face-foreground 'vertical-border (face-background 'vertical-border)))
+  (set-face-background 'fringe          nil)
+  (set-face-background 'vertical-border nil)
+  (set-face-foreground 'vertical-border (face-background 'modeline-inactive)))
 
 
 ;; (for dev) macrostep
