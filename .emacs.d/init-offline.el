@@ -1,6 +1,6 @@
-;;; init-online.el -- bk's emacs starting point
+;;; init-offline.el -- bk's emacs starting point
 ;;; Commentary:
-;; Emacs init.el online version (getting package from web)
+;; Emacs init.el offline version (getting package from web)
 
 ;;; Code:
 
@@ -17,15 +17,6 @@
 
 (defconst bk:use-irony nil
   "Use irony for code linting and completion, if nil use r-tags.")
-
-(defconst bk:temp-directory
-  (concat user-emacs-directory
-          (convert-standard-filename "temp/"))
-  "Directory for temporary files.")
-
-(defconst bk:rtags-lisp-directory
-  "/usr/home/bchoi/cyop/share/emacs/site-lisp/rtags"
-  "Directory for rtags Lisp files.")
 
 (load
  (expand-file-name "init-common.el" user-emacs-directory))
@@ -51,5 +42,5 @@
  t)
 
 ;;; (provide 'init-offline)
-;;; init-online.el ends here
+;;; init-offline.el ends here
 

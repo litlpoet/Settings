@@ -5,17 +5,20 @@
 (use-package cc-mode)
 
 ;; modern c++ font-lock
-(use-package modern-cpp-font-lock :ensure t)
+(use-package modern-cpp-font-lock
+  :ensure t)
 
 ;; google-c-style
-(use-package google-c-style :ensure t
+(use-package google-c-style
+  :ensure t
   :commands (google-set-c-style google-make-newline-indent)
   :init
   (add-hook 'c-mode-common-hook 'google-set-c-style)
   (add-hook 'c-mode-common-hook 'google-make-newline-indent))
 
 ;; clang-format
-(use-package clang-format :ensure t
+(use-package clang-format
+  :ensure t
   :bind (:map c-mode-base-map
               ("C-c C-f" . clang-format-buffer))
   :init
@@ -28,7 +31,8 @@
   (add-hook 'before-save-hook 'bk:clang-format-before-save))
 
 ;; cmake-font-lock
-(use-package cmake-font-lock :ensure t
+(use-package cmake-font-lock
+  :ensure t
   :commands (cmake-font-lock-activate)
   :init
   (defun bk:company-cmake-hook()
@@ -48,7 +52,6 @@
 
 ;; rtags
 (use-package rtags
-  :load-path (bk:rtags-lisp-directory)
   :commands (rtags-enable-standard-keybindings)
   :init
   (setq

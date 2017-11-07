@@ -9,6 +9,11 @@
 
 ;;; Code:
 
+(defconst bk:temp-directory
+  (concat user-emacs-directory
+          (convert-standard-filename "temp/"))
+  "Directory for temporary files.")
+
 (when window-system
   (menu-bar-mode   -1)
   (tool-bar-mode   -1)

@@ -18,6 +18,8 @@
   :ensure t
   :bind ("M-i" . company-complete)
   :init
+  (add-hook 'after-init-hook 'global-company-mode)
+  :config
   (setq company-backends
         '(company-nxml
           company-capf
@@ -29,23 +31,24 @@
           emacs-lisp-mode
           cmake-mode
           c-mode
-          c++-mode))
-  (add-hook 'after-init-hook 'global-company-mode))
+          c++-mode
+          python-mode)))
 
 ;; fly-check
 (use-package flycheck
   :ensure t
   :commands (global-flycheck-mode)
   :init
+  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :config
   (setq flycheck-global-modes
         '(emacs-lisp-mode
           python-mode
           c-mode
-          c++-mode))
+          c++-mode
+          python-mode))
   (setq flycheck-check-syntax-automatically
         '(mode-enabled save))
-  (add-hook 'after-init-hook #'global-flycheck-mode)
-  :config
   (setq-default flycheck-disabled-checkers
                 '(c/c++-clang
                   c/c++-gcc
@@ -62,7 +65,9 @@
 (use-package magit
   :ensure t
   :bind (("C-c s" . magit-status))
-  :init (setq vc-handled-backends nil)
+  :init
+  (setq vc-handled-backends            nil
+        magit-completing-read-function 'ivy-completing-read)
   :config
   (set-face-attribute 'magit-diff-file-heading nil
                       :inverse-video t
