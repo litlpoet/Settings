@@ -37,7 +37,7 @@
   :init
   (defun bk:company-cmake-hook()
     ;; put company-cmake to the beginning of company-backends
-    (set (make-local-variable 'company-idle-delay) 0.1)
+    (set (make-local-variable 'company-idle-delay) nil)
     ;; Also, dabbrev in comments and strings is nice.
     (set (make-local-variable 'company-dabbrev-code-everywhere) t)
     ;; remove a bunch of backends that interfere in cmake mode.
@@ -61,9 +61,6 @@
    rtags-use-filename-completion             nil
    rtags-display-result-backend              'ivy)
   (rtags-enable-standard-keybindings c-mode-base-map)
-  ;; (use-package rtags-helm
-  ;;   :init
-  ;;   (setq rtags-use-helm t))
   (use-package company-rtags
     :defer t
     :if (not bk:use-irony)
@@ -92,10 +89,10 @@
   :commands (irony-mode irony-completion-at-point-async)
   :init
   (defun bk:irony-mode-hook()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async)
+    (define-key irony-mode-map
+      [remap completion-at-point] 'counsel-irony)
+    (define-key irony-mode-map
+      [remap complete-symbol] 'counsel-irony)
     (irony-cdb-autosetup-compile-options))
   (add-hook 'irony-mode-hook 'bk:irony-mode-hook)
   (add-hook 'c++-mode-hook 'irony-mode)

@@ -15,12 +15,10 @@
             '(lambda()
                (ivy-mode 1)))
   :config
-  (use-package swiper
-    :ensure t
-    :bind ("C-s" . swiper))
   (use-package counsel
     :ensure t
-    :bind (("M-x"     . counsel-M-x)
+    :bind (("C-s"     . counsel-grep-or-swiper)
+           ("M-x"     . counsel-M-x)
            ("C-x C-f" . counsel-find-file)
            ("C-c g"   . counsel-git)
            ("C-c j"   . counsel-git-grep)
