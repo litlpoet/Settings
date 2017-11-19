@@ -49,6 +49,7 @@
   :defer t
   :init
   (load-theme 'base16-default-dark t)
+  :config
   (set-face-background 'fringe          nil)
   (set-face-background 'vertical-border nil)
   (set-face-foreground 'vertical-border (face-background 'modeline-inactive)))
@@ -64,6 +65,7 @@
 (use-package init-essentials-common   :load-path "elisp-bk/")
 (use-package init-essentials-navi     :load-path "elisp-bk/")
 (use-package init-essentials-proj     :load-path "elisp-bk/")
+(use-package init-essentials-org      :load-path "elisp-bk/")
 (use-package init-essentials-prog     :load-path "elisp-bk/")
 (use-package init-essentials-prog-cpp :load-path "elisp-bk/")
 (use-package init-essentials-prog-py  :load-path "elisp-bk/")

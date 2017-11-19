@@ -103,7 +103,8 @@
   (setq writeroom-width                100
         writeroom-maximize-window      nil
         writeroom-extra-line-spacing   5
-        writeroom-bottom-divider-width 0))
+        writeroom-bottom-divider-width 0
+        writeroom-mode-line            t))
 
 (provide 'init-essentials-prog)
 ;;; init-essentials-prog ends here
