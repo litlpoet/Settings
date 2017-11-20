@@ -60,6 +60,16 @@
                       :foreground "gold"
                       :background nil))
 
+;; (edit) undo-tree
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :commands (global-undo-tree-mode)
+  :bind (("C-/" . undo)
+         ("C-?" . undo-tree-redo))
+  :init
+  (add-hook 'after-init-hook '(lambda() (global-undo-tree-mode 1))))
+
 ;; (viz) volatile-highlights
 (use-package volatile-highlights
   :ensure t
@@ -96,12 +106,14 @@
 ;; (start) dash-board
 (use-package dashboard
   :ensure t
+  :commands (dashboard-setup-startup-hook)
+  :init
+  (add-hook 'after-init-hook 'dashboard-setup-startup-hook)
   :config
   (setq dashboard-startup-banner 'logo
-        dashboard-items          '((bookmarks . 7)
-                                   (projects  . 7)
-                                   (recents   . 7)))
-  (dashboard-setup-startup-hook))
+        dashboard-items          '((bookmarks . 10)
+                                   (projects  . 10)
+                                   (recents   . 10))))
 
 (provide 'init-essentials-common)
 ;;; init-essentials-common.el ends here

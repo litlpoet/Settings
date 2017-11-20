@@ -1,9 +1,9 @@
-;;; init-essentials-org.el --- org mode configurations  -*- lexical-binding: t; -*-
+;;; init-defaults-dired.el --- dired extensions      -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017  Byungkuk Choi
 
 ;; Author: Byungkuk Choi <bk@i7-G6>
-;; Keywords: lisp
+;; Keywords: lisp, abbrev
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -20,20 +20,23 @@
 
 ;;; Commentary:
 
-;; org mode configurations
+;; dired extensions
 
 ;;; Code:
 
-(use-package org
-  :ensure t
+;; dired
+(use-package dired
   :defer t
-  :init
-  (use-package org-bullets
-    :ensure t
-    :commands (org-bullets-mode)
-    :init
-    (add-hook 'org-mode-hook
-              (lambda () (org-bullets-mode 1)))))
+  :config
+  (if (eq system-type 'windows-nt)
+      (setq dired-listing-switches "-lha")
+    (setq dired-listing-switches
+          "-lha --group-directories-first"))
+  (setq dired-dwim-target       t
+        dired-recursive-copies  'always
+        dired-recursive-deletes 'always)
+  (use-package dired-hacks-utils
+    :ensure t))
 
-(provide 'init-essentials-org)
-;;; init-essentials-org.el ends here
+(provide 'init-defaults-dired)
+;;; init-defaults-dired.el ends here

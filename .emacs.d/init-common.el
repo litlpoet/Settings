@@ -60,12 +60,18 @@
   :ensure t
   :bind ("C-c e m" . macrostep-expand))
 
-(use-package init-defaults            :load-path "elisp-bk/")
+;; personal implementations
 (use-package impl-autoinsert          :load-path "elisp-bk/")
+
+;; default packages and their extensions
+(use-package init-defaults            :load-path "elisp-bk/")
+(use-package init-defaults-dired      :load-path "elisp-bk/")
+(use-package init-defaults-org        :load-path "elisp-bk/")
+
+;; essential packages
 (use-package init-essentials-common   :load-path "elisp-bk/")
 (use-package init-essentials-navi     :load-path "elisp-bk/")
 (use-package init-essentials-proj     :load-path "elisp-bk/")
-(use-package init-essentials-org      :load-path "elisp-bk/")
 (use-package init-essentials-prog     :load-path "elisp-bk/")
 (use-package init-essentials-prog-cpp :load-path "elisp-bk/")
 (use-package init-essentials-prog-py  :load-path "elisp-bk/")

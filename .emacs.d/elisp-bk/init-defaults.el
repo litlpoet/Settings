@@ -96,19 +96,6 @@
         confirm-kill-emacs     'y-or-n-p)
   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
 
-;; dired
-(use-package dired
-  :defer t
-  :init
-  (if (eq system-type 'windows-nt)
-      (setq dired-listing-switches "-lha")
-    (setq dired-listing-switches
-          "-lha --group-directories-first"))
-  :config
-  (setq dired-dwim-target       t
-        dired-recursive-copies  'always
-        dired-recursive-deletes 'always))
-
 ;; menu-bar
 (use-package menu-bar
   :bind ("C-x k" . kill-this-buffer))
