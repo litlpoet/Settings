@@ -21,6 +21,20 @@
 ;; alias
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; files
+(use-package files
+  :defer t
+  :init
+  (unless (file-exists-p bk:temp-directory)
+    (make-directory bk:temp-directory t))
+  (setq backup-by-copying      t
+        kept-new-versions      5
+        kept-old-versions      3
+        delete-old-versions    t
+        backup-directory-alist `(("." . ,bk:temp-directory))
+        confirm-kill-emacs     'y-or-n-p)
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
+
 ;; start-up
 (use-package startup
   :defer t
@@ -81,35 +95,6 @@
 ;; ;;     (add-to-list 'default-frame-alist '(font . "Noto Sans Mono CJK KR-12")))
 ;; ;; (if (bk/font-exists-p "Noto Sans Mono CJK KR")
 ;; ;;     (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR")))
-
-;; files
-(use-package files
-  :defer t
-  :init
-  (unless (file-exists-p bk:temp-directory)
-    (make-directory bk:temp-directory t))
-  (setq backup-by-copying      t
-        kept-new-versions      5
-        kept-old-versions      3
-        delete-old-versions    t
-        backup-directory-alist `(("." . ,bk:temp-directory))
-        confirm-kill-emacs     'y-or-n-p)
-  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
-
-;; dired
-(use-package dired
-  :defer t
-  :init
-  (if (or (eq system-type 'darwin)
-          (eq system-type 'windows-nt))
-      (setq dired-listing-switches "-lha"
-            dired-use-ls-dired     nil)
-    (setq dired-listing-switches
-          "-lha --group-directories-first"))
-  :config
-  (setq dired-dwim-target       t
-        dired-recursive-copies  'always
-        dired-recursive-deletes 'always))
 
 ;; menu-bar
 (use-package menu-bar

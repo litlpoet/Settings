@@ -28,8 +28,10 @@
 (use-package dired
   :defer t
   :config
-  (if (eq system-type 'windows-nt)
-      (setq dired-listing-switches "-lha")
+  (if (or (eq system-type 'darwin)
+          (eq system-type 'windows-nt))
+      (setq dired-listing-switches "-lha"
+            dired-use-ls-dired     nil)
     (setq dired-listing-switches
           "-lha --group-directories-first"))
   (setq dired-dwim-target       t
