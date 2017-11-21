@@ -7,14 +7,15 @@
   :ensure t
   :commands (projectile-mode)
   :init
+  (add-hook 'after-init-hook 'projectile-mode)
+  :config
+  (setq projectile-completion-system 'ivy)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
   (setq projectile-switch-project-action
         '(lambda()
            (progn
-             (projectile-dired)
-             ;; (neotree-dir (projectile-project-root))
-             )))
+             (projectile-dired))))
   (setq projectile-known-projects-file
         (expand-file-name "projectile-bookmarks.eld" bk:temp-directory))
   (setq projectile-other-file-alist
@@ -35,12 +36,12 @@
           (nil "lock" "gpg")
           ("lock" "")
           ("gpg" "")))
-  (add-hook 'after-init-hook 'projectile-mode)
-  :config
-  (use-package helm-projectile
+  (use-package counsel-projectile
     :ensure t
-    :commands (helm-projectile-on)
-    :init (helm-projectile-on)))
+    :commands (counsel-projectile-on)
+    :init
+    (counsel-projectile-on))
+  )
 
 (provide 'init-essentials-proj)
 ;;; init-essentials-proj.el ends here

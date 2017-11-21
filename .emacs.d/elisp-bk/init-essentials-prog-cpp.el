@@ -4,15 +4,21 @@
 ;;; Code:
 (use-package cc-mode)
 
+;; modern c++ font-lock
+(use-package modern-cpp-font-lock
+  :ensure t)
+
 ;; google-c-style
-(use-package google-c-style :ensure t
+(use-package google-c-style
+  :ensure t
   :commands (google-set-c-style google-make-newline-indent)
   :init
   (add-hook 'c-mode-common-hook 'google-set-c-style)
   (add-hook 'c-mode-common-hook 'google-make-newline-indent))
 
 ;; clang-format
-(use-package clang-format :ensure t
+(use-package clang-format
+  :ensure t
   :bind (:map c-mode-base-map
               ("C-c C-f" . clang-format-buffer))
   :init
@@ -22,17 +28,16 @@
               (eq major-mode 'c++-mode)
               (eq major-mode 'glsl-mode))
       (clang-format-buffer)))
-  (add-hook 'before-save-hook 'bk:clang-format-before-save)
-  :config
-  (setq-default clang-format-style "Google"))
+  (add-hook 'before-save-hook 'bk:clang-format-before-save))
 
 ;; cmake-font-lock
-(use-package cmake-font-lock :ensure t
+(use-package cmake-font-lock
+  :ensure t
   :commands (cmake-font-lock-activate)
   :init
   (defun bk:company-cmake-hook()
     ;; put company-cmake to the beginning of company-backends
-    (set (make-local-variable 'company-idle-delay) 0.1)
+    (set (make-local-variable 'company-idle-delay) nil)
     ;; Also, dabbrev in comments and strings is nice.
     (set (make-local-variable 'company-dabbrev-code-everywhere) t)
     ;; remove a bunch of backends that interfere in cmake mode.
@@ -47,18 +52,15 @@
 
 ;; rtags
 (use-package rtags
-  :load-path (bk:rtags-lisp-directory)
   :commands (rtags-enable-standard-keybindings)
   :init
   (setq
    rtags-autostart-diagnostics               t
    rtags-other-window-window-size-percentage 50
    rtags-jump-to-first-match                 nil
-   rtags-use-filename-completion             nil)
+   rtags-use-filename-completion             nil
+   rtags-display-result-backend              'ivy)
   (rtags-enable-standard-keybindings c-mode-base-map)
-  (use-package rtags-helm
-    :init
-    (setq rtags-use-helm t))
   (use-package company-rtags
     :defer t
     :if (not bk:use-irony)
@@ -87,10 +89,10 @@
   :commands (irony-mode irony-completion-at-point-async)
   :init
   (defun bk:irony-mode-hook()
-    (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-    (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async)
+    (define-key irony-mode-map
+      [remap completion-at-point] 'counsel-irony)
+    (define-key irony-mode-map
+      [remap complete-symbol] 'counsel-irony)
     (irony-cdb-autosetup-compile-options))
   (add-hook 'irony-mode-hook 'bk:irony-mode-hook)
   (add-hook 'c++-mode-hook 'irony-mode)

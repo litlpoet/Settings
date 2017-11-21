@@ -4,63 +4,50 @@
 
 ;;; Code:
 ;; change default appearance as soon as possible
-(when window-system
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
 
 ;; invoke packages
+(defconst bk:emacs-start-time (current-time)
+  "Emacs start time.")
+
 (require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.org/packages/")
-	     t)  ;; last 't' puts 'melpa' at the end of the list
+(add-to-list
+ 'package-archives
+ '("melpa" . "http://melpa.org/packages/")
+ t)  ;; last 't' puts 'melpa' at the end of the list
 (package-initialize)
 
-;; use package setup
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package)
-  (setq use-package-verbose t))
-(require 'diminish)
-(require 'bind-key)
+(defconst bk:is-online t
+  "If Emacs have access on internet, set nil if not.")
 
-;; custom
-(use-package custom
-  :defer t
-  :init
-  (setq custom-safe-themes t)
-  (setq custom-file
-        (expand-file-name "custom.el" user-emacs-directory))
-  (load custom-file))
+(defconst bk:use-irony t
+  "Use irony for code linting and completion, if nil use r-tags.")
 
-;; main theme
-(use-package material-theme
-  :ensure t
-  :defer t
-  :init (load-theme 'material t))
+(load
+ (expand-file-name "init-common.el" user-emacs-directory))
 
-;; (for dev) macrostep
-(use-package macrostep
-  :ensure t
-  :bind ("C-c e m" . macrostep-expand))
-
-(use-package init-constants           :load-path "elisp-bk/")
-(use-package init-defaults            :load-path "elisp-bk/")
-(use-package init-essentials-common   :load-path "elisp-bk/")
-(use-package init-essentials-navi     :load-path "elisp-bk/")
-(use-package init-essentials-proj     :load-path "elisp-bk/")
-(use-package init-essentials-prog     :load-path "elisp-bk/")
-(use-package init-essentials-prog-cpp :load-path "elisp-bk/")
-(use-package init-essentials-prog-py  :load-path "elisp-bk/")
-
-;; initialize specialized packages
+(load
+ (expand-file-name "init-malinka-proj.el" user-emacs-directory))
 
 ;; report load time
-(bk:report-emacs-boot-time)
+(let ((elapsed (float-time
+                (time-subtract
+                 (current-time)
+                 bk:emacs-start-time))))
+  (message
+   "Loading %s...done (%.3fs) [init.el]"
+   load-file-name elapsed))
+(add-hook
+ 'after-init-hook
+ `(lambda ()
+    (let ((elapsed (float-time
+                    (time-subtract
+                     (current-time)
+                     bk:emacs-start-time))))
+      (message
+       "Loading %s...done (%.3fs) [after-init]"
+       ,load-file-name elapsed)))
+ t)
 
-;;; (provide 'init)
+;;; (provide 'init-online)
 ;;; init-online.el ends here
 

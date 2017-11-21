@@ -5,15 +5,14 @@
 ;; (file) recentf-ext
 (use-package recentf-ext
   :ensure t
-  :init
-  (setq recentf-max-saved-items 10
-        recentf-save-file
-        (expand-file-name "recentf" bk:temp-directory)))
+  :config
+  (setq recentf-max-saved-items 10))
 
 ;; (edit) iedit
 (use-package iedit
   :ensure t
-  :bind ("C-;" . iedit-mode)
+  :bind (("C-;" . iedit-mode)
+         ("C-:" . iedit-mode-toggle-on-function))
   :config (set-face-inverse-video 'iedit-occurrence t))
 
 ;; (edit) expand-region
@@ -61,6 +60,16 @@
                       :foreground "gold"
                       :background nil))
 
+;; (edit) undo-tree
+(use-package undo-tree
+  :ensure t
+  :diminish undo-tree-mode
+  :commands (global-undo-tree-mode)
+  :bind (("C-/" . undo)
+         ("C-?" . undo-tree-redo))
+  :init
+  (add-hook 'after-init-hook '(lambda() (global-undo-tree-mode 1))))
+
 ;; (viz) volatile-highlights
 (use-package volatile-highlights
   :ensure t
@@ -70,31 +79,41 @@
                       :underline "light slate gray")
   (volatile-highlights-mode t))
 
-;; (vis) anzu
+;; (viz) anzu
 (use-package anzu
   :ensure t
-  :defer t
+  :commands (global-anzu-mode)
   :diminish anzu-mode
   :init
   (global-anzu-mode +1))
 
-;; (vis) rainbow-delimiters
+;; (viz) rainbow-delimiters
 (use-package rainbow-delimiters
   :ensure t
   :commands (rainbow-delimiters-mode)
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
+;; (viz) highlight-indent-guides
+;; (use-package highlight-indent-guides
+;;   :ensure t
+;;   :commands (highlight-indent-guides-mode)
+;;   :init
+;;   (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
+;;   :config
+;;   (setq highlight-indent-guides-method 'column))
+
 ;; (start) dash-board
 (use-package dashboard
   :ensure t
+  :commands (dashboard-setup-startup-hook)
   :init
-  (setq dashboard-startup-banner 'logo
-        dashboard-items          '((projects  . 5)
-                                   (recents   . 5)
-                                   (bookmarks . 5)))
+  (add-hook 'after-init-hook 'dashboard-setup-startup-hook)
   :config
-  (dashboard-setup-startup-hook))
+  (setq dashboard-startup-banner 'logo
+        dashboard-items          '((bookmarks . 10)
+                                   (projects  . 10)
+                                   (recents   . 10))))
 
 (provide 'init-essentials-common)
 ;;; init-essentials-common.el ends here

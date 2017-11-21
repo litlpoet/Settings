@@ -1,5 +1,6 @@
 ;; elpy
-(use-package elpy :ensure t
+(use-package elpy
+  :ensure t
   :commands (elpy-enable)
   :init
   (elpy-enable)
