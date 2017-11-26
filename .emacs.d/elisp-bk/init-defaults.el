@@ -69,7 +69,9 @@
 (use-package simple
   :commands (column-number-mode)
   :init
-  (column-number-mode t)
+  (add-hook 'after-init-hook
+            '(lambda()
+               (column-number-mode t)))
   :config
   (setq global-mark-ring-max 1000
         mark-ring-max        1000

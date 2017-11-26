@@ -61,7 +61,7 @@
   :bind ("C-c e m" . macrostep-expand))
 
 ;; personal implementations
-(use-package impl-autoinsert          :load-path "elisp-bk/")
+;; (use-package impl-autoinsert          :load-path "elisp-bk/")
 
 ;; default packages and their extensions
 (use-package init-defaults            :load-path "elisp-bk/")
@@ -77,6 +77,18 @@
 (use-package init-essentials-prog-py  :load-path "elisp-bk/")
 
 ;; initialize specialized packages
+
+;; (start) dash-board
+(use-package dashboard
+  :ensure t
+  :commands (dashboard-setup-startup-hook)
+  :init
+  (add-hook 'after-init-hook 'dashboard-setup-startup-hook)
+  :config
+  (setq dashboard-startup-banner 'logo
+        dashboard-items          '((bookmarks . 10)
+                                   (projects  . 10)
+                                   (recents   . 10))))
 
 (provide 'init-common)
 ;;; init-common.el ends here

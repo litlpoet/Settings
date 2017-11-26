@@ -5,8 +5,11 @@
 ;; (file) recentf-ext
 (use-package recentf-ext
   :ensure t
-  :config
-  (setq recentf-max-saved-items 10))
+  :init
+  (setq recentf-save-file (expand-file-name "recentf" bk:temp-directory)
+        recentf-max-saved-items 100
+        recentf-max-menu-items  10
+        recentf-auto-cleanup    'never))
 
 ;; (edit) iedit
 (use-package iedit
@@ -38,16 +41,17 @@
   :ensure t
   :diminish smartparens-mode
   :bind (:map smartparens-mode-map
-              ("C-M-w" . sp-copy-sexp)
-              ("M-<delete>" . sp-unwrap-sexp)
+              ("C-M-w"         . sp-copy-sexp)
+              ("M-<delete>"    . sp-unwrap-sexp)
               ("M-<backspace>" . sp-backward-unwrap-sexp)
-              ("M-D" . sp-splice-sexp )
-              ("M-F" . sp-forward-symbol )
-              ("M-B" . sp-backward-symbol))
+              ("M-D"           . sp-splice-sexp)
+              ("M-F"           . sp-forward-symbol)
+              ("M-B"           . sp-backward-symbol))
   :init
   (require 'smartparens-config)
   (sp-with-modes '(c-mode c++-mode)
-                 (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+    (sp-local-pair "{" nil
+                   :post-handlers '(("||\n[i]" "RET"))))
   (sp-local-pair 'c++-mode "/*" "*/"
                  :post-handlers '((" | " "SPC")
                                   ("* ||\n[i]" "RET")))
@@ -74,10 +78,12 @@
 (use-package volatile-highlights
   :ensure t
   :diminish volatile-highlights-mode
+  :commands (volatile-highlights-mode)
+  :init
+  (add-hook 'after-init-hook '(lambda() (volatile-highlights-mode t)))
   :config
   (set-face-attribute 'vhl/default-face nil
-                      :underline "light slate gray")
-  (volatile-highlights-mode t))
+                      :underline "light slate gray"))
 
 ;; (viz) anzu
 (use-package anzu
@@ -85,7 +91,7 @@
   :commands (global-anzu-mode)
   :diminish anzu-mode
   :init
-  (global-anzu-mode +1))
+  (add-hook 'after-init-hook '(lambda() (global-anzu-mode +1))))
 
 ;; (viz) rainbow-delimiters
 (use-package rainbow-delimiters
@@ -102,18 +108,6 @@
 ;;   (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
 ;;   :config
 ;;   (setq highlight-indent-guides-method 'column))
-
-;; (start) dash-board
-(use-package dashboard
-  :ensure t
-  :commands (dashboard-setup-startup-hook)
-  :init
-  (add-hook 'after-init-hook 'dashboard-setup-startup-hook)
-  :config
-  (setq dashboard-startup-banner 'logo
-        dashboard-items          '((bookmarks . 10)
-                                   (projects  . 10)
-                                   (recents   . 10))))
 
 (provide 'init-essentials-common)
 ;;; init-essentials-common.el ends here
