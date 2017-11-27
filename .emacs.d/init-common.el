@@ -81,10 +81,8 @@
 ;; (start) dash-board
 (use-package dashboard
   :ensure t
-  :commands (dashboard-setup-startup-hook)
-  :init
-  (add-hook 'after-init-hook 'dashboard-setup-startup-hook)
   :config
+  (dashboard-setup-startup-hook)
   (setq dashboard-startup-banner 'logo
         dashboard-items          '((bookmarks . 10)
                                    (projects  . 10)

@@ -32,8 +32,17 @@
         kept-old-versions      3
         delete-old-versions    t
         backup-directory-alist `(("." . ,bk:temp-directory))
-        confirm-kill-emacs     'y-or-n-p)
-  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
+        confirm-kill-emacs     'y-or-n-p))
+
+;; files recentf
+(use-package recentf
+  :commands (recentf-mode)
+  :init
+  ;; following two lines must be set prior to execute recentf-mode
+  (setq-default recentf-save-file
+                (expand-file-name "recentf" bk:temp-directory))
+  (setq-default recentf-auto-cleanup 'never)
+  (recentf-mode 1))
 
 ;; start-up
 (use-package startup
@@ -60,8 +69,7 @@
   :commands (global-hl-line-mode)
   :init
   (add-hook 'after-init-hook
-            '(lambda()
-               (global-hl-line-mode t)))
+            '(lambda() (global-hl-line-mode t)))
   :config
   (setq global-hl-line-sticky-frag nil))
 

@@ -2,7 +2,9 @@
 ;;; Commentary:
 
 ;;; Code:
-(use-package cc-mode)
+(use-package cc-mode
+  :init
+  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
 
 ;; modern c++ font-lock
 (use-package modern-cpp-font-lock
@@ -37,16 +39,13 @@
   :init
   (defun bk:company-cmake-hook()
     ;; put company-cmake to the beginning of company-backends
-    (set (make-local-variable 'company-idle-delay) nil)
+    (setq-local company-idle-delay nil)
     ;; Also, dabbrev in comments and strings is nice.
-    (set (make-local-variable 'company-dabbrev-code-everywhere) t)
+    (setq-local company-dabbrev-code-everywhere t)
     ;; remove a bunch of backends that interfere in cmake mode.
-    (set
-     (make-local-variable 'company-backends)
-     (cons 'company-cmake
-           (delq 'company-nxml
-                 (mapcar #'identity company-backends))))
-    )
+    (setq-local company-backends '(company-cmake
+                                   company-capf
+                                   company-files)))
   (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
   (add-hook 'cmake-mode-hook 'bk:company-cmake-hook))
 
@@ -62,6 +61,7 @@
    rtags-display-result-backend              'ivy)
   (rtags-enable-standard-keybindings c-mode-base-map)
   (use-package company-rtags
+    :ensure t
     :defer t
     :if (not bk:use-irony)
     :init
@@ -69,24 +69,20 @@
           company-rtags-begin-after-member-access nil)
     (defun bk:company-rtags-hook()
       ;; put company-rtags to the beginning of company-backends
-      (set (make-local-variable 'company-idle-delay) nil)
+      (setq-local company-idle-delay nil)
       ;; dabbrev in comments and strings
-      (set (make-local-variable 'company-dabbrev-code-everywhere) t)
+      (setq-local company-dabbrev-code-everywhere t)
       ;; remove a bunch of backends that interfere in C/C++ mode.
-      (set (make-local-variable 'company-backends) '(company-rtags))
-      ;; (set
-      ;;  (make-local-variable 'company-backends)
-      ;;  (cons 'company-rtags
-      ;;        (delq 'company-nxml
-      ;;              (mapcar #'identity company-backends))))
-      )
+      (setq-local company-backends '(company-rtags)))
     (add-hook 'c-mode-common-hook 'bk:company-rtags-hook)))
 
 ;; irony-mode
 (use-package irony
   :ensure t
   :if bk:use-irony
-  :commands (irony-mode irony-completion-at-point-async)
+  :commands (irony-mode
+             irony-completion-at-point-async
+             irony-install-server)
   :init
   (defun bk:irony-mode-hook()
     (define-key irony-mode-map
@@ -105,24 +101,21 @@
     :commands (company-irony)
     :init
     (defun bk:company-irony-hook()
-      (set (make-local-variable 'company-idle-delay) 0.3)
-      (set (make-local-variable 'company-dabbrev-code-everywhere) t)
-      ;; remove a bunch of backends that interfere in C/C++ mode.
-      (set
-       (make-local-variable 'company-backends)
-       '((company-irony company-yasnippet)
-         company-capf company-files
-         (company-dabbrev-code company-keywords)
-          company-dabbrev)))
+      (setq-local company-idle-delay              0.3)
+      (setq-local company-dabbrev-code-everywhere t)
+      (setq-local company-backends
+                  '((company-irony company-yasnippet)
+                    company-capf company-files
+                    (company-dabbrev-code company-keywords)
+                    company-dabbrev)))
     (add-hook 'irony-mode-hook 'bk:company-irony-hook))
   (use-package flycheck-irony
     :ensure t
     :commands (flycheck-irony-setup)
     :init
     (flycheck-irony-setup)
-    (defun bk:flycheck-irony-hook()
-      (flycheck-select-checker 'irony))
-    (add-hook 'irony-mode-hook 'bk:flycheck-irony-hook)
+    (add-hook 'irony-mode-hook
+              '(lambda() (flycheck-select-checker 'irony)))
     ;; :config
     ;; (use-package flycheck-google-cpplint
     ;;   :ensure t

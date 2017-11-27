@@ -37,8 +37,7 @@
   (setq dired-dwim-target       t
         dired-recursive-copies  'always
         dired-recursive-deletes 'always)
-  (use-package dired-hacks-utils
-    :ensure t))
+  (use-package dired-x))
 
 (provide 'init-defaults-dired)
 ;;; init-defaults-dired.el ends here

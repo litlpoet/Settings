@@ -2,15 +2,6 @@
 ;;; Commentary:
 
 ;;; Code:
-;; (file) recentf-ext
-(use-package recentf-ext
-  :ensure t
-  :init
-  (setq recentf-save-file (expand-file-name "recentf" bk:temp-directory)
-        recentf-max-saved-items 100
-        recentf-max-menu-items  10
-        recentf-auto-cleanup    'never))
-
 ;; (edit) iedit
 (use-package iedit
   :ensure t

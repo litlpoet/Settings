@@ -10,11 +10,9 @@
   :bind ("C-c C-r" . ivy-resume)
   :init
   (setq ivy-use-virtual-buffers t
-        ivy-count-format "(%d/%d) ")
+        ivy-count-format        "(%d/%d) ")
   (add-hook 'after-init-hook
-            '(lambda()
-               (ivy-mode 1)))
-  :config
+            '(lambda() (ivy-mode 1)))
   (use-package counsel
     :ensure t
     :bind (("C-s"     . counsel-grep-or-swiper)
@@ -23,17 +21,19 @@
            ("C-c g"   . counsel-git)
            ("C-c j"   . counsel-git-grep)
            ("C-c k"   . counsel-ag)
-           ("C-x l"   . counsel-locate))))
+           ("C-x l"   . counsel-locate)
+           ("M-y"     . counsel-yank-pop))))
 
 ;; (navi) ace-window
 (use-package ace-window
   :ensure t
-  :bind ("C-x o" . ace-window))
+  :bind (("C-x o" . ace-window)
+         ("C-x 1" . ace-delete-window)))
 
 ;; (navi) avy
-(use-package avy
-  :ensure t
-  :bind ("C-c j" . avy-goto-word-or-subword-1))
+;; (use-package avy
+;;   :ensure t
+;;   :bind ("C-c j" . avy-goto-word-or-subword-1))
 
 ;; (navi) which-key
 (use-package which-key
@@ -42,8 +42,7 @@
   :commands (which-key-mode)
   :init
   (add-hook 'after-init-hook
-            '(lambda()
-               (which-key-mode))))
+            '(lambda() (which-key-mode))))
 
 ;; (navi) sublimity
 ;; (use-package sublimity

@@ -59,7 +59,7 @@
     (with-eval-after-load 'flycheck
       (flycheck-pos-tip-mode))
     :config
-    (setq flycheck-pos-tip-timeout 20)))
+    (setq flycheck-pos-tip-timeout 30)))
 
 ;; magit
 (use-package magit
