@@ -26,7 +26,10 @@
 
 (use-package org
   :ensure t
-  :defer t
+  :bind (("C-c l" . org-store-link)
+         ("C-c a" . org-agenda)
+         ("C-c c" . org-capture)
+         ("C-c b" . org-iswitchb))
   :init
   (use-package org-bullets
     :ensure t
