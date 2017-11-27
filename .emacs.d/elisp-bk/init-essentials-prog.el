@@ -99,7 +99,7 @@
   (add-hook 'after-init-hook #'global-writeroom-mode)
   :config
   (setq writeroom-major-modes
-        '(text-mode prog-mode cmake-mode dashboard-mode))
+        '(text-mode prog-mode cmake-mode dashboard-mode Man-mode))
   (setq writeroom-width                100
         writeroom-maximize-window      nil
         writeroom-extra-line-spacing   5
