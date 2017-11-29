@@ -60,9 +60,13 @@
    rtags-use-filename-completion             nil
    rtags-display-result-backend              'ivy)
   (rtags-enable-standard-keybindings c-mode-base-map)
+  :config
+  (use-package ivy-rtags
+    :ensure t
+    :defer  t)
   (use-package company-rtags
     :ensure t
-    :defer t
+    :defer  t
     :if (not bk:use-irony)
     :init
     (setq rtags-completions-enabled               t
