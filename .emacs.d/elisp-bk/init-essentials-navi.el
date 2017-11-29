@@ -12,17 +12,22 @@
   (setq ivy-use-virtual-buffers t
         ivy-count-format        "(%d/%d) ")
   (add-hook 'after-init-hook
-            '(lambda() (ivy-mode 1)))
-  (use-package counsel
-    :ensure t
-    :bind (("C-s"     . counsel-grep-or-swiper)
-           ("M-x"     . counsel-M-x)
-           ("C-x C-f" . counsel-find-file)
-           ("C-c g"   . counsel-git)
-           ("C-c j"   . counsel-git-grep)
-           ("C-c k"   . counsel-ag)
-           ("C-x l"   . counsel-locate)
-           ("M-y"     . counsel-yank-pop))))
+            '(lambda() (ivy-mode 1))))
+
+;; (navi) ivy / swiper / counsel
+(use-package counsel
+  :ensure t
+  :bind (("C-r"     . counsel-grep-or-swiper)
+         ("C-s"     . counsel-grep-or-swiper)
+         ("M-x"     . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("C-c g"   . counsel-git)
+         ("C-c j"   . counsel-git-grep)
+         ("C-c k"   . counsel-ag)
+         ("C-x l"   . counsel-locate)
+         ("M-y"     . counsel-yank-pop)
+         ("C-h v"   . counsel-describe-variable)
+         ("C-h f"   . counsel-describe-function)))
 
 ;; (navi) ace-window
 (use-package ace-window

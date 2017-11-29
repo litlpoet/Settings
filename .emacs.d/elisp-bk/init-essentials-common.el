@@ -27,6 +27,16 @@
          ("M-$" . mc/skip-to-next-like-this)
          ("M-#" . mc/skip-to-previous-like-this)))
 
+;; (edit) smart-hungry-delete
+(use-package smart-hungry-delete
+  :ensure t
+  :commands (smart-hungry-delete-add-default-hooks)
+  :bind (("<backspace>" . smart-hungry-delete-backward-char)
+         ("C-d"         . smart-hungry-delete-forward-char))
+  ;; :defer nil ;; dont defer so we can add our functions to hooks
+  :init
+  (smart-hungry-delete-add-default-hooks))
+
 ;; (edit) smartparens
 (use-package smartparens
   :ensure t
@@ -50,8 +60,8 @@
   (show-smartparens-global-mode t)
   :config
   (set-face-attribute 'show-paren-match nil
-                      :weight 'extra-bold
-                      :underline "yellow"
+                      :weight     'extra-bold
+                      :underline  "yellow"
                       :foreground "gold"
                       :background nil))
 
