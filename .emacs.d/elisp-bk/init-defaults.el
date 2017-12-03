@@ -59,10 +59,10 @@
   (blink-cursor-mode 0))
 
 ;; fringe
-;; (use-package fringe
-;;   :commands (set-fringe-mode)
-;;   :init
-;;   (set-fringe-mode '(nil . 0)))
+(use-package fringe
+  :commands (set-fringe-mode)
+  :init
+  (set-fringe-mode '(12 . 8)))
 
 ;; hilight line
 (use-package hl-line

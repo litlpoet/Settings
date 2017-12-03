@@ -40,8 +40,7 @@
    :root-directory  "/home/bk/vc/tutorials/test_ceres"
    :build-directory "/home/bk/vc/tutorials/test_ceres/build"
    :configure-cmd   "cmake ../src/"
-   :compile-cmd     "make -j8")
-  )
+   :compile-cmd     "make -j8"))
 
 (provide 'init-malinka-proj)
 ;;; init-malinka-proj.el ends here

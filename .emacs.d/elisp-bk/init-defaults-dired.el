@@ -37,7 +37,10 @@
   (setq dired-dwim-target       t
         dired-recursive-copies  'always
         dired-recursive-deletes 'always)
-  (use-package dired-x))
+  (use-package dired-x
+    :config
+    (setq dired-hide-details-hide-symlink-targets nil
+          dired-hide-details-hide-information-lines nil)))
 
 (provide 'init-defaults-dired)
 ;;; init-defaults-dired.el ends here

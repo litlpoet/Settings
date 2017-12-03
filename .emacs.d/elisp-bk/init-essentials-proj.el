@@ -39,9 +39,11 @@
   (use-package counsel-projectile
     :ensure t
     :commands (counsel-projectile-on)
+    :bind (:map
+           projectile-mode-map
+           ("C-c p s r" . counsel-projectile-rg))
     :init
-    (counsel-projectile-on))
-  )
+    (counsel-projectile-on)))
 
 (provide 'init-essentials-proj)
 ;;; init-essentials-proj.el ends here

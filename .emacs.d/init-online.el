@@ -22,6 +22,9 @@
 (defconst bk:use-irony t
   "Use irony for code linting and completion, if nil use r-tags.")
 
+(defconst bk:use-rg (if (executable-find "rg") t nil)
+  "If ripgrep is in the system, preper to use it rather than grep or ag.")
+
 (load
  (expand-file-name "init-common.el" user-emacs-directory))
 

@@ -27,8 +27,8 @@
 (eval-when-compile
   (require 'use-package)
   (setq use-package-verbose t))
-(require 'diminish)
-(require 'bind-key)
+(use-package diminish :ensure t)
+(use-package bind-key :ensure t)
 
 ;; custom
 (use-package custom
@@ -39,20 +39,31 @@
         (expand-file-name "custom.el" user-emacs-directory))
   (load custom-file))
 
-;; main theme
-;; (use-package material-theme
-;;   :ensure t
-;;   :defer t
-;;   :init (load-theme 'material t))
+;; main themes
+(use-package material-theme
+  :ensure t
+  :defer  t)
+
 (use-package base16-theme
   :ensure t
-  :defer t
+  :defer  t
+  ;; :init
+  ;; (load-theme 'base16-default-dark t)
+  ;; :config
+  ;; (set-face-background 'fringe          nil)
+  ;; (set-face-background 'vertical-border nil)
+  ;; (set-face-foreground 'vertical-border (face-background 'modeline-inactive))
+  )
+
+(use-package doom-themes
+  :ensure t
+  :defer  t
   :init
-  (load-theme 'base16-default-dark t)
+  (setq doom-themes-enable-bold   t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-tomorrow-night t)
   :config
-  (set-face-background 'fringe          nil)
-  (set-face-background 'vertical-border nil)
-  (set-face-foreground 'vertical-border (face-background 'modeline-inactive)))
+  (doom-themes-org-config))
 
 
 ;; (for dev) macrostep
@@ -81,12 +92,13 @@
 ;; (start) dash-board
 (use-package dashboard
   :ensure t
-  :config
-  (dashboard-setup-startup-hook)
+  :defer  t
+  :init
   (setq dashboard-startup-banner 'logo
         dashboard-items          '((bookmarks . 10)
                                    (projects  . 10)
-                                   (recents   . 10))))
+                                   (recents   . 10)))
+  (dashboard-setup-startup-hook))
 
 (provide 'init-common)
 ;;; init-common.el ends here

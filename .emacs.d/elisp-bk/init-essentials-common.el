@@ -12,12 +12,12 @@
 ;; (edit) expand-region
 (use-package expand-region
   :ensure t
-  :bind ("M-2" . er/expand-region))
+  :bind   ("M-2" . er/expand-region))
 
 ;; (edit) duplicate-thing
 (use-package duplicate-thing
   :ensure t
-  :bind ("M-c" . duplicate-thing))
+  :bind   ("M-c" . duplicate-thing))
 
 ;; (edit) multiple-cursors
 (use-package multiple-cursors
@@ -27,27 +27,33 @@
          ("M-$" . mc/skip-to-next-like-this)
          ("M-#" . mc/skip-to-previous-like-this)))
 
-;; (edit) smart-hungry-delete
-(use-package smart-hungry-delete
-  :ensure t
-  :commands (smart-hungry-delete-add-default-hooks)
-  :bind (("<backspace>" . smart-hungry-delete-backward-char)
-         ("C-d"         . smart-hungry-delete-forward-char))
-  ;; :defer nil ;; dont defer so we can add our functions to hooks
+;; (edit) hungry-delete
+(use-package hungry-delete
+  :ensure   t
+  :diminish hungry-delete-mode
+  :commands (global-hungry-delete-mode)
+  :init     (global-hungry-delete-mode))
+
+;; (edit) aggresive-indent
+(use-package aggressive-indent
+  :ensure   t
+  :diminish aggressive-indent-mode
+  :commands (aggressive-indent-mode)
   :init
-  (smart-hungry-delete-add-default-hooks))
+  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
 
 ;; (edit) smartparens
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
-  :bind (:map smartparens-mode-map
-              ("C-M-w"         . sp-copy-sexp)
-              ("M-<delete>"    . sp-unwrap-sexp)
-              ("M-<backspace>" . sp-backward-unwrap-sexp)
-              ("M-D"           . sp-splice-sexp)
-              ("M-F"           . sp-forward-symbol)
-              ("M-B"           . sp-backward-symbol))
+  :bind (:map
+         smartparens-mode-map
+         ("C-M-w"         . sp-copy-sexp)
+         ("M-<delete>"    . sp-unwrap-sexp)
+         ("M-<backspace>" . sp-backward-unwrap-sexp)
+         ("M-D"           . sp-splice-sexp)
+         ("M-F"           . sp-forward-symbol)
+         ("M-B"           . sp-backward-symbol))
   :init
   (require 'smartparens-config)
   (sp-with-modes '(c-mode c++-mode)
@@ -70,8 +76,7 @@
   :ensure t
   :diminish undo-tree-mode
   :commands (global-undo-tree-mode)
-  :bind (("C-/" . undo)
-         ("C-?" . undo-tree-redo))
+  :bind ("C-?" . undo-tree-redo)
   :init
   (add-hook 'after-init-hook '(lambda() (global-undo-tree-mode 1))))
 
@@ -86,13 +91,13 @@
   (set-face-attribute 'vhl/default-face nil
                       :underline "light slate gray"))
 
-;; (viz) anzu
-(use-package anzu
-  :ensure t
-  :commands (global-anzu-mode)
-  :diminish anzu-mode
-  :init
-  (add-hook 'after-init-hook '(lambda() (global-anzu-mode +1))))
+;; ;; (viz) anzu
+;; (use-package anzu
+;;   :ensure t
+;;   :commands (global-anzu-mode)
+;;   :diminish anzu-mode
+;;   :init
+;;   (add-hook 'after-init-hook '(lambda() (global-anzu-mode +1))))
 
 ;; (viz) rainbow-delimiters
 (use-package rainbow-delimiters
@@ -101,7 +106,7 @@
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
-;; (viz) highlight-indent-guides
+;; ;; (viz) highlight-indent-guides
 ;; (use-package highlight-indent-guides
 ;;   :ensure t
 ;;   :commands (highlight-indent-guides-mode)

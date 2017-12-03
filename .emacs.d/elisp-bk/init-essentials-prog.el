@@ -61,29 +61,24 @@
     :config
     (setq flycheck-pos-tip-timeout 30)))
 
+;; diff-hl-mode
+(use-package diff-hl
+  :ensure t
+  :defer  t
+  :init
+  (global-diff-hl-mode))
+
 ;; magit
 (use-package magit
   :ensure t
   :bind (("C-c s" . magit-status))
   :init
-  (setq vc-handled-backends            nil
-        magit-completing-read-function 'ivy-completing-read)
+  (setq magit-completing-read-function 'ivy-completing-read)
+  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
   (set-face-attribute 'magit-diff-file-heading nil
                       :inverse-video t
                       :weight 'extra-bold))
-
-;; git-gutter
-;; (use-package git-gutter
-;;   :ensure t
-;;   :commands (global-git-gutter-mode)
-;;   :init
-;;   (add-hook 'after-init-hook
-;;             '(lambda()
-;;                (global-git-gutter-mode t)))
-;;   :config
-;;   (setq-default git-gutter:lighter      nil
-;;                 git-gutter:window-width 2))
 
 ;; clean-aindent-mode
 (use-package clean-aindent-mode
