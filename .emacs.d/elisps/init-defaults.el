@@ -5,18 +5,28 @@
 ;; c code engine variables
 (setq visible-bell                    nil
       ring-bell-function              'ignore
-      highlight-nonselected-windows   nil
       auto-save-timeout               120
       scroll-preserve-screen-position t
       scroll-conservatively           100000
       scroll-step                     1
       scroll-margin                   5)
 
+(when (fboundp 'set-charset-priority)
+  (set-charset-priority 'unicode))
+
 (setq-default cursor-type                     'bar
               tab-width                       2
               indent-tabs-mode                nil
               fill-column                     100
-              cursor-in-non-selected-windows  nil)
+              cursor-in-non-selected-windows  nil
+              highlight-nonselected-windows   nil
+              enable-recursive-minibuffers    nil
+              max-mini-window-height          0.3
+              use-dialog-box                  nil
+              minibuffer-prompt-properties   '(read-only t point-entered
+                                                         minibuffer-avoid-prompt
+                                                         face
+                                                         minibuffer-prompt))
 
 ;; alias
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -31,8 +41,15 @@
         kept-new-versions      5
         kept-old-versions      3
         delete-old-versions    t
-        backup-directory-alist `(("." . ,bk:temp-directory))
-        confirm-kill-emacs     'y-or-n-p))
+        confirm-kill-emacs     'y-or-n-p)
+  (setq-default backup-directory-alist (list (cons "." bk:temp-directory))))
+
+;; tramp
+(use-package tramp
+  :defer t
+  :init
+  (setq tramp-backup-directory-alist backup-directory-alist))
+
 
 ;; files recentf
 (use-package recentf
@@ -92,12 +109,17 @@
   :init (delete-selection-mode t))
 
 ;; mule-cmds
-(use-package  mule-cmds
+(use-package mule-cmds
   :defer t
   :init
-  (set-language-environment "Korean")
-  (prefer-coding-system     'utf-8))
-;; (set-selection-coding-system 'utf-8)
+  (prefer-coding-system        'utf-8)
+  (set-terminal-coding-system  'utf-8)
+  (set-keyboard-coding-system  'utf-8)
+  (set-selection-coding-system 'utf-8)
+  (setq locale-coding-system   'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8)
+  ;; (set-language-environment "Korean")
+  )
 
 ;; fonts
 (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR"))
@@ -120,9 +142,12 @@
    '(lambda()
       (setq-local
        whitespace-style
-       '(face tabs tab-mark trailing spaces
-              space-mark newline newline-mark
-              indentation::space indentation::tab))
+       '(face
+         tabs tab-mark
+         trailing
+         spaces space-mark
+         newline newline-mark
+         indentation))
       (whitespace-mode 1)))
   (add-hook
    'prog-mode-hook
@@ -170,6 +195,11 @@
   (dolist (elem bk:auto-insert-alist)
     (add-to-list 'auto-insert-alist elem)))
 
+;; vc-hooks
+(use-package vc-hooks
+  :defer t
+  :init
+  (setq vc-follow-symlinks t))
 
 (provide 'init-defaults)
 ;;; init-defaults.el ends here

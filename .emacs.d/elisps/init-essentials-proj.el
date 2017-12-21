@@ -16,6 +16,8 @@
         '(lambda()
            (progn
              (projectile-dired))))
+  (setq projectile-cache-file
+        (expand-file-name "projectile.cache" bk:temp-directory))
   (setq projectile-known-projects-file
         (expand-file-name "projectile-bookmarks.eld" bk:temp-directory))
   (setq projectile-other-file-alist
@@ -38,12 +40,9 @@
           ("gpg" "")))
   (use-package counsel-projectile
     :ensure t
-    :commands (counsel-projectile-on)
-    :bind (:map
-           projectile-mode-map
-           ("C-c p s r" . counsel-projectile-rg))
+    :commands (counsel-projectile-mode)
     :init
-    (counsel-projectile-on)))
+    (counsel-projectile-mode)))
 
 (provide 'init-essentials-proj)
 ;;; init-essentials-proj.el ends here

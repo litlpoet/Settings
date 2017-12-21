@@ -26,7 +26,8 @@
 
 ;; dired
 (use-package dired
-  :defer t
+  :bind (:map dired-mode-map
+              ("C-o" . dired-omit-mode))
   :config
   (if (or (eq system-type 'darwin)
           (eq system-type 'windows-nt))
@@ -37,10 +38,15 @@
   (setq dired-dwim-target       t
         dired-recursive-copies  'always
         dired-recursive-deletes 'always)
-  (use-package dired-x
-    :config
-    (setq dired-hide-details-hide-symlink-targets nil
-          dired-hide-details-hide-information-lines nil)))
+  (setq-default
+   dired-omit-mode  t
+   dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\[:alnum:\]"))
+
+;; dired-x
+(use-package dired-x                    ; must be required for a certain keymap (i.e. C-x C-j)
+  :config
+  (setq dired-hide-details-hide-symlink-targets   nil
+        dired-hide-details-hide-information-lines nil))
 
 (provide 'init-defaults-dired)
 ;;; init-defaults-dired.el ends here

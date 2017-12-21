@@ -37,7 +37,7 @@
   (setq custom-safe-themes t)
   (setq custom-file
         (expand-file-name "custom.el" user-emacs-directory))
-  (load custom-file))
+  (load custom-file t t))
 
 ;; main themes
 (use-package material-theme
@@ -65,6 +65,12 @@
   :config
   (doom-themes-org-config))
 
+;; (use-package solaire-mode
+;;   :ensure t
+;;   :commands (turn-on-solaire-mode solaire-mode solaire-mode-in-minibuffer)
+;;   :init
+;;   (add-hook 'minibuffer-setup-hook        #'solaire-mode-in-minibuffer))
+
 
 ;; (for dev) macrostep
 (use-package macrostep
@@ -72,20 +78,20 @@
   :bind ("C-c e m" . macrostep-expand))
 
 ;; personal implementations
-;; (use-package impl-autoinsert          :load-path "elisp-bk/")
+;; (use-package impl-autoinsert          :load-path "elisps/")
 
 ;; default packages and their extensions
-(use-package init-defaults            :load-path "elisp-bk/")
-(use-package init-defaults-dired      :load-path "elisp-bk/")
-(use-package init-defaults-org        :load-path "elisp-bk/")
+(use-package init-defaults            :load-path "elisps/")
+(use-package init-defaults-dired      :load-path "elisps/")
+(use-package init-defaults-org        :load-path "elisps/")
 
 ;; essential packages
-(use-package init-essentials-common   :load-path "elisp-bk/")
-(use-package init-essentials-navi     :load-path "elisp-bk/")
-(use-package init-essentials-proj     :load-path "elisp-bk/")
-(use-package init-essentials-prog     :load-path "elisp-bk/")
-(use-package init-essentials-prog-cpp :load-path "elisp-bk/")
-(use-package init-essentials-prog-py  :load-path "elisp-bk/")
+(use-package init-essentials-common   :load-path "elisps/")
+(use-package init-essentials-navi     :load-path "elisps/")
+(use-package init-essentials-proj     :load-path "elisps/")
+(use-package init-essentials-prog     :load-path "elisps/")
+(use-package init-essentials-prog-cpp :load-path "elisps/")
+(use-package init-essentials-prog-py  :load-path "elisps/")
 
 ;; initialize specialized packages
 
