@@ -12,10 +12,10 @@
   (setq projectile-completion-system 'ivy)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
-  (setq projectile-switch-project-action
-        '(lambda()
-           (progn
-             (projectile-dired))))
+  ;; (setq projectile-switch-project-action
+  ;;       '(lambda()
+  ;;          (progn
+  ;;            (projectile-dired))))
   (setq projectile-cache-file
         (expand-file-name "projectile.cache" bk:temp-directory))
   (setq projectile-known-projects-file
@@ -42,7 +42,8 @@
     :ensure t
     :commands (counsel-projectile-mode)
     :init
-    (counsel-projectile-mode)))
+    (counsel-projectile-mode)
+    ))
 
 (provide 'init-essentials-proj)
 ;;; init-essentials-proj.el ends here

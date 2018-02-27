@@ -29,18 +29,39 @@
   :init
   (add-hook 'c-mode-common-hook 'malinka-mode)
   :config
+  ;; (setq malinka-print-debug? 1)
+  (malinka-define-project
+   :name            "libmotion"
+   :root-directory  "/home/bk/dev/vc/projects/libmotion"
+   :build-directory "/home/bk/dev/vc/projects/libmotion/build"
+   :configure-cmd   "cmake .."
+   :compile-db-cmd  "conan install .. -s build_type=Release && cmake .."
+   :compile-cmd     "cmake --build . --config Release -- -j8"
+   :test-directory  "/home/bk/dev/vc/projects/libmotion/build"
+   :test-cmd        "ctest -V"
+   )
   (malinka-define-project
    :name            "libML"
-   :root-directory  "/home/bk/vc/projects/libML"
-   :build-directory "/home/bk/vc/projects/libML/build"
+   :root-directory  "/home/bk/dev/vc/projects/libML"
+   :build-directory "/home/bk/dev/vc/projects/libML/build"
    :configure-cmd   "cmake ../source/"
-   :compile-cmd     "make -j8")
+   :compile-cmd     "make -j8"
+   )
+  (malinka-define-project
+   :name            "sketchimo"
+   :root-directory  "/home/bk/dev/vc/projects/sketchimo"
+   :build-directory "/home/bk/dev/vc/projects/sketchimo/build"
+   :configure-cmd   "cmake .."
+   :compile-cmd     "make -j8"
+   :run-cmd         "./build/sketchimo"
+   )
   (malinka-define-project
    :name            "test_ceres"
-   :root-directory  "/home/bk/vc/tutorials/test_ceres"
-   :build-directory "/home/bk/vc/tutorials/test_ceres/build"
+   :root-directory  "/home/bk/dev/vc/tutorials/test_ceres"
+   :build-directory "/home/bk/dev/vc/tutorials/test_ceres/build"
    :configure-cmd   "cmake ../src/"
-   :compile-cmd     "make -j8"))
+   :compile-cmd     "make -j8"
+   ))
 
 (provide 'init-malinka-proj)
 ;;; init-malinka-proj.el ends here
