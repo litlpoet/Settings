@@ -1,6 +1,6 @@
-;;; init-defaults-org.el --- org mode configurations  -*- lexical-binding: t; -*-
+;;; init-essentials-prog-md.el --- markdown setup    -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017  Byungkuk Choi
+;; Copyright (C) 2018  Byungkuk Choi
 
 ;; Author: Byungkuk Choi <bk@i7-G6>
 ;; Keywords: lisp
@@ -19,27 +19,19 @@
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
-;; org mode configurations
+
+;; markdown setup
 
 ;;; Code:
-
-(use-package org
+(use-package markdown-mode
   :ensure t
-  :pin    org
-  :bind (("C-c l" . org-store-link)
-         ("C-c a" . org-agenda)
-         ("C-c c" . org-capture)
-         ("C-c b" . org-iswitchb)))
-
-(use-package org-bullets
-  :ensure t
-  :commands (org-bullets-mode)
+  :commands (markdown-mode gfm-mode)
+  :mode (("READMD\\.md\\'" . gfm-mode)
+         ("\\.md\\'"       . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
   :init
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode t))))
+  (setq markdown-command "multimarkdown"))
 
-(use-package ox-hugo
-  :ensure t
-  :after ox)
 
-(provide 'init-defaults-org)
-;;; init-defaults-org.el ends here
+(provide 'init-essentials-prog-md)
+;;; init-essentials-prog-md.el ends here

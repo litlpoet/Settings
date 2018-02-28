@@ -10,6 +10,7 @@
   (add-hook 'after-init-hook 'projectile-mode)
   :config
   (setq projectile-completion-system 'ivy)
+  (setq projectile-find-dir-includes-top-level t)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
   ;; (setq projectile-switch-project-action
@@ -37,13 +38,14 @@
           ("frag" "vert")
           (nil "lock" "gpg")
           ("lock" "")
-          ("gpg" "")))
-  (use-package counsel-projectile
-    :ensure t
-    :commands (counsel-projectile-mode)
-    :init
-    (counsel-projectile-mode)
-    ))
+          ("gpg" ""))))
+
+(use-package counsel-projectile
+  :ensure t
+  :after projectile
+  :commands (counsel-projectile-mode)
+  :init
+  (counsel-projectile-mode))
 
 (provide 'init-essentials-proj)
 ;;; init-essentials-proj.el ends here

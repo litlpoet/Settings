@@ -90,6 +90,7 @@
 (use-package init-essentials-navi     :load-path "elisps/")
 (use-package init-essentials-proj     :load-path "elisps/")
 (use-package init-essentials-prog     :load-path "elisps/")
+(use-package init-essentials-prog-md  :load-path "elisps/")
 (use-package init-essentials-prog-cpp :load-path "elisps/")
 (use-package init-essentials-prog-py  :load-path "elisps/")
 

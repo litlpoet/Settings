@@ -10,11 +10,17 @@
   "Emacs start time.")
 
 (require 'package)
+(package-initialize)
+(add-to-list
+ 'package-archives
+ '("org" . "http://orgmode.org/elpa/"))
 (add-to-list
  'package-archives
  '("melpa" . "http://melpa.org/packages/")
  t)  ;; last 't' puts 'melpa' at the end of the list
-(package-initialize)
+(setq package-archive-priorities '(("org"   . 3)
+                                   ("melpa" . 2)
+                                   ("gnu"   . 1)))
 
 (defconst bk:is-online t
   "If Emacs have access on internet, set nil if not.")
