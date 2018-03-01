@@ -26,8 +26,7 @@
 
 (use-package malinka
   :ensure t
-  :init
-  (add-hook 'c-mode-common-hook 'malinka-mode)
+  :hook (c-mode-common . malinka-mode)
   :config
   ;; (setq malinka-print-debug? 1)
   (malinka-define-project

@@ -2,9 +2,12 @@
 ;;; Commentary:
 
 ;;; Code:
+;; (use-package cc-mode
+;;   :init
+;;   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
+
 (use-package cc-mode
-  :init
-  (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
+  :mode ("\\.h\\'" . c++-mode))
 
 ;; modern c++ font-lock
 (use-package modern-cpp-font-lock
@@ -13,10 +16,8 @@
 ;; google-c-style
 (use-package google-c-style
   :ensure t
-  :commands (google-set-c-style google-make-newline-indent)
-  :init
-  (add-hook 'c-mode-common-hook 'google-set-c-style)
-  (add-hook 'c-mode-common-hook 'google-make-newline-indent))
+  :hook ((c-mode-common . google-set-c-style)
+         (c-mode-common . google-make-newline-indent)))
 
 ;; clang-format
 (use-package clang-format
@@ -52,6 +53,7 @@
 ;; rtags
 (use-package rtags
   :ensure t
+  :defer  t
   :init
   (setq
    rtags-autostart-diagnostics               t
@@ -60,30 +62,32 @@
    rtags-use-filename-completion             nil
    rtags-display-result-backend              'ivy)
   :config
-  (rtags-enable-standard-keybindings c-mode-base-map)
-  (use-package ivy-rtags
-    :ensure t
-    :defer  t)
-  (use-package company-rtags
-    :ensure t
-    :defer  t
-    :if (not bk:use-irony)
-    :init
-    (setq rtags-completions-enabled               t
-          company-rtags-begin-after-member-access nil)
-    (defun bk:company-rtags-hook()
-      ;; put company-rtags to the beginning of company-backends
-      (setq-local company-idle-delay nil)
-      ;; dabbrev in comments and strings
-      (setq-local company-dabbrev-code-everywhere t)
-      ;; remove a bunch of backends that interfere in C/C++ mode.
-      (setq-local company-backends '(company-rtags)))
-    (add-hook 'c-mode-common-hook 'bk:company-rtags-hook)))
+  (rtags-enable-standard-keybindings c-mode-base-map))
+
+(use-package ivy-rtags
+  :ensure t
+  :after  (rtags))
+
+(use-package company-rtags
+  :ensure t
+  :if (not bk:use-irony)
+  :after (rtags)
+  :init
+  (setq rtags-completions-enabled               t
+        company-rtags-begin-after-member-access nil)
+  (defun bk:company-rtags-hook()
+    ;; put company-rtags to the beginning of company-backends
+    (setq-local company-idle-delay nil)
+    ;; dabbrev in comments and strings
+    (setq-local company-dabbrev-code-everywhere t)
+    ;; remove a bunch of backends that interfere in C/C++ mode.
+    (setq-local company-backends '(company-rtags)))
+  (add-hook 'c-mode-common-hook #'bk:company-rtags-hook))
 
 ;; irony-mode
 (use-package irony
   :ensure t
-  :if bk:use-irony
+  :if     bk:use-irony
   :commands (irony-mode
              irony-completion-at-point-async
              irony-install-server)
@@ -98,36 +102,38 @@
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook
             '(lambda()
-               (unless (derived-mode-p 'glsl-mode) (irony-mode))))
-  :config
-  (use-package company-irony
-    :ensure t
-    :commands (company-irony)
-    :init
-    (defun bk:company-irony-hook()
-      (setq-local company-idle-delay              0.3)
-      (setq-local company-dabbrev-code-everywhere t)
-      (setq-local company-backends
-                  '((company-irony company-yasnippet)
-                    company-capf company-files
-                    (company-dabbrev-code company-keywords)
-                    company-dabbrev)))
-    (add-hook 'irony-mode-hook 'bk:company-irony-hook))
-  (use-package flycheck-irony
-    :ensure t
-    :commands (flycheck-irony-setup)
-    :init
-    (flycheck-irony-setup)
-    (add-hook 'irony-mode-hook
-              '(lambda() (flycheck-select-checker 'irony)))
-    ;; :config
-    ;; (use-package flycheck-google-cpplint
-    ;;   :ensure t
-    ;;   :config
-    ;;   (flycheck-add-next-checker
-    ;;    'irony '(warning . c/c++-googlelint)))
-    ;;   )
-    ))
+               (unless (derived-mode-p 'glsl-mode) (irony-mode)))))
+
+(use-package company-irony
+  :ensure t
+  :after (irony)
+  :commands (company-irony)
+  :init
+  (defun bk:company-irony-hook()
+    (setq-local company-idle-delay              0.3)
+    (setq-local company-dabbrev-code-everywhere t)
+    (setq-local company-backends
+                '((company-irony company-yasnippet)
+                  company-capf company-files
+                  (company-dabbrev-code company-keywords)
+                  company-dabbrev)))
+  (add-hook 'irony-mode-hook #'bk:company-irony-hook))
+
+(use-package flycheck-irony
+  :ensure t
+  :after (irony)
+  :commands (flycheck-irony-setup)
+  :init
+  (flycheck-irony-setup)
+  (add-hook 'irony-mode-hook
+            '(lambda() (flycheck-select-checker 'irony))))
+
+;; (use-package flycheck-google-cpplint
+;;   :ensure t
+;;   :config
+;;   (flycheck-add-next-checker
+;;    'irony '(warning . c/c++-googlelint)))
+;;   )
 
 ;; cmake-ide
 ;; (use-package cmake-ide :ensure t

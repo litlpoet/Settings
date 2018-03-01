@@ -17,8 +17,7 @@
 (use-package company
   :ensure t
   :bind ("M-i" . company-complete)
-  :init
-  (add-hook 'after-init-hook 'global-company-mode)
+  :hook (after-init . global-company-mode)
   :config
   (setq company-backends
         '(company-nxml
@@ -37,9 +36,7 @@
 ;; fly-check
 (use-package flycheck
   :ensure t
-  :commands (global-flycheck-mode)
-  :init
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+  :hook (after-init . global-flycheck-mode)
   :config
   (setq flycheck-global-modes
         '(emacs-lisp-mode
@@ -52,21 +49,16 @@
   (setq-default flycheck-disabled-checkers
                 '(c/c++-clang
                   c/c++-gcc
-                  c/c++-cppcheck))
-  (use-package flycheck-pos-tip
-    :ensure t
-    :init
-    (with-eval-after-load 'flycheck
-      (flycheck-pos-tip-mode))
-    :config
-    (setq flycheck-pos-tip-timeout 30)))
+                  c/c++-cppcheck)))
 
-;; diff-hl-mode
-(use-package diff-hl
+(use-package flycheck-pos-tip
   :ensure t
-  :defer  t
+  :commands (flycheck-pos-tip-mode)
   :init
-  (global-diff-hl-mode))
+  (with-eval-after-load 'flycheck
+    (flycheck-pos-tip-mode))
+  :config
+  (setq flycheck-pos-tip-timeout 30))
 
 ;; magit
 (use-package magit
@@ -74,32 +66,36 @@
   :bind (("C-c s" . magit-status))
   :init
   (setq magit-completing-read-function 'ivy-completing-read)
-  (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
   :config
   (set-face-attribute 'magit-diff-file-heading nil
                       :inverse-video t
                       :weight 'extra-bold))
 
+;; diff-hl-mode
+(use-package diff-hl
+  :ensure t
+  :hook ((after-init         . global-diff-hl-mode)
+         (dired-mode         . diff-hl-dired-mode)
+         (magit-post-refresh . diff-hl-magit-post-refresh)))
+
 ;; clean-aindent-mode
 (use-package clean-aindent-mode
   :ensure t
-  :commands (clean-aindent-mode)
-  :init
-  (add-hook 'prog-mode-hook 'clean-aindent-mode))
+  :hook (prog-mode))
 
 (use-package writeroom-mode
   :ensure t
-  :commands (global-writeroom-mode)
+  :hook (after-init . global-writeroom-mode)
   :init
-  (add-hook 'after-init-hook #'global-writeroom-mode)
-  :config
   (setq writeroom-major-modes
         '(text-mode prog-mode cmake-mode dashboard-mode Man-mode))
-  (setq writeroom-width                100
+  (setq writeroom-fullscreen-effect    'maximized
+        writeroom-width                120
         writeroom-maximize-window      nil
         writeroom-extra-line-spacing   5
         writeroom-bottom-divider-width 0
-        writeroom-mode-line            t))
+        writeroom-mode-line            t
+        writeroom-fringes-outside-margins nil))
 
 (provide 'init-essentials-prog)
 ;;; init-essentials-prog ends here
