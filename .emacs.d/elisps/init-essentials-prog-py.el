@@ -4,9 +4,7 @@
 ;;; Code:
 (use-package elpy
   :ensure t
-  :commands (elpy-enable)
-  :init
-  (elpy-enable)
+  :hook (after-init . elpy-enable)
   :config
   (setq elpy-modules
         (delq 'elpy-module-flymake elpy-modules)))

@@ -42,7 +42,7 @@
 
 (use-package counsel-projectile
   :ensure t
-  :after projectile
+  :after  projectile
   :commands (counsel-projectile-mode)
   :init
   (counsel-projectile-mode))

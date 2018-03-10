@@ -31,16 +31,13 @@
 (use-package hungry-delete
   :ensure   t
   :diminish hungry-delete-mode
-  :commands (global-hungry-delete-mode)
-  :init     (global-hungry-delete-mode))
+  :hook (prog-mode . hungry-delete-mode))
 
 ;; (edit) aggresive-indent
 (use-package aggressive-indent
   :ensure   t
   :diminish aggressive-indent-mode
-  :commands (aggressive-indent-mode)
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode))
+  :hook (emacs-lisp-mode . aggressive-indent-mode))
 
 ;; (edit) smartparens
 (use-package smartparens
@@ -102,9 +99,7 @@
 ;; (viz) rainbow-delimiters
 (use-package rainbow-delimiters
   :ensure t
-  :commands (rainbow-delimiters-mode)
-  :init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; ;; (viz) highlight-indent-guides
 ;; (use-package highlight-indent-guides

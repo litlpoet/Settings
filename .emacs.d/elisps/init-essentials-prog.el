@@ -10,8 +10,7 @@
   :commands (yas-global-mode)
   :init
   (add-hook 'after-init-hook
-            '(lambda()
-               (yas-global-mode 1))))
+            '(lambda() (yas-global-mode 1))))
 
 ;; company
 (use-package company
@@ -28,6 +27,7 @@
   (setq company-global-modes
         '(lisp-interaction-mode
           emacs-lisp-mode
+          org-mode
           cmake-mode
           c-mode
           c++-mode
@@ -53,12 +53,11 @@
 
 (use-package flycheck-pos-tip
   :ensure t
+  :after  flycheck
   :commands (flycheck-pos-tip-mode)
   :init
-  (with-eval-after-load 'flycheck
-    (flycheck-pos-tip-mode))
-  :config
-  (setq flycheck-pos-tip-timeout 30))
+  (setq flycheck-pos-tip-timeout 30)
+  (flycheck-pos-tip-mode))
 
 ;; magit
 (use-package magit
@@ -89,12 +88,12 @@
   :init
   (setq writeroom-major-modes
         '(text-mode prog-mode cmake-mode dashboard-mode Man-mode))
-  (setq writeroom-fullscreen-effect    'maximized
-        writeroom-width                120
-        writeroom-maximize-window      nil
-        writeroom-extra-line-spacing   5
-        writeroom-bottom-divider-width 0
-        writeroom-mode-line            t
+  (setq writeroom-fullscreen-effect       'maximized
+        writeroom-width                   120
+        writeroom-maximize-window         nil
+        writeroom-extra-line-spacing      5
+        writeroom-bottom-divider-width    0
+        writeroom-mode-line               t
         writeroom-fringes-outside-margins nil))
 
 (provide 'init-essentials-prog)

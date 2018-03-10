@@ -85,41 +85,39 @@
 (use-package hl-line
   :commands (global-hl-line-mode)
   :init
+  (setq global-hl-line-sticky-frag nil)
   (add-hook 'after-init-hook
-            '(lambda() (global-hl-line-mode t)))
-  :config
-  (setq global-hl-line-sticky-frag nil))
+            '(lambda() (global-hl-line-mode t))))
 
 ;; simple
 (use-package simple
   :commands (column-number-mode)
   :init
-  (add-hook 'after-init-hook
-            '(lambda()
-               (column-number-mode t)))
-  :config
   (setq global-mark-ring-max 1000
         mark-ring-max        1000
         kill-ring-max        1000
-        kill-whole-line      t))
+        kill-whole-line      t)
+  (add-hook 'after-init-hook
+            '(lambda() (column-number-mode t)))  )
 
 ;; delsel
 (use-package delsel
   :commands (delete-selection-mode)
-  :init (delete-selection-mode t))
+  :init
+  (add-hook 'after-init-hook
+            '(lambda() (delete-selection-mode t))))
 
 ;; mule-cmds
 (use-package mule-cmds
   :defer t
   :init
-  (set-language-environment "Korean")
-  (prefer-coding-system        'utf-8)
-  (set-terminal-coding-system  'utf-8)
-  (set-keyboard-coding-system  'utf-8)
-  (set-selection-coding-system 'utf-8)
-  (setq locale-coding-system   'utf-8)
-  (setq-default buffer-file-coding-system 'utf-8)
-  )
+  (set-language-environment               "Korean")
+  (prefer-coding-system                   'utf-8)
+  (set-terminal-coding-system             'utf-8)
+  (set-keyboard-coding-system             'utf-8)
+  (set-selection-coding-system            'utf-8)
+  (setq locale-coding-system              'utf-8)
+  (setq-default buffer-file-coding-system 'utf-8))
 
 ;; fonts
 (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR"))
@@ -170,10 +168,9 @@
   :commands (global-auto-revert-mode)
   :diminish auto-revert-mode
   :init
+  (setq auto-revert-verbose nil)
   (add-hook 'after-init-hook
-            '(lambda()
-               (setq auto-revert-verbose nil)
-               (global-auto-revert-mode t))))
+            '(lambda() (global-auto-revert-mode t))))
 
 ;; window
 (use-package window
@@ -186,10 +183,9 @@
 (use-package autoinsert
   :commands (auto-insert-mode)
   :init
+  (setq auto-insert-query nil)
   (add-hook 'after-init-hook
-            '(lambda()
-               (setq auto-insert-query nil)
-               (auto-insert-mode t)))
+            '(lambda() (auto-insert-mode t)))
   :config
   (use-package impl-autoinsert)
   (dolist (elem bk:auto-insert-alist)

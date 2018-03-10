@@ -29,7 +29,12 @@
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c c" . org-capture)
-         ("C-c b" . org-iswitchb)))
+         ("C-c b" . org-iswitchb))
+  :hook (org-mode . bk:org-mode-hook)
+  :init
+  (defun bk:org-mode-hook()
+    (add-hook 'completion-at-point-functions
+              'pcomplete-completions-at-point nil t)))
 
 (use-package org-bullets
   :ensure t

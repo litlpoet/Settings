@@ -22,6 +22,7 @@
 ;; clang-format
 (use-package clang-format
   :ensure t
+  :after (cc-mode)
   :bind (:map c-mode-base-map
               ("C-c C-f" . clang-format-buffer))
   :init
@@ -53,7 +54,7 @@
 ;; rtags
 (use-package rtags
   :ensure t
-  :defer  t
+  :after (cc-mode)
   :init
   (setq
    rtags-autostart-diagnostics               t

@@ -28,11 +28,12 @@
          ("M-y"     . counsel-yank-pop)
          ("C-h v"   . counsel-describe-variable)
          ("C-h f"   . counsel-describe-function))
-  :init
-  (if bk:use-rg
-      (setq
-       counsel-grep-base-command
-       "rg -i -M 120 --no-heading --line-number --color never '%s' %s")))
+  ;; :init
+  ;; (if bk:use-rg
+  ;;     (setq
+  ;;      counsel-grep-base-command
+  ;;      "rg -i -M 120 --no-heading --line-number --color never '%s' %s"))
+  )
 
 ;; (navi) ace-window
 (use-package ace-window
@@ -49,10 +50,7 @@
 (use-package which-key
   :ensure t
   :diminish which-key-mode
-  :commands (which-key-mode)
-  :init
-  (add-hook 'after-init-hook
-            '(lambda() (which-key-mode))))
+  :hook (after-init . which-key-mode))
 
 ;; (navi) sublimity
 ;; (use-package sublimity

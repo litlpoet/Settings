@@ -1,23 +1,14 @@
-# emacs
-auto-save-list
 *~
 *.dat
 *.eld
-ido.*
-recentf
-.emacs.d/elpa
-.emacs.d/eshell
-.emacs.d/irony
-.emacs.d/init.el
-.emacs.d/semanticdb
-.emacs.d/server
-.emacs.d/tmp
-.emacs.d/.mc-lists.el
-.emacs.d/tramp
-.emacs.d/.github_token
-.emacs.d/.org-id-locations
-.emacs.d/bookmarks
-.emacs.d/org-clock-save.el
 *.*#
 *.cache
+ido.*
+recentf
+bookmarks
+auto-save-list
+elpa
+init.el
+irony
+!.emacs.d/
 

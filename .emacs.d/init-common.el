@@ -98,12 +98,11 @@
 
 ;; (start) dash-board
 (use-package dashboard
-  :ensure t
-  :defer  t
+  :ensure   t
+  :commands (dashboard-setup-startup-hook)
   :init
   (setq dashboard-startup-banner 'logo
-        dashboard-items          '((bookmarks . 10)
-                                   (projects  . 10)
+        dashboard-items          '((projects  . 10)
                                    (recents   . 10)))
   (dashboard-setup-startup-hook))
 

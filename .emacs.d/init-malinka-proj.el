@@ -40,6 +40,13 @@
    :test-cmd        "ctest -V"
    )
   (malinka-define-project
+   :name            "PositionBasedDynamics"
+   :root-directory  "/home/bk/dev/vc/thirdparties/PositionBasedDynamics"
+   :build-directory "/home/bk/dev/vc/thirdparties/PositionBasedDynamics/build"
+   :configure-cmd   "cmake .."
+   :compile-cmd     "cmake --build . --config Release -- -j8"
+   )
+  (malinka-define-project
    :name            "libML"
    :root-directory  "/home/bk/dev/vc/projects/libML"
    :build-directory "/home/bk/dev/vc/projects/libML/build"
