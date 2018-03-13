@@ -31,7 +31,7 @@
 (use-package hungry-delete
   :ensure   t
   :diminish hungry-delete-mode
-  :hook (prog-mode . hungry-delete-mode))
+  :hook ((emacs-lisp-mode lisp-interaction-mode) . hungry-delete-mode))
 
 ;; (edit) aggresive-indent
 (use-package aggressive-indent

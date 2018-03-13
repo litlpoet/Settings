@@ -7,6 +7,7 @@
         org-beginning-of-line
         org-self-insert-command
         org-yank
+        wdired-finish-edit
         ))
 
 (setq mc/cmds-to-run-once

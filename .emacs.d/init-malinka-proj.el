@@ -67,7 +67,18 @@
    :build-directory "/home/bk/dev/vc/tutorials/test_ceres/build"
    :configure-cmd   "cmake ../src/"
    :compile-cmd     "make -j8"
-   ))
+   )
+  (malinka-define-project
+   :name            "test_vulkan"
+   :root-directory  "/home/bk/dev/vc/tutorials/test_vulkan"
+   :build-directory "/home/bk/dev/vc/tutorials/test_vulkan/build"
+   :configure-cmd   "cmake .."
+   :compile-db-cmd  "conan install .. -s build_type=Release && cmake .."
+   :compile-cmd     "cmake --build . --config Release -- -j8"
+   :test-directory  "/home/bk/dev/vc/tutorials/test_vulkan/build"
+   :test-cmd        "ctest -V"
+   )
+  )
 
 (provide 'init-malinka-proj)
 ;;; init-malinka-proj.el ends here

@@ -13,10 +13,9 @@
   (setq projectile-find-dir-includes-top-level t)
   (setq projectile-mode-line
         '(:eval (format " Prj[%s]" (projectile-project-name))))
-  ;; (setq projectile-switch-project-action
-  ;;       '(lambda()
-  ;;          (progn
-  ;;            (projectile-dired))))
+  (setq projectile-switch-project-action
+        '(lambda()
+           (progn (projectile-dired))))
   (setq projectile-cache-file
         (expand-file-name "projectile.cache" bk:temp-directory))
   (setq projectile-known-projects-file
@@ -45,7 +44,11 @@
   :after  projectile
   :commands (counsel-projectile-mode)
   :init
-  (counsel-projectile-mode))
+  (counsel-projectile-mode)
+  :config
+  (counsel-projectile-modify-action
+   'counsel-projectile-switch-project-action
+   '((add ("r" counsel-projectile-switch-project-by-name "open project root dir") 1))))
 
 (provide 'init-essentials-proj)
 ;;; init-essentials-proj.el ends here
