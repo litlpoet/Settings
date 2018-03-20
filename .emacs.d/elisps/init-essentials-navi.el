@@ -35,12 +35,6 @@
   ;;      "rg -i -M 120 --no-heading --line-number --color never '%s' %s"))
   )
 
-;; (navi) ace-window
-(use-package ace-window
-  :ensure t
-  :bind (("C-x o" . ace-window)
-         ("C-x 1" . ace-delete-window)))
-
 ;; (navi) avy
 ;; (use-package avy
 ;;   :ensure t

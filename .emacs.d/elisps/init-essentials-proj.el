@@ -15,7 +15,11 @@
         '(:eval (format " Prj[%s]" (projectile-project-name))))
   (setq projectile-switch-project-action
         '(lambda()
-           (progn (projectile-dired))))
+           (progn
+             (projectile-dired)
+             ;; (when (file-exists-p "malinka-init.el")
+             ;;   (load-file "malinka-init.el"))
+             )))
   (setq projectile-cache-file
         (expand-file-name "projectile.cache" bk:temp-directory))
   (setq projectile-known-projects-file

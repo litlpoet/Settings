@@ -77,6 +77,7 @@
    :compile-cmd     "cmake --build . --config Release -- -j8"
    :test-directory  "/home/bk/dev/vc/tutorials/test_vulkan/build"
    :test-cmd        "ctest -V"
+   :run-cmd         "./build/bin/tutorial"
    )
   )
 

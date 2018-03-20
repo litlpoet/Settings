@@ -3,6 +3,8 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        c-electric-colon
+        c-electric-delete-forward
         hungry-delete-forward
         org-beginning-of-line
         org-self-insert-command

@@ -101,6 +101,20 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package page-break-lines
+  :diminish page-break-lines-mode
+  :commands (global-page-break-lines-mode)
+  :init
+  (setq-default page-break-lines-modes
+                '(emacs-lisp-mode
+                  lisp-mode
+                  scheme-mode
+                  compilation-mode
+                  outline-mode
+                  help-mode
+                  text-mode))
+  (add-hook 'after-init-hook '(lambda() (global-page-break-lines-mode t))))
+
 ;; ;; (viz) highlight-indent-guides
 ;; (use-package highlight-indent-guides
 ;;   :ensure t

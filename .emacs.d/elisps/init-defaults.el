@@ -179,6 +179,13 @@
          ("C-S-<down>"  . shrink-window)
          ("C-S-<up>"    . enlarge-window)))
 
+;; windmove
+(use-package windmove
+  :bind (("S-<left>"  . windmove-left)
+         ("S-<right>" . windmove-right)
+         ("S-<down>"  . windmove-down)
+         ("S-<up>"    . windmove-up)))
+
 ;; auto-insert
 (use-package autoinsert
   :commands (auto-insert-mode)
