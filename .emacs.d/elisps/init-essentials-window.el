@@ -35,6 +35,12 @@
   :ensure t
   :hook (after-init . purpose-mode))
 
+(use-package window-purpose-x
+  :after (window-purpose)
+  :bind ("C-c q" . purpose-x-popwin-close-windows)
+  :init
+  (purpose-x-popwin-setup))
+
 ;; (window) purpose
 (use-package ivy-purpose
   :ensure t

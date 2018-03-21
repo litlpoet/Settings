@@ -204,5 +204,13 @@
   :init
   (setq vc-follow-symlinks t))
 
+;; compile
+(use-package compile
+  :defer t
+  :init
+  (setq compilation-always-kill              t
+        compilation-scroll-output            t
+        compilation-auto-jump-to-first-error t))
+
 (provide 'init-defaults)
 ;;; init-defaults.el ends here
