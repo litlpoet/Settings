@@ -52,13 +52,11 @@
                   c/c++-gcc
                   c/c++-cppcheck)))
 
-(use-package flycheck-pos-tip
+;; flycheck-popup-tip
+(use-package flycheck-popup-tip
   :ensure t
-  :after  flycheck
-  :commands (flycheck-pos-tip-mode)
-  :init
-  (setq flycheck-pos-tip-timeout 30)
-  (flycheck-pos-tip-mode))
+  :after (flycheck)
+  :hook (flycheck-mode . flycheck-popup-tip-mode))
 
 ;; magit
 (use-package magit
