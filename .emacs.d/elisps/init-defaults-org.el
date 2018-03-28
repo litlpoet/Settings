@@ -38,9 +38,7 @@
 
 (use-package org-bullets
   :ensure t
-  :commands (org-bullets-mode)
-  :init
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode t))))
+  :hook (org-mode . org-bullets-mode))
 
 (use-package ox-hugo
   :ensure t

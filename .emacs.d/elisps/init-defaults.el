@@ -17,7 +17,6 @@
 (setq-default cursor-type                     'bar
               tab-width                       2
               indent-tabs-mode                nil
-              fill-column                     100
               cursor-in-non-selected-windows  nil
               highlight-nonselected-windows   nil
               enable-recursive-minibuffers    nil
@@ -83,29 +82,24 @@
 
 ;; hilight line
 (use-package hl-line
-  :commands (global-hl-line-mode)
+  :hook (after-init . global-hl-line-mode)
   :init
-  (setq global-hl-line-sticky-frag nil)
-  (add-hook 'after-init-hook
-            '(lambda() (global-hl-line-mode t))))
+  (setq global-hl-line-sticky-frag nil))
 
 ;; simple
 (use-package simple
-  :commands (column-number-mode)
+  :hook ((org-mode   . auto-fill-mode)
+         (after-init . column-number-mode))
   :init
   (setq global-mark-ring-max 1000
         mark-ring-max        1000
         kill-ring-max        1000
         kill-whole-line      t)
-  (add-hook 'after-init-hook
-            '(lambda() (column-number-mode t)))  )
+  (setq-default fill-column 100))
 
 ;; delsel
 (use-package delsel
-  :commands (delete-selection-mode)
-  :init
-  (add-hook 'after-init-hook
-            '(lambda() (delete-selection-mode t))))
+  :hook (after-init . delete-selection-mode))
 
 ;; mule-cmds
 (use-package mule-cmds
@@ -140,12 +134,7 @@
    '(lambda()
       (setq-local
        whitespace-style
-       '(face
-         tabs tab-mark
-         trailing
-         spaces space-mark
-         newline newline-mark
-         indentation))
+       '(face tabs tab-mark trailing spaces space-mark newline newline-mark indentation))
       (whitespace-mode 1)))
   (add-hook
    'prog-mode-hook
@@ -165,12 +154,10 @@
 
 ;; autorevert
 (use-package autorevert
-  :commands (global-auto-revert-mode)
   :diminish auto-revert-mode
+  :hook (after-init . global-auto-revert-mode)
   :init
-  (setq auto-revert-verbose nil)
-  (add-hook 'after-init-hook
-            '(lambda() (global-auto-revert-mode t))))
+  (setq auto-revert-verbose nil))
 
 ;; window
 (use-package window
@@ -188,11 +175,9 @@
 
 ;; auto-insert
 (use-package autoinsert
-  :commands (auto-insert-mode)
+  :hook (after-init . auto-insert-mode)
   :init
   (setq auto-insert-query nil)
-  (add-hook 'after-init-hook
-            '(lambda() (auto-insert-mode t)))
   :config
   (use-package impl-autoinsert)
   (dolist (elem bk:auto-insert-alist)

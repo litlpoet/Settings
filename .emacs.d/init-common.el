@@ -94,6 +94,7 @@
 (use-package init-essentials-prog-cpp :load-path "elisps/")
 (use-package init-essentials-prog-py  :load-path "elisps/")
 (use-package init-essentials-window   :load-path "elisps/")
+(use-package init-os                  :load-path "elisps/")
 
 ;; initialize specialized packages
 

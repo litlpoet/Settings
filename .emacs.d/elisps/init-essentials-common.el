@@ -72,18 +72,14 @@
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
-  :commands (global-undo-tree-mode)
-  :bind ("C-?" . undo-tree-redo)
-  :init
-  (add-hook 'after-init-hook '(lambda() (global-undo-tree-mode 1))))
+  :hook (after-init . global-undo-tree-mode)
+  :bind ("C-?" . undo-tree-redo))
 
 ;; (viz) volatile-highlights
 (use-package volatile-highlights
   :ensure t
   :diminish volatile-highlights-mode
-  :commands (volatile-highlights-mode)
-  :init
-  (add-hook 'after-init-hook '(lambda() (volatile-highlights-mode t)))
+  :hook (after-init . volatile-highlights-mode)
   :config
   (set-face-attribute 'vhl/default-face nil
                       :underline "light slate gray"))
@@ -103,12 +99,11 @@
 
 ;; (viz) pretty page-break-lines
 (use-package page-break-lines
+  :ensure t
   :diminish page-break-lines-mode
-  :commands (global-page-break-lines-mode)
+  :hook (after-init . global-page-break-lines-mode)
   :init
-  (add-to-list 'page-break-lines-modes
-               'text-mode)
-  (add-hook 'after-init-hook '(lambda() (global-page-break-lines-mode t))))
+  (add-to-list 'page-break-lines-modes 'text-mode))
 
 ;; ;; (viz) highlight-indent-guides
 ;; (use-package highlight-indent-guides

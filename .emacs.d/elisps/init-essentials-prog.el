@@ -3,14 +3,15 @@
 
 ;;; Code:
 
+;; [built-in] prog-mode
+(use-package prog-mode
+  :hook (prog-mode . prettify-symbols-mode))
+
 ;; yasnippet
 (use-package yasnippet
   :ensure t
   :diminish yas-minor-mode
-  :commands (yas-global-mode)
-  :init
-  (add-hook 'after-init-hook
-            '(lambda() (yas-global-mode 1))))
+  :hook (after-init . yas-global-mode))
 
 ;; company
 (use-package company
@@ -82,6 +83,7 @@
   :ensure t
   :hook (prog-mode))
 
+;; writeroom mode
 (use-package writeroom-mode
   :ensure t
   :hook (after-init . global-writeroom-mode)
@@ -89,7 +91,7 @@
   (setq writeroom-major-modes
         '(text-mode prog-mode cmake-mode dashboard-mode Man-mode))
   (setq writeroom-fullscreen-effect       'maximized
-        writeroom-width                   120
+        writeroom-width                   100
         writeroom-maximize-window         nil
         writeroom-extra-line-spacing      5
         writeroom-bottom-divider-width    0

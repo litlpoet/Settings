@@ -28,6 +28,7 @@
 (use-package ace-window
   :ensure t
   :bind (("C-x o" . ace-window)
+         ("C-x p" . ace-swap-window)
          ("C-x 1" . ace-delete-window)))
 
 ;; (window) purpose

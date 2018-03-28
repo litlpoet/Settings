@@ -6,13 +6,11 @@
 (use-package ivy
   :ensure t
   :diminish ivy-mode
-  :commands (ivy-mode)
+  :hook (after-init . ivy-mode)
   :bind ("C-c C-r" . ivy-resume)
   :init
   (setq ivy-use-virtual-buffers t
-        ivy-count-format        "(%d/%d) ")
-  (add-hook 'after-init-hook
-            '(lambda() (ivy-mode 1))))
+        ivy-count-format        "(%d/%d) "))
 
 ;; (navi) ivy / swiper / counsel
 (use-package counsel
