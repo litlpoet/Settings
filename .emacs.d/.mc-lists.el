@@ -3,12 +3,15 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        c-electric-brace
         c-electric-colon
         c-electric-delete-forward
+        c-electric-lt-gt
         hungry-delete-forward
         org-beginning-of-line
         org-self-insert-command
         org-yank
+        sp-splice-sexp
         wdired-finish-edit
         ))
 

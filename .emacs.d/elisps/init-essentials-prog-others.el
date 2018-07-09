@@ -1,4 +1,4 @@
-;;; init-essentials-window.el --- window management  -*- lexical-binding: t; -*-
+;;; init-essentials-prog-others.el --- other programming lang. setup    -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Byungkuk Choi
 
@@ -20,37 +20,16 @@
 
 ;;; Commentary:
 
-;; window management
+;; markdown setup
 
 ;;; Code:
-
-;; (window) ace-window
-(use-package ace-window
+(use-package markdown-mode
   :ensure t
-  :bind (("C-x o" . ace-window)
-         ("C-x p" . ace-swap-window)
-         ("C-x 1" . ace-delete-window)))
-
-;; (window) purpose
-(use-package window-purpose
-  :ensure t
-  :hook (after-init . purpose-mode))
-
-(use-package window-purpose-x
-  :after (window-purpose)
-  :bind ("C-c q" . purpose-x-popwin-close-windows)
+  :mode (("READMD\\.md\\'" . gfm-mode)
+         ("\\.md\\'"       . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
   :init
-  (purpose-x-popwin-setup))
+  (setq markdown-command "multimarkdown"))
 
-;; (window) purpose
-(use-package ivy-purpose
-  :ensure t
-  :after (ivy window-purpose)
-  :commands (ivy-purpose-setup)
-  :init
-  (ivy-purpose-setup))
-
-
-
-(provide 'init-essentials-window)
-;;; init-essentials-window.el ends here
+(provide 'init-essentials-prog-others)
+;;; init-essentials-prog-others.el ends here

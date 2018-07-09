@@ -23,7 +23,6 @@
 ;;
 
 ;;; Code:
-
 (use-package malinka
   :ensure t
   :hook (c-mode-common . malinka-mode)
@@ -58,8 +57,9 @@
    :root-directory  "/home/bk/dev/vc/projects/sketchimo"
    :build-directory "/home/bk/dev/vc/projects/sketchimo/build"
    :configure-cmd   "cmake .."
-   :compile-cmd     "make -j8"
-   :run-cmd         "./build/sketchimo"
+   :compile-db-cmd  "conan install .. -s build_type=Release && cmake .."
+   :compile-cmd     "cmake --build . --config Release -- -j8"
+   :run-cmd         "./build/bin/sketchimo"
    )
   (malinka-define-project
    :name            "test_ceres"
@@ -78,6 +78,28 @@
    :test-directory  "/home/bk/dev/vc/tutorials/test_vulkan/build"
    :test-cmd        "ctest -V"
    :run-cmd         "./build/bin/tutorial"
+   )
+  (malinka-define-project
+   :name            "test_ipopt"
+   :root-directory  "/home/bk/dev/vc/tutorials/test_ipopt"
+   :build-directory "/home/bk/dev/vc/tutorials/test_ipopt/build"
+   :configure-cmd   "cmake .."
+   :compile-db-cmd  "conan install .. -s build_type=Release && cmake .."
+   :compile-cmd     "cmake --build . --config Release -- -j8"
+   :test-directory  "/home/bk/dev/vc/tutorials/test_ipopt/build"
+   :test-cmd        "ctest -V"
+   :run-cmd         "./build/bin/ipopt-tutorial"
+   )
+  (malinka-define-project
+   :name            "litl"
+   :root-directory  "/home/bk/dev/vc/litl"
+   :build-directory "/home/bk/dev/vc/litl/build"
+   :configure-cmd   "cmake .."
+   :compile-db-cmd  "conan install .. -s build_type=Release && cmake .."
+   :compile-cmd     "cmake --build . --config Release -- -j8"
+   :test-directory  "/home/bk/dev/vc/litl/build"
+   :test-cmd        "ctest -V"
+   :run-cmd         "./build/litl_qt/litl_qt"
    )
   )
 

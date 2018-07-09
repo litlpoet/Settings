@@ -71,7 +71,6 @@
 ;;   :init
 ;;   (add-hook 'minibuffer-setup-hook        #'solaire-mode-in-minibuffer))
 
-
 ;; (for dev) macrostep
 (use-package macrostep
   :ensure t
@@ -82,31 +81,30 @@
 
 ;; default packages and their extensions
 (use-package init-defaults            :load-path "elisps/")
-(use-package init-defaults-dired      :load-path "elisps/")
 (use-package init-defaults-org        :load-path "elisps/")
 
 ;; essential packages
-(use-package init-essentials-common   :load-path "elisps/")
-(use-package init-essentials-navi     :load-path "elisps/")
-(use-package init-essentials-proj     :load-path "elisps/")
-(use-package init-essentials-prog     :load-path "elisps/")
-(use-package init-essentials-prog-md  :load-path "elisps/")
-(use-package init-essentials-prog-cpp :load-path "elisps/")
-(use-package init-essentials-prog-py  :load-path "elisps/")
-(use-package init-essentials-window   :load-path "elisps/")
-(use-package init-os                  :load-path "elisps/")
+(use-package init-essentials                 :load-path "elisps/")
+(use-package init-essentials-prog            :load-path "elisps/")
+(use-package init-essentials-prog-cpp        :load-path "elisps/")
+;; (use-package init-essentials-prog-cpp-rtags :load-path "elisps/")
+(use-package init-essentials-prog-cpp-cquery :load-path "elisps/")
+(use-package init-essentials-prog-py         :load-path "elisps/")
+(use-package init-essentials-prog-others     :load-path "elisps/")
+(use-package init-essentials-hydra           :load-path "elisps/")
+(use-package init-os                         :load-path "elisps/")
 
 ;; initialize specialized packages
 
-;; (start) dash-board
-(use-package dashboard
-  :ensure   t
-  :commands (dashboard-setup-startup-hook)
-  :init
-  (setq dashboard-startup-banner 'logo
-        dashboard-items          '((projects  . 10)
-                                   (recents   . 10)))
-  (dashboard-setup-startup-hook))
+;; ;; (start) dash-board
+;; (use-package dashboard
+;;   :ensure   t
+;;   :commands (dashboard-setup-startup-hook)
+;;   :init
+;;   (setq dashboard-startup-banner 'nil
+;;         dashboard-items          '((projects  . 10)
+;;                                    (recents   . 10)))
+;;   (dashboard-setup-startup-hook))
 
 (provide 'init-common)
 ;;; init-common.el ends here

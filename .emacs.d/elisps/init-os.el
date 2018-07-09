@@ -30,7 +30,7 @@
     (use-package system-packages
       :ensure t
       :commands (system-packages-update)
-      :init
+      :config
       (add-to-list 'system-packages-supported-package-managers
                    '(pacaur .
                             ((default-sudo . nil)
@@ -53,11 +53,11 @@
       (setq system-packages-use-sudo        nil
             system-packages-package-manager 'pacaur))))
 
-(use-package symon
-  :ensure t
-  :hook (after-init . symon-mode)
-  :init
-  (setq symon-delay 10))
+;; (use-package symon
+;;   :ensure t
+;;   :hook (after-init . symon-mode)
+;;   :init
+;;   (setq symon-delay 10))
 
 
 (provide 'init-os)

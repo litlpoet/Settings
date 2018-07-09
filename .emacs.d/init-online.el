@@ -34,8 +34,8 @@
 (load
  (expand-file-name "init-common.el" user-emacs-directory))
 
-(load
- (expand-file-name "init-malinka-proj.el" user-emacs-directory))
+;; (load
+;;  (expand-file-name "init-malinka-proj.el" user-emacs-directory))
 
 ;; report load time
 (let ((elapsed (float-time

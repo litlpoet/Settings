@@ -78,7 +78,7 @@
 (use-package fringe
   :commands (set-fringe-mode)
   :init
-  (set-fringe-mode '(12 . 8)))
+  (set-fringe-mode '(15 . 8)))
 
 ;; hilight line
 (use-package hl-line
@@ -159,13 +159,6 @@
   :init
   (setq auto-revert-verbose nil))
 
-;; window
-(use-package window
-  :bind (("C-S-<left>"  . shrink-window-horizontally)
-         ("C-S-<right>" . enlarge-window-horizontally)
-         ("C-S-<down>"  . shrink-window)
-         ("C-S-<up>"    . enlarge-window)))
-
 ;; windmove
 (use-package windmove
   :bind (("S-<left>"  . windmove-left)
@@ -196,6 +189,39 @@
   (setq compilation-always-kill              t
         compilation-scroll-output            t
         compilation-auto-jump-to-first-error t))
+
+;; ibuffer
+(use-package ibuffer
+  :bind ("C-x C-b" . ibuffer)
+  :init
+  (setq-default ibuffer-default-sorting-mode 'major-mode))
+
+;; dired
+(use-package dired
+  :bind (:map dired-mode-map
+              ("k" . dired-kill-subdir)
+              (")" . dired-omit-mode))
+  :init
+  (if (or (eq system-type 'darwin)
+          (eq system-type 'windows-nt))
+      (setq dired-listing-switches "-lha"
+            dired-use-ls-dired     nil)
+    (setq dired-listing-switches
+          "-lha --group-directories-first"))
+  (setq dired-dwim-target       t
+        dired-recursive-copies  'always
+        dired-recursive-deletes 'always)
+  :config
+  (setq-default
+   dired-omit-mode  t
+   dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\[:alnum:\]"))
+
+;; dired-x
+(use-package dired-x                    ; must be required for a certain keymap (i.e. C-x C-j)
+  :after (dired)
+  :init
+  (setq dired-hide-details-hide-symlink-targets   nil
+        dired-hide-details-hide-information-lines t))
 
 (provide 'init-defaults)
 ;;; init-defaults.el ends here

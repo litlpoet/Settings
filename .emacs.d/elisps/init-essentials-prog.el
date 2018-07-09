@@ -82,19 +82,29 @@
   :hook (prog-mode))
 
 ;; writeroom mode
-(use-package writeroom-mode
+;; (use-package writeroom-mode
+;;   :ensure t
+;;   :hook (after-init . global-writeroom-mode)
+;;   :init
+;;   (setq writeroom-major-modes
+;;         '(text-mode prog-mode cmake-mode dashboard-mode Man-mode))
+;;   (setq writeroom-width                   100
+;;         writeroom-maximize-window         nil
+;;         writeroom-extra-line-spacing      5
+;;         writeroom-bottom-divider-width    0
+;;         writeroom-mode-line               t
+;;         writeroom-fringes-outside-margins nil)
+;;   :config
+;;   (setq writeroom-global-effects
+;;         (delq 'writeroom-set-fullscreen writeroom-global-effects)))
+
+;; zeal docset
+(use-package zeal-at-point
   :ensure t
-  :hook (after-init . global-writeroom-mode)
-  :init
-  (setq writeroom-major-modes
-        '(text-mode prog-mode cmake-mode dashboard-mode Man-mode))
-  (setq writeroom-fullscreen-effect       'maximized
-        writeroom-width                   100
-        writeroom-maximize-window         nil
-        writeroom-extra-line-spacing      5
-        writeroom-bottom-divider-width    0
-        writeroom-mode-line               t
-        writeroom-fringes-outside-margins nil))
+  :bind (("C-c z" . zeal-at-point))
+  :config
+  (add-to-list 'zeal-at-point-mode-alist
+               '(c++-mode . ("cpp" "qt5" "gl4"))))
 
 (provide 'init-essentials-prog)
 ;;; init-essentials-prog ends here
