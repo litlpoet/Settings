@@ -48,7 +48,7 @@
 (use-package hydra-window
   :load-path "elisps/hydras"
   :after (hydra)
-  :bind ("C-x w" . hydra-window/body))
+  :bind ("C-c w" . hydra-window/body))
 
 (provide 'init-essentials-hydra)
 ;;; init-essentials-hydra.el ends here

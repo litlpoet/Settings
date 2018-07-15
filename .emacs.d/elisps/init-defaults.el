@@ -3,13 +3,18 @@
 
 ;;; Code:
 ;; c code engine variables
+(setq gc-cons-threshold 64000000)
+(add-hook 'after-init-hook
+          #'(lambda() (setq gc-cons-threshold 800000)))
+
 (setq visible-bell                    nil
       ring-bell-function              'ignore
       auto-save-timeout               120
       scroll-preserve-screen-position t
       scroll-conservatively           100000
       scroll-step                     1
-      scroll-margin                   5)
+      scroll-margin                   5
+      even-window-sizes               'width-only)
 
 (when (fboundp 'set-charset-priority)
   (set-charset-priority 'unicode))
@@ -208,20 +213,19 @@
             dired-use-ls-dired     nil)
     (setq dired-listing-switches
           "-lha --group-directories-first"))
-  (setq dired-dwim-target       t
-        dired-recursive-copies  'always
-        dired-recursive-deletes 'always)
-  :config
-  (setq-default
-   dired-omit-mode  t
-   dired-omit-files "^\\.?#\\|^\\.$\\|^\\.\[:alnum:\]"))
+  (setq dired-dwim-target                         t
+        dired-recursive-copies                    'always
+        dired-recursive-deletes                   'always
+        dired-hide-details-hide-symlink-targets   nil
+        dired-hide-details-hide-information-lines t))
 
 ;; dired-x
 (use-package dired-x                    ; must be required for a certain keymap (i.e. C-x C-j)
   :after (dired)
   :init
-  (setq dired-hide-details-hide-symlink-targets   nil
-        dired-hide-details-hide-information-lines t))
+  (setq-default
+   dired-omit-mode  t
+   dired-omit-files "^\\.$\\|^\\.[^\\.].+$"))
 
 (provide 'init-defaults)
 ;;; init-defaults.el ends here

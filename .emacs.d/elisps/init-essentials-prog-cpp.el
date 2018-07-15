@@ -2,16 +2,13 @@
 ;;; Commentary:
 
 ;;; Code:
-;; (use-package cc-mode
-;;   :init
-;;   (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode)))
-
 (use-package cc-mode
   :mode ("\\.h\\'" . c++-mode))
 
 ;; modern c++ font-lock
 (use-package modern-cpp-font-lock
-  :ensure t)
+  :ensure t
+  :hook (c++-mode . modern-c++-font-lock-mode))
 
 ;; google-c-style
 (use-package google-c-style
@@ -31,17 +28,25 @@
                                    (eq major-mode 'glsl-mode))
                            (clang-format-buffer)))))
 
+;; cmake-mode
+(use-package cmake-mode
+  :ensure t
+  :defer t
+  :hook (cmake-mode . (lambda()
+                        (progn
+                          (setq-local company-idle-delay              nil)
+                          (setq-local company-dabbrev-code-everywhere t)
+                          (setq-local company-backends '(company-cmake
+                                                         company-capf
+                                                         company-files))))))
+
 ;; cmake-font-lock
 (use-package cmake-font-lock
   :ensure t
-  :hook ((cmake-mode . cmake-font-lock-activate)
-         (cmake-mode . (lambda()
-                         (progn
-                           (setq-local company-idle-delay              nil)
-                           (setq-local company-dabbrev-code-everywhere t)
-                           (setq-local company-backends '(company-cmake
-                                                          company-capf
-                                                          company-files)))))))
+  :commands (cmake-font-lock-activate)
+  :hook (cmake-mode . (lambda() (progn
+                              (cmake-font-lock-activate)
+                              (font-lock-refresh-defaults)))))
 
 ;; (use-package function-args
 ;;   :ensure t

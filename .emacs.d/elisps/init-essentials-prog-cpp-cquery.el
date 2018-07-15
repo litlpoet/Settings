@@ -23,9 +23,6 @@
 ;; config for a cquery stack
 
 ;;; Code:
-(use-package lsp-mode
-  :ensure t)
-
 (use-package lsp-ui
   :ensure t
   :hook (lsp-mode . lsp-ui-mode)
@@ -46,7 +43,7 @@
                                    (lsp-cquery-enable)
                                  (user-error nil))))
   :init
-  (setq cquery-extra-args '("--log-file=~/.cquery/cquery.log"))
+  (setq cquery-extra-args '("--log-file=~/.cache/cquery/cquery.log"))
   (setq cquery-extra-init-params '(:completion (:detailedLabel t))))
 
 (use-package company-lsp

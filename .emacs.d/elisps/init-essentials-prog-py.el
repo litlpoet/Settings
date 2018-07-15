@@ -10,7 +10,8 @@
   (setq elpy-rpc-backend "jedi")
   (setq elpy-modules
         (delq 'elpy-module-flymake elpy-modules))
-  (pyvenv-activate "~/dev/pyvenv/py3.6"))
+  ;; (pyvenv-activate "~/dev/pyvenv/py3.6")
+  )
 
 (provide 'init-essentials-prog-py)
 ;;; init-essentials-prog-py.el ends here

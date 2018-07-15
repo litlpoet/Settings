@@ -6,11 +6,7 @@
 ;; (dired) direx
 (use-package direx
   :ensure t
-  ;; :after (popwin)
   :bind ("C-c C-j" . direx:jump-to-directory-other-window)
-  ;; :init
-  ;; (push '(direx:direx-mode :position left :dedicated t)
-  ;;       popwin:special-display-config)
   :config
   (setq direx:closed-icon "▷"
         direx:open-icon   "▽"))
@@ -64,17 +60,16 @@
          ("M-D"           . sp-splice-sexp)
          ("M-F"           . sp-forward-symbol)
          ("M-B"           . sp-backward-symbol))
-  :init
-  (require 'smartparens-config)
+  :hook ((after-init . show-smartparens-global-mode)
+         (after-init . smartparens-global-mode)
+         (after-init . (lambda() (require 'smartparens-config))))
+  :config
   (sp-with-modes '(c-mode c++-mode)
-    (sp-local-pair "{" nil
-                   :post-handlers '(("||\n[i]" "RET"))))
+                 (sp-local-pair "{" nil
+                                :post-handlers '(("||\n[i]" "RET"))))
   (sp-local-pair 'c++-mode "/*" "*/"
                  :post-handlers '((" | " "SPC")
                                   ("* ||\n[i]" "RET")))
-  (smartparens-global-mode t)
-  (show-smartparens-global-mode t)
-  :config
   (set-face-attribute 'show-paren-match nil
                       :weight     'extra-bold
                       :underline  "yellow"
@@ -97,14 +92,6 @@
   (set-face-attribute 'vhl/default-face nil
                       :underline "light slate gray"))
 
-;; ;; (viz) anzu
-;; (use-package anzu
-;;   :ensure t
-;;   :commands (global-anzu-mode)
-;;   :diminish anzu-mode
-;;   :init
-;;   (add-hook 'after-init-hook '(lambda() (global-anzu-mode +1))))
-
 ;; (viz) rainbow-delimiters
 (use-package rainbow-delimiters
   :ensure t
@@ -117,15 +104,6 @@
   :hook (after-init . global-page-break-lines-mode)
   :init
   (add-to-list 'page-break-lines-modes 'text-mode))
-
-;; ;; (viz) highlight-indent-guides
-;; (use-package highlight-indent-guides
-;;   :ensure t
-;;   :commands (highlight-indent-guides-mode)
-;;   :init
-;;   (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
-;;   :config
-;;   (setq highlight-indent-guides-method 'column))
 
 ;; (navi) ivy / swiper / counsel
 (use-package ivy
@@ -170,20 +148,6 @@
   :ensure t
   :diminish which-key-mode
   :hook (after-init . which-key-mode))
-
-;; (navi) sublimity
-;; (use-package sublimity
-;;   :ensure t
-;;   :commands (sublimity-mode)
-;;   :init
-;;   (use-package sublimity-map
-;;     :init
-;;     (setq sublimity-map-size        20
-;;           sublimity-map-fraction    0.3
-;;           sublimity-map-text-scale -7))
-;;   (add-hook 'prog-mode-hook
-;;             '(lambda()
-;;                (sublimity-mode 1))))
 
 ;; projectile
 (use-package projectile
@@ -243,24 +207,46 @@
   :config
   (set-face-attribute
    'aw-leading-char-face nil :foreground "deep sky blue" :weight 'bold :height 2.0)
-  (setq aw-keys   '(?a ?s ?d ?f ?j ?k ?l)))
+  (setq aw-keys '(?a ?s ?d ?f ?j ?k ?l)))
 
-;; popwin
-;; (use-package popwin
+;; (display) beacon
+(use-package beacon
+  :ensure t
+  :diminish beacon-mode
+  :hook (after-init . beacon-mode))
+
+;; (windows) shackle
+(use-package shackle
+  :ensure t
+  :hook (after-init . shackle-mode)
+  :init
+  (setq
+   shackle-rules
+   '((direx:direx-mode
+      :other t :align left  :size 0.25 :select t :inhibit-window-quit nil)
+     (compilation-mode
+      :other t :align below :size 0.30 :select nil :inhibit-window-quit nil)
+     ("*system-packages*"
+      :other t :align below :size 0.30 :select t :inhibit-window-quit nil)
+     ("*Help*"
+      :other t :align below :size 0.30 :select t :inhibit-window-quit nil))))
+
+;; ;; (viz) highlight-indent-guides
+;; (use-package highlight-indent-guides
 ;;   :ensure t
-;;   :hook (after-init . popwin-mode)
+;;   :commands (highlight-indent-guides-mode)
 ;;   :init
-;;   (message "init popwin")
+;;   (add-hook 'prog-mode-hook #'highlight-indent-guides-mode)
 ;;   :config
-;;   (message "config popwin")
-;;   (setq popwin:popup-window-height 25
-;;         popwin:popup-window-width  60
-;;         display-buffer-function 'popwin:display-buffer)
-;;   (push "*system-packages*"             popwin:special-display-config)
-;;   (push "*CMake Help*"                  popwin:special-display-config)
-;;   (push '(messages-buffer-mode :tail t) popwin:special-display-config)
-;;   (push '(compilation-mode :noselect t) popwin:special-display-config)
-;;   (push "*RTags"                        popwin:special-display-config))
+;;   (setq highlight-indent-guides-method 'column))
+
+;; ;; (viz) anzu
+;; (use-package anzu
+;;   :ensure t
+;;   :commands (global-anzu-mode)
+;;   :diminish anzu-mode
+;;   :init
+;;   (add-hook 'after-init-hook '(lambda() (global-anzu-mode +1))))
 
 ;; ;; (window) purpose
 ;; (use-package window-purpose
@@ -287,6 +273,20 @@
 ;;     (without-purpose-command #'counsel-find-file))
 ;;   (bind-key "C-x C-f" #'counsel-find-file-without-purpose         purpose-mode-map)
 ;;   (bind-key "C-x b"   #'ivy-purpose-switch-buffer-without-purpose purpose-mode-map))
+
+;; (navi) sublimity
+;; (use-package sublimity
+;;   :ensure t
+;;   :commands (sublimity-mode)
+;;   :init
+;;   (use-package sublimity-map
+;;     :init
+;;     (setq sublimity-map-size        20
+;;           sublimity-map-fraction    0.3
+;;           sublimity-map-text-scale -7))
+;;   (add-hook 'prog-mode-hook
+;;             '(lambda()
+;;                (sublimity-mode 1))))
 
 (provide 'init-essentials)
 ;;; init-essentials.el ends here

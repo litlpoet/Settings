@@ -65,12 +65,6 @@
   :config
   (doom-themes-org-config))
 
-;; (use-package solaire-mode
-;;   :ensure t
-;;   :commands (turn-on-solaire-mode solaire-mode solaire-mode-in-minibuffer)
-;;   :init
-;;   (add-hook 'minibuffer-setup-hook        #'solaire-mode-in-minibuffer))
-
 ;; (for dev) macrostep
 (use-package macrostep
   :ensure t
@@ -105,6 +99,12 @@
 ;;         dashboard-items          '((projects  . 10)
 ;;                                    (recents   . 10)))
 ;;   (dashboard-setup-startup-hook))
+
+;; (use-package solaire-mode
+;;   :ensure t
+;;   :commands (turn-on-solaire-mode solaire-mode solaire-mode-in-minibuffer)
+;;   :init
+;;   (add-hook 'minibuffer-setup-hook        #'solaire-mode-in-minibuffer))
 
 (provide 'init-common)
 ;;; init-common.el ends here

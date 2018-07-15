@@ -9,18 +9,16 @@
 (defconst bk:emacs-start-time (current-time)
   "Emacs start time.")
 
-(require 'package)
-(package-initialize)
-(add-to-list
- 'package-archives
- '("org" . "http://orgmode.org/elpa/"))
-(add-to-list
- 'package-archives
- '("melpa" . "http://melpa.org/packages/")
- t)  ;; last 't' puts 'melpa' at the end of the list
+(setq package-archives '(("org"   . "http://orgmode.org/elpa/")
+                         ("melpa" . "http://melpa.org/packages/")
+                         ("gnu"   . "https://elpa.gnu.org/packages/")))
 (setq package-archive-priorities '(("org"   . 3)
                                    ("melpa" . 2)
                                    ("gnu"   . 1)))
+(setq package-enable-at-startup nil)
+
+(require 'package)
+;; (package-initialize)
 
 (defconst bk:is-online t
   "If Emacs have access on internet, set nil if not.")
@@ -31,31 +29,24 @@
 (defconst bk:use-rg (if (executable-find "rg") t nil)
   "If ripgrep is in the system, preper to use it rather than grep or ag.")
 
-(load
- (expand-file-name "init-common.el" user-emacs-directory))
+(load (expand-file-name "init-common.el" user-emacs-directory))
 
 ;; (load
 ;;  (expand-file-name "init-malinka-proj.el" user-emacs-directory))
 
 ;; report load time
 (let ((elapsed (float-time
-                (time-subtract
-                 (current-time)
-                 bk:emacs-start-time))))
-  (message
-   "Loading %s...done (%.3fs) [init.el]"
-   load-file-name elapsed))
-(add-hook
- 'after-init-hook
- `(lambda ()
-    (let ((elapsed (float-time
-                    (time-subtract
-                     (current-time)
-                     bk:emacs-start-time))))
-      (message
-       "Loading %s...done (%.3fs) [after-init]"
-       ,load-file-name elapsed)))
- t)
+                (time-subtract (current-time) bk:emacs-start-time))))
+  (message "Loading %s...done (%.3fs) [init.el]" load-file-name elapsed))
+
+(add-hook 'after-init-hook
+          `(lambda ()
+             (let ((elapsed (float-time
+                             (time-subtract
+                              (current-time)
+                              bk:emacs-start-time))))
+               (message "Loading %s...done (%.3fs) [after-init]"
+                        ,load-file-name elapsed))) t)
 
 ;;; (provide 'init-online)
 ;;; init-online.el ends here
