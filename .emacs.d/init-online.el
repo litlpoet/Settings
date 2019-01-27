@@ -9,15 +9,13 @@
 (defconst bk:emacs-start-time (current-time)
   "Emacs start time.")
 
+(require 'package)
 (setq package-archives '(("org"   . "http://orgmode.org/elpa/")
                          ("melpa" . "http://melpa.org/packages/")
-                         ("gnu"   . "https://elpa.gnu.org/packages/")))
+                         ("gnu"   . "http://elpa.gnu.org/packages/")))
 (setq package-archive-priorities '(("org"   . 3)
                                    ("melpa" . 2)
                                    ("gnu"   . 1)))
-(setq package-enable-at-startup nil)
-
-(require 'package)
 ;; (package-initialize)
 
 (defconst bk:is-online t
