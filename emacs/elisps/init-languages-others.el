@@ -24,7 +24,6 @@
 
 ;;; Code:
 (use-package markdown-mode
-  :ensure t
   :mode (("READMD\\.md\\'" . gfm-mode)
          ("\\.md\\'"       . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))

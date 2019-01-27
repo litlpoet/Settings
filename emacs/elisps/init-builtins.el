@@ -1,4 +1,4 @@
-;;; init-default.el --- default setting
+;;; init-builtins.el --- default setting
 ;;; Commentary:
 
 ;;; Code:
@@ -43,8 +43,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; font-faces
-(use-package faces
-  :defer t
+(use-builtin faces
   :init
   (when (display-graphic-p)
     (let ((preferred-font-families '("Noto Sans Mono"
@@ -59,8 +58,7 @@
   (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR")))
 
 ;; files
-(use-package files
-  :defer t
+(use-builtin files
   :init
   (unless (file-exists-p bk:local-directory)
     (make-directory bk:local-directory t))
@@ -72,13 +70,12 @@
   (setq-default backup-directory-alist (list (cons "." bk:local-directory))))
 
 ;; tramp
-(use-package tramp
-  :defer t
+(use-builtin tramp
   :init
   (setq tramp-backup-directory-alist backup-directory-alist))
 
 ;; files recentf
-(use-package recentf
+(use-builtin recentf
   :hook (after-init . recentf-mode)
   :init
   ;; following two lines must be set prior to execute recentf-mode
@@ -87,67 +84,56 @@
                 recentf-auto-cleanup 'never))
 
 ;; start-up
-(use-package startup
-  :defer t
+(use-builtin startup
   :init
   (setq inhibit-startup-screen     t
         initial-scratch-message    nil
         auto-save-list-file-prefix bk:local-directory))
 
 ;; frame
-(use-package frame
-  :hook (after-init . blink-cursor-mode)
-  :init
-  ;; (set-frame-font "Noto Sans Mono-11" nil t)
-  ;; ;; (if (bk/font-exists-p "Noto Sans Mono CJK KR-12")
-  ;; ;;     (add-to-list 'default-frame-alist '(font . "Noto Sans Mono CJK KR-12")))
-  ;; ;; (if (bk/font-exists-p "Noto Sans Mono CJK KR")
-  ;; ;;     (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR")))
-  )
+(use-builtin frame
+  :hook (after-init . blink-cursor-mode))
 
 ;; fringe
-(use-package fringe
+(use-builtin fringe
   :commands (set-fringe-mode)
   :hook (after-init . (lambda() (set-fringe-mode '(20 . 6)))))
 
 ;; hilight line
-(use-package hl-line
+(use-builtin hl-line
   :hook (after-init . global-hl-line-mode)
   :init
   (setq global-hl-line-sticky-frag nil))
 
 ;; delsel
-(use-package delsel
+(use-builtin delsel
   :hook (after-init . delete-selection-mode))
 
 ;; autorevert
-(use-package autorevert
+(use-builtin autorevert
   :hook (after-init . global-auto-revert-mode)
   :init
   (setq auto-revert-verbose nil)
   :blackout t)
 
 ;; vc-hooks
-(use-package vc-hooks
-  :defer t
+(use-builtin vc-hooks
   :init
   (setq vc-follow-symlinks t))
 
 ;; compile
-(use-package compile
-  :defer t
+(use-builtin compile
   :init
   (setq compilation-always-kill              t
         compilation-scroll-output            t
         compilation-auto-jump-to-first-error t))
 
 ;; [built-in] prog-mode
-(use-package prog-mode
+(use-builtin prog-mode
   :hook (prog-mode . prettify-symbols-mode))
 
 ;; mule-cmds
-(use-package mule-cmds
-  :defer t
+(use-builtin mule-cmds
   :init
   (set-language-environment               "Korean")
   (prefer-coding-system                   'utf-8)
@@ -158,7 +144,7 @@
   (setq-default buffer-file-coding-system 'utf-8))
 
 ;; simple
-(use-package simple
+(use-builtin simple
   :hook ((org-mode   . auto-fill-mode)
          (after-init . column-number-mode))
   :init
@@ -170,11 +156,11 @@
   (setq-default fill-column 100))
 
 ;; menu-bar
-(use-package menu-bar
+(use-builtin menu-bar
   :bind ("C-x k" . kill-this-buffer))
 
 ;; whitespace
-(use-package whitespace
+(use-builtin whitespace
   :commands (whitespace-mode)
   :init
   (add-hook
@@ -197,54 +183,27 @@
   :blackout t)
 
 ;; abbrev
-(use-package abbrev
-  :defer t
+(use-builtin abbrev
   :blackout t)
 
 ;; windmove
-(use-package windmove
+(use-builtin windmove
   :bind (("S-<left>"  . windmove-left)
          ("S-<right>" . windmove-right)
          ("S-<down>"  . windmove-down)
          ("S-<up>"    . windmove-up)))
 
 ;; ibuffer
-(use-package ibuffer
+(use-builtin ibuffer
   :bind ("C-x C-b" . ibuffer)
   :init
   (setq-default ibuffer-default-sorting-mode 'major-mode))
 
-;; dired
-(use-package dired
-  :bind (:map dired-mode-map
-              ("k" . dired-kill-subdir)
-              (")" . dired-omit-mode))
-  :init
-  (if (or (eq system-type 'darwin)
-          (eq system-type 'windows-nt))
-      (setq dired-listing-switches "-lha"
-            dired-use-ls-dired     nil)
-    (setq dired-listing-switches
-          "-lha --group-directories-first"))
-  (setq dired-dwim-target                         t
-        dired-recursive-copies                    'always
-        dired-recursive-deletes                   'always
-        dired-hide-details-hide-symlink-targets   nil
-        dired-hide-details-hide-information-lines t))
-
-;; dired-x
-(use-package dired-x                    ; must be required for a certain keymap (i.e. C-x C-j)
-  :after (dired)
-  :init
-  (setq-default
-   dired-omit-mode  t
-   dired-omit-files "^\\.$\\|^\\.[^\\.].+$"))
-
 ;; auto-insert
-(use-package autoinsert
+(use-builtin autoinsert
   :hook (after-init . auto-insert-mode)
   :init
   (setq auto-insert-query nil))
 
-(provide 'init-defaults)
-;;; init-defaults.el ends here
+(provide 'init-builtins)
+;;; init-builtins.el ends here
