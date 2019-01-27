@@ -39,6 +39,7 @@
               '(read-only t
                           point-entered minibuffer-avoid-prompt
                           face minibuffer-prompt))
+
 ;; alias
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -54,8 +55,8 @@
                           :weight 'regular
                           :width  'semi-condensed
                           :height '110)
-      (add-to-list 'face-font-family-alternatives preferred-font-families)))
-  (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR")))
+      (add-to-list 'face-font-family-alternatives preferred-font-families))
+    (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR"))))
 
 ;; files
 (use-builtin files

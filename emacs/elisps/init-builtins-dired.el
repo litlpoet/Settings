@@ -27,7 +27,7 @@
         dired-hide-details-hide-information-lines t))
 
 ;; dired-x
-(use-builtin dired-x                    ; must be required for a certain keymap (i.e. C-x C-j)
+(use-builtin dired-x  ; must be required for a certain keymap (i.e. C-x C-j)
   :after (dired)
   :demand t
   :init
@@ -41,8 +41,6 @@
   :config
   (setq direx:closed-icon "▸"
         direx:open-icon   "▾"))
-
-
 
 (provide 'init-builtins-dired)
 ;;; init-builtins-dired.el ends here

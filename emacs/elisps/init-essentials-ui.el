@@ -17,6 +17,12 @@
   :config
   (doom-themes-org-config))
 
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
+  :init
+  (setq doom-modeline-bar-width 2
+        doom-modeline-height    25))
+
 (use-package volatile-highlights
   :hook (after-init . volatile-highlights-mode)
   :config
