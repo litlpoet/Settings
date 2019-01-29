@@ -49,18 +49,17 @@
 (use-package ccls
   :hook (c-mode-common . (lambda()
                            (progn
+                             (require 'ccls)
                              (condition-case nil
                                  (lsp)
                                (user-error nil))
                              (setq-local company-idle-delay 0.3)
                              (setq-local company-dabbrev-code-everywhere t)
                              (setq-local company-backends
-                                         '(company-lsp
-                                           ;; (company-lsp company-yasnippet)
-                                           company-capf company-files)))))
+                                         '(company-lsp company-capf company-files)))))
   :init
-  (setq ccls-extra-args '("--log-file=/home/bk/.cache/ccls/ccls.log")
-        ccls-extra-init-params '(:index (:comments 2) :completion (:detailedLabel t))))
+  (setq ccls-args '("--log-file=/home/bk/.cache/ccls/ccls.log")
+        ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))))
 
 (use-package glsl-mode)
 

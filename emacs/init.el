@@ -31,16 +31,17 @@
   (add-to-list 'load-path bk:elisps-directory)
   (add-to-list 'load-path bk:elisps-hydras-directory))
 
-(load (concat bk:elisps-directory "init-package-management") nil t)
-(load (concat bk:elisps-directory "init-builtins") nil t)
-(load (concat bk:elisps-directory "init-builtins-dired") nil t)
-(load (concat bk:elisps-directory "init-essentials") nil t)
-(load (concat bk:elisps-directory "init-essentials-project") nil t)
-(load (concat bk:elisps-directory "init-essentials-ui") nil t)
-(load (concat bk:elisps-directory "init-languages") nil t)
-(load (concat bk:elisps-directory "init-languages-cpp") nil t)
-(load (concat bk:elisps-directory "init-languages-python") nil t)
-(load (concat bk:elisps-directory "init-keybindings") nil t)
+(require 'init-package-management)
+
+(require 'init-builtins)
+(require 'init-builtins-dired)
+(require 'init-essentials)
+(require 'init-essentials-project)
+(require 'init-essentials-ui)
+(require 'init-languages)
+(require 'init-languages-cpp)
+(require 'init-languages-python)
+(require 'init-keybindings)
 
 ;;; report init.el load time
 (let ((elapsed (float-time

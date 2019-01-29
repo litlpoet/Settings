@@ -36,7 +36,5 @@
   :after (hydra)
   :bind ("C-c w" . hydra-window/body))
 
-
-
 (provide 'init-keybindings)
 ;;; init-keybindings.el ends here

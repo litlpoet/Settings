@@ -5,17 +5,18 @@
 
 ;; lsp / lsp-ui
 (use-package lsp-mode
-  :commands (lsp))
+  :commands (lsp)
+  :init
+  (setq lsp-prefer-flymake nil))
 
 (use-package lsp-ui
   :commands (lsp-ui-mode)
-  :config
-  (setq lsp-ui-sideline-delay 1
+  :init
+  (setq lsp-ui-sideline-delay            1
         lsp-ui-sideline-ignore-duplicate t
-        lsp-ui-sideline-show-flycheck nil
-        lsp-ui-sideline-show-symbol nil
-        ;; lsp-ui-flycheck-live-reporting nil
-        )
+        lsp-ui-sideline-show-flycheck    nil
+        lsp-ui-sideline-show-symbol      nil)
+  :config
   (set-face-attribute 'lsp-face-highlight-read nil
                       :weight     'bold
                       :underline  "green"
@@ -45,22 +46,13 @@
 ;; company
 (use-package company
   :bind ("M-i" . company-complete)
-  :hook (after-init . global-company-mode)
-  :config
+  :hook ((prog-mode text-mode) . company-mode)
+  :init
   (setq company-backends
-        '(company-nxml
-          company-capf
+        '(company-capf
           company-files
           (company-dabbrev-code company-keywords)
           company-dabbrev))
-  (setq company-global-modes
-        '(lisp-interaction-mode
-          emacs-lisp-mode
-          org-mode
-          cmake-mode
-          c-mode
-          c++-mode
-          python-mode))
   :blackout t)
 
 ;; company lsp
@@ -72,17 +64,13 @@
 
 ;; fly-check
 (use-package flycheck
-  :hook (after-init . global-flycheck-mode)
+  :hook (prog-mode . flycheck-mode)
   :config
-  (setq flycheck-global-modes
-        '(emacs-lisp-mode
-          python-mode
-          c-mode
-          c++-mode
-          python-mode))
   (setq flycheck-check-syntax-automatically
-        '(save mode-enabled ;; idle-change
-               )
+        '(save
+          mode-enabled
+          ;; idle-change
+          )
         ;; flycheck-idle-change-delay 1.0
         )
   (setq-default flycheck-disabled-checkers
@@ -104,12 +92,6 @@
   (set-face-attribute 'magit-diff-file-heading nil
                       :inverse-video t
                       :weight 'extra-bold))
-
-;; diff-hl-mode
-(use-package diff-hl
-  :hook ((after-init         . global-diff-hl-mode)
-         (dired-mode         . diff-hl-dired-mode)
-         (magit-post-refresh . diff-hl-magit-post-refresh)))
 
 ;; clean-aindent-mode
 (use-package clean-aindent-mode

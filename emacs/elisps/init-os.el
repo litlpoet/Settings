@@ -28,7 +28,6 @@
 (when (string-match-p "ARCH" operating-system-release)
   (progn
     (use-package system-packages
-      :ensure t
       :commands (system-packages-update)
       :config
       (add-to-list 'system-packages-supported-package-managers

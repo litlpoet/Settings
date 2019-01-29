@@ -55,7 +55,7 @@ If not in a projectile project use `bk:format-include-guard-fallback'."
   "Generate an include guard (should be in a C/C++ file).
 used by the symbol `auto-insert-mode'."
   (insert "guard")
-  (yas/expand))
+  (yas-expand))
 
 (dolist (elem bk:auto-insert-alist)
   (add-to-list 'auto-insert-alist elem))

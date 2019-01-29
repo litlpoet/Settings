@@ -63,19 +63,15 @@
   :init
   (unless (file-exists-p bk:local-directory)
     (make-directory bk:local-directory t))
-  (setq backup-by-copying      t
-        kept-new-versions      5
-        kept-old-versions      3
-        delete-old-versions    t
-        confirm-kill-emacs     'y-or-n-p)
+  (setq auto-save-default   nil
+        make-backup-files   nil
+        confirm-kill-emacs  'y-or-n-p)
   (setq-default backup-directory-alist (list (cons "." bk:local-directory))))
 
-;; tramp
 (use-builtin tramp
   :init
   (setq tramp-backup-directory-alist backup-directory-alist))
 
-;; files recentf
 (use-builtin recentf
   :hook (after-init . recentf-mode)
   :init
@@ -84,56 +80,48 @@
                 (expand-file-name "recentf" bk:local-directory)
                 recentf-auto-cleanup 'never))
 
-;; start-up
 (use-builtin startup
   :init
-  (setq inhibit-startup-screen     t
-        initial-scratch-message    nil
-        auto-save-list-file-prefix bk:local-directory))
+  (setq-default
+   initial-major-mode                'fundamental-mode
+   initial-scratch-message           nil
+   inhibit-startup-screen            t
+   inhibit-startup-echo-area-message user-login-name
+   auto-save-list-file-prefix        bk:local-directory)
+  (fset #'display-startup-echo-area-message #'ignore))
 
 ;; frame
 (use-builtin frame
   :hook (after-init . blink-cursor-mode))
 
-;; fringe
 (use-builtin fringe
-  :commands (set-fringe-mode)
-  :hook (after-init . (lambda() (set-fringe-mode '(20 . 6)))))
+  :commands fringe-mode
+  :hook (after-init . (lambda() (fringe-mode '(18 . 6)))))
 
-;; hilight line
 (use-builtin hl-line
-  :hook (after-init . global-hl-line-mode)
-  :init
-  (setq global-hl-line-sticky-frag nil))
+  :hook ((prog-mode text-mode dired-mode) . hl-line-mode)
+  :init (setq hl-line-sticky-flag nil))
 
-;; delsel
 (use-builtin delsel
   :hook (after-init . delete-selection-mode))
 
-;; autorevert
 (use-builtin autorevert
   :hook (after-init . global-auto-revert-mode)
-  :init
-  (setq auto-revert-verbose nil)
+  :init (setq auto-revert-verbose nil)
   :blackout t)
 
-;; vc-hooks
 (use-builtin vc-hooks
-  :init
-  (setq vc-follow-symlinks t))
+  :init (setq vc-follow-symlinks t))
 
-;; compile
 (use-builtin compile
   :init
   (setq compilation-always-kill              t
         compilation-scroll-output            t
         compilation-auto-jump-to-first-error t))
 
-;; [built-in] prog-mode
 (use-builtin prog-mode
   :hook (prog-mode . prettify-symbols-mode))
 
-;; mule-cmds
 (use-builtin mule-cmds
   :init
   (set-language-environment               "Korean")
@@ -144,10 +132,9 @@
   (setq locale-coding-system              'utf-8)
   (setq-default buffer-file-coding-system 'utf-8))
 
-;; simple
 (use-builtin simple
-  :hook ((org-mode   . auto-fill-mode)
-         (after-init . column-number-mode))
+  :hook ((org-mode  . auto-fill-mode)
+         (prog-mode . column-number-mode))
   :init
   (setq global-mark-ring-max 1000
         mark-ring-max        1000
@@ -156,11 +143,9 @@
         size-indication-mode t)
   (setq-default fill-column 100))
 
-;; menu-bar
 (use-builtin menu-bar
   :bind ("C-x k" . kill-this-buffer))
 
-;; whitespace
 (use-builtin whitespace
   :commands (whitespace-mode)
   :init
@@ -183,24 +168,20 @@
   (set-face-foreground 'whitespace-line nil)
   :blackout t)
 
-;; abbrev
 (use-builtin abbrev
   :blackout t)
 
-;; windmove
 (use-builtin windmove
   :bind (("S-<left>"  . windmove-left)
          ("S-<right>" . windmove-right)
          ("S-<down>"  . windmove-down)
          ("S-<up>"    . windmove-up)))
 
-;; ibuffer
 (use-builtin ibuffer
   :bind ("C-x C-b" . ibuffer)
   :init
   (setq-default ibuffer-default-sorting-mode 'major-mode))
 
-;; auto-insert
 (use-builtin autoinsert
   :hook (after-init . auto-insert-mode)
   :init

@@ -20,7 +20,7 @@
 (use-package multiple-cursors
   :init
   (setq mc/list-file (expand-file-name
-                      (convert-standard-filename "mc-list.el")
+                      (convert-standard-filename "mc-lists.el")
                       bk:local-directory))
   :bind (("M-4" . mc/mark-next-like-this)
          ("M-3" . mc/mark-previous-like-this)
@@ -51,10 +51,10 @@
          ("M-D"           . sp-splice-sexp)
          ("M-F"           . sp-forward-symbol)
          ("M-B"           . sp-backward-symbol))
-  :hook ((after-init . show-smartparens-global-mode)
-         (after-init . smartparens-global-mode)
-         (after-init . (lambda() (require 'smartparens-config))))
+  :hook ((prog-mode . smartparens-mode)
+         (prog-mode . show-smartparens-mode))
   :config
+  (require 'smartparens-config)
   (sp-with-modes '(c-mode c++-mode)
     (sp-local-pair "{" nil
                    :post-handlers '(("||\n[i]" "RET"))))
