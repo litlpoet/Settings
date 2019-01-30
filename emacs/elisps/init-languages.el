@@ -7,7 +7,8 @@
 (use-package lsp-mode
   :commands (lsp)
   :init
-  (setq lsp-prefer-flymake nil))
+  (setq lsp-session-file (expand-file-name "lsp-session" bk:local-directory)
+        lsp-prefer-flymake nil))
 
 (use-package lsp-ui
   :commands (lsp-ui-mode)

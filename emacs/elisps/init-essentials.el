@@ -4,28 +4,27 @@
 ;;; Code:
 ;; (edit) iedit
 (use-package iedit
-  :bind (("C-;" . iedit-mode)
-         ("C-:" . iedit-mode-toggle-on-function))
+  :commands (iedit-mode iedit-mode-toggle-on-function)
   :config (set-face-inverse-video 'iedit-occurrence t))
 
 ;; (edit) expand-region
 (use-package expand-region
-  :bind   ("M-2" . er/expand-region))
+  :commands (er/expand-region))
 
 ;; (edit) duplicate-thing
 (use-package duplicate-thing
-  :bind   ("M-c" . duplicate-thing))
+  :commands (duplicate-thing))
 
 ;; (edit) multiple-cursors
 (use-package multiple-cursors
+  :commands (mc/mark-previous-like-this
+             mc/mark-next-like-this
+             mc/skip-to-previous-like-this
+             mc/skip-to-next-like-this)
   :init
   (setq mc/list-file (expand-file-name
                       (convert-standard-filename "mc-lists.el")
-                      bk:local-directory))
-  :bind (("M-4" . mc/mark-next-like-this)
-         ("M-3" . mc/mark-previous-like-this)
-         ("M-$" . mc/skip-to-next-like-this)
-         ("M-#" . mc/skip-to-previous-like-this)))
+                      bk:local-directory)))
 
 ;; (edit) hungry-delete
 (use-package hungry-delete
@@ -39,18 +38,10 @@
 
 ;;; (edit) macrostep
 (use-package macrostep
-  :bind ("C-c e m" . macrostep-expand))
+  :commands (macrostep-expand))
 
 ;; (edit) smartparens
 (use-package smartparens
-  :bind (:map
-         smartparens-mode-map
-         ("C-M-w"         . sp-copy-sexp)
-         ("M-<delete>"    . sp-unwrap-sexp)
-         ("M-<backspace>" . sp-backward-unwrap-sexp)
-         ("M-D"           . sp-splice-sexp)
-         ("M-F"           . sp-forward-symbol)
-         ("M-B"           . sp-backward-symbol))
   :hook ((prog-mode . smartparens-mode)
          (prog-mode . show-smartparens-mode))
   :config

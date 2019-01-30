@@ -144,7 +144,7 @@
   (setq-default fill-column 100))
 
 (use-builtin menu-bar
-  :bind ("C-x k" . kill-this-buffer))
+  :commands (kill-this-buffer))
 
 (use-builtin whitespace
   :commands (whitespace-mode)
@@ -172,13 +172,10 @@
   :blackout t)
 
 (use-builtin windmove
-  :bind (("S-<left>"  . windmove-left)
-         ("S-<right>" . windmove-right)
-         ("S-<down>"  . windmove-down)
-         ("S-<up>"    . windmove-up)))
+  :commands (windmove-left windmove-right windmove-down windmove-up))
 
 (use-builtin ibuffer
-  :bind ("C-x C-b" . ibuffer)
+  :commands (ibuffer)
   :init
   (setq-default ibuffer-default-sorting-mode 'major-mode))
 

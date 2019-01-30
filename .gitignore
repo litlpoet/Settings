@@ -11,4 +11,4 @@ elpa
 irony
 !.emacs.d/
 emacs/straight
-
+.local/

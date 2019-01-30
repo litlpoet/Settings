@@ -36,5 +36,37 @@
   :after (hydra)
   :bind ("C-c w" . hydra-window/body))
 
+;; personal global key bindings
+(bind-keys* ("C-x k" . kill-this-buffer)
+            ("C-x C-b" . ibuffer))
+(bind-key "C-c C-j" #'direx-project:jump-to-project-root)
+(bind-keys* ("S-<left>"  . windmove-left)
+            ("S-<right>" . windmove-right)
+            ("S-<down>"  . windmove-down)
+            ("S-<up>"    . windmove-up))
+(bind-keys ("C-;" . iedit-mode)
+           ("C-:" . iedit-mode-toggle-on-function))
+(bind-keys ("M-c" . duplicate-thing)
+           ("M-2" . er/expand-region)
+           ("M-3" . mc/mark-previous-like-this)
+           ("M-4" . mc/mark-next-like-this)
+           ("M-#" . mc/skip-to-previous-like-this)
+           ("M-$" . mc/skip-to-next-like-this))
+
+;; personal local key bindings
+(with-eval-after-load 'dired
+  (bind-keys :map dired-mode-map
+             ("k" . dired-kill-subdir)
+             (")" . dired-omit-mode)))
+(with-eval-after-load 'smartparens
+  (bind-keys :map smartparens-mode-map
+             ("C-M-w"         . sp-copy-sexp)
+             ("M-<delete>"    . sp-unwrap-sexp)
+             ("M-<backspace>" . sp-backward-unwrap-sexp)
+             ("M-D"           . sp-splice-sexp)
+             ("M-F"           . sp-forward-symbol)
+             ("M-B"           . sp-backward-symbol)))
+(bind-key "C-c e m" #'macrostep-expand )
+
 (provide 'init-keybindings)
 ;;; init-keybindings.el ends here

@@ -10,9 +10,7 @@
 ;;; Code:
 ;; dired
 (use-builtin dired
-  :bind (:map dired-mode-map
-              ("k" . dired-kill-subdir)
-              (")" . dired-omit-mode))
+  :commands (dired-kill-subdir dired-omit-mode)
   :init
   (if (or (eq system-type 'darwin)
           (eq system-type 'windows-nt))
@@ -37,8 +35,8 @@
 
 ;; (dired) direx
 (use-package direx
-  :bind ("C-c C-j" . direx-project:jump-to-project-root)
-  :config
+  :commands (direx-project:jump-to-project-root)
+  :init
   (setq direx:closed-icon "▸"
         direx:open-icon   "▾"))
 
