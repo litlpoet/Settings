@@ -9,6 +9,7 @@
         c-electric-semi&comma
         c-electric-slash
         counsel-yank-pop
+        hungry-delete-forward
         kill-region
         ))
 

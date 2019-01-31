@@ -5,13 +5,11 @@
 
 ;; lsp / lsp-ui
 (use-package lsp-mode
-  :commands (lsp)
   :init
   (setq lsp-session-file (expand-file-name "lsp-session" bk:local-directory)
         lsp-prefer-flymake nil))
 
 (use-package lsp-ui
-  :commands (lsp-ui-mode)
   :init
   (setq lsp-ui-sideline-delay            1
         lsp-ui-sideline-ignore-duplicate t
@@ -46,7 +44,6 @@
 
 ;; company
 (use-package company
-  :bind ("M-i" . company-complete)
   :hook ((prog-mode text-mode) . company-mode)
   :init
   (setq company-backends
@@ -59,7 +56,6 @@
 ;; company lsp
 (use-package company-lsp
   :after (company)
-  :commands (company-lsp)
   :config
   (setq company-lsp-cache-candidates nil))
 
@@ -86,7 +82,6 @@
 
 ;; magit
 (use-package magit
-  :bind (("C-c s" . magit-status))
   :init
   (setq magit-completing-read-function 'ivy-completing-read)
   :config
@@ -100,14 +95,9 @@
 
 ;; zeal docset
 (use-package zeal-at-point
-  :bind (("C-c z" . zeal-at-point))
   :config
   (add-to-list 'zeal-at-point-mode-alist
                '(c++-mode . ("cpp" "qt5" "gl4"))))
-
-;; personal implementation
-(use-builtin impl-autoinsert
-  :after (autoinsert))
 
 (provide 'init-languages)
 ;;; init-languages ends here

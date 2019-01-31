@@ -95,7 +95,7 @@
   :hook (after-init . blink-cursor-mode))
 
 (use-builtin fringe
-  :commands fringe-mode
+  :commands fringe-mode                 ; fringe-mode is not autoloaded
   :hook (after-init . (lambda() (fringe-mode '(18 . 6)))))
 
 (use-builtin hl-line
@@ -144,10 +144,9 @@
   (setq-default fill-column 100))
 
 (use-builtin menu-bar
-  :commands (kill-this-buffer))
+  :commands (kill-this-buffer))         ; kill-this-buffer is not autoloaded
 
 (use-builtin whitespace
-  :commands (whitespace-mode)
   :init
   (add-hook
    'diff-mode-hook
@@ -171,11 +170,9 @@
 (use-builtin abbrev
   :blackout t)
 
-(use-builtin windmove
-  :commands (windmove-left windmove-right windmove-down windmove-up))
+(use-builtin windmove)
 
 (use-builtin ibuffer
-  :commands (ibuffer)
   :init
   (setq-default ibuffer-default-sorting-mode 'major-mode))
 
@@ -183,6 +180,10 @@
   :hook (after-init . auto-insert-mode)
   :init
   (setq auto-insert-query nil))
+
+(use-builtin impl-autoinsert
+  :after (autoinsert)
+  :demand t)
 
 (provide 'init-builtins)
 ;;; init-builtins.el ends here

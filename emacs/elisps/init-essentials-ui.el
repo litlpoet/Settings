@@ -20,11 +20,11 @@
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
   :init
-  (setq doom-modeline-bar-width 2
+  (setq doom-modeline-bar-width 3
         doom-modeline-height    25))
 
 (use-package volatile-highlights
-  :hook (after-init . volatile-highlights-mode)
+  :hook ((text-mode prog-mode) . volatile-highlights-mode)
   :config
   (set-face-attribute 'vhl/default-face nil
                       :underline "light slate gray")

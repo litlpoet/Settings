@@ -39,6 +39,7 @@
 (require 'init-essentials-project)
 (require 'init-essentials-ui)
 (require 'init-languages)
+(require 'init-languages-lisp)
 (require 'init-languages-cpp)
 (require 'init-languages-python)
 (require 'init-keybindings)
