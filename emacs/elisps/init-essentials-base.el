@@ -34,8 +34,12 @@
 
 (use-package ivy
   :init
-  (setq ivy-use-virtual-buffers t
-        ivy-count-format        "(%d/%d) ")
+  (setq ivy-height                  15
+        ivy-fixed-height-minibuffer t
+        ivy-initial-inputs-alist    nil
+        ivy-format-function         #'ivy-format-function-line
+        ivy-use-virtual-buffers     t
+        ivy-count-format            "(%d/%d) ")
   (ivy-mode))
 
 (use-package ivy-xref

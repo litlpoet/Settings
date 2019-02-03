@@ -39,8 +39,8 @@
  ("C-c s"   . magit-status)
  ("C-c z"   . zeal-at-point)
  ("C-c C-j" . direx-project:jump-to-project-root)
- ("C-x o"   . ace-window)
- ("C-x 1"   . ace-delete-window))
+ ([remap other-window]         . ace-window)
+ ([remap delete-other-windows] . ace-delete-window))
 
 (with-eval-after-load 'undo-tree
   (bind-keys ("C-?" . undo-tree-redo))) ;; undo-tree-redo is not autoloaded
