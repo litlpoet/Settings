@@ -9,12 +9,12 @@
 
 ;;; Code:
 (use-package projectile
-  :hook (after-init . projectile-mode)
   :init
   (setq projectile-cache-file
         (expand-file-name "projectile.cache" bk:local-directory)
         projectile-known-projects-file
         (expand-file-name "projectile-bookmarks.eld" bk:local-directory))
+  (projectile-mode)
   :config
   (setq projectile-completion-system           'ivy
         projectile-switch-project-action       #'projectile-dired

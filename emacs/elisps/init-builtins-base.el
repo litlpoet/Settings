@@ -1,8 +1,7 @@
-;;; init-builtins.el --- default setting
+;;; init-builtins-base.el --- default setting
 ;;; Commentary:
 
 ;;; Code:
-
 ;;; early appearance
 (when window-system
   (menu-bar-mode   -1)
@@ -19,8 +18,8 @@
       ring-bell-function              'ignore
       auto-save-timeout               120
       scroll-preserve-screen-position t
-      scroll-conservatively           100000
-      scroll-step                     1
+      scroll-conservatively           1001
+      ;; scroll-step                     1
       scroll-margin                   5
       even-window-sizes               'width-only)
 
@@ -38,12 +37,23 @@
               minibuffer-prompt-properties
               '(read-only t
                           point-entered minibuffer-avoid-prompt
-                          face minibuffer-prompt))
+                          face minibuffer-prompt)
+              window-resize-pixelwise t
+              frame-resize-pixelwise  t)
 
 ;; alias
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; font-faces
+(use-builtin abbrev)
+(use-builtin delsel    :init (delete-selection-mode))
+(use-builtin frame     :init (blink-cursor-mode))
+(use-builtin ibuffer   :init (setq-default ibuffer-default-sorting-mode 'major-mode))
+(use-builtin menu-bar  :commands (kill-this-buffer))         ; kill-this-buffer is not autoloaded
+(use-builtin prog-mode :hook (prog-mode . prettify-symbols-mode))
+(use-builtin tramp     :init (setq tramp-backup-directory-alist backup-directory-alist))
+(use-builtin vc-hooks  :init (setq vc-follow-symlinks t))
+(use-builtin windmove)
+
 (use-builtin faces
   :init
   (when (display-graphic-p)
@@ -58,7 +68,6 @@
       (add-to-list 'face-font-family-alternatives preferred-font-families))
     (set-fontset-font t 'hangul (font-spec :name "Noto Sans Mono CJK KR"))))
 
-;; files
 (use-builtin files
   :init
   (unless (file-exists-p bk:local-directory)
@@ -68,17 +77,13 @@
         confirm-kill-emacs  'y-or-n-p)
   (setq-default backup-directory-alist (list (cons "." bk:local-directory))))
 
-(use-builtin tramp
-  :init
-  (setq tramp-backup-directory-alist backup-directory-alist))
-
 (use-builtin recentf
-  :hook (after-init . recentf-mode)
   :init
   ;; following two lines must be set prior to execute recentf-mode
   (setq-default recentf-save-file
                 (expand-file-name "recentf" bk:local-directory)
-                recentf-auto-cleanup 'never))
+                recentf-auto-cleanup 'never)
+  (recentf-mode))
 
 (use-builtin startup
   :init
@@ -90,37 +95,25 @@
    auto-save-list-file-prefix        bk:local-directory)
   (fset #'display-startup-echo-area-message #'ignore))
 
-;; frame
-(use-builtin frame
-  :hook (after-init . blink-cursor-mode))
-
 (use-builtin fringe
   :commands fringe-mode                 ; fringe-mode is not autoloaded
-  :hook (after-init . (lambda() (fringe-mode '(18 . 6)))))
+  :init (fringe-mode '(18 . 6)))
 
 (use-builtin hl-line
   :hook ((prog-mode text-mode dired-mode) . hl-line-mode)
-  :init (setq hl-line-sticky-flag nil))
-
-(use-builtin delsel
-  :hook (after-init . delete-selection-mode))
+  :init (setq hl-line-sticky-flag        nil
+              global-hl-line-sticky-flag nil))
 
 (use-builtin autorevert
-  :hook (after-init . global-auto-revert-mode)
-  :init (setq auto-revert-verbose nil)
-  :blackout t)
-
-(use-builtin vc-hooks
-  :init (setq vc-follow-symlinks t))
+  :init
+  (setq auto-revert-verbose nil)
+  (global-auto-revert-mode))
 
 (use-builtin compile
   :init
   (setq compilation-always-kill              t
         compilation-scroll-output            t
         compilation-auto-jump-to-first-error t))
-
-(use-builtin prog-mode
-  :hook (prog-mode . prettify-symbols-mode))
 
 (use-builtin mule-cmds
   :init
@@ -141,10 +134,7 @@
         kill-ring-max        1000
         kill-whole-line      t
         size-indication-mode t)
-  (setq-default fill-column 100))
-
-(use-builtin menu-bar
-  :commands (kill-this-buffer))         ; kill-this-buffer is not autoloaded
+  (setq-default fill-column 120))
 
 (use-builtin whitespace
   :init
@@ -164,26 +154,19 @@
                   '(face tabs trailing lines-tail))
       (whitespace-mode 1)))
   :config
-  (set-face-foreground 'whitespace-line nil)
-  :blackout t)
+  (set-face-foreground 'whitespace-line nil))
 
-(use-builtin abbrev
-  :blackout t)
-
-(use-builtin windmove)
-
-(use-builtin ibuffer
-  :init
-  (setq-default ibuffer-default-sorting-mode 'major-mode))
+(use-builtin visual-line-mode
+  :hook ((prog-mode text-mode) . visual-line-mode))
 
 (use-builtin autoinsert
-  :hook (after-init . auto-insert-mode)
   :init
-  (setq auto-insert-query nil))
+  (setq auto-insert-query nil)
+  (auto-insert-mode))
 
 (use-builtin impl-autoinsert
-  :after (autoinsert)
+  :after (autoinsert projectile)
   :demand t)
 
-(provide 'init-builtins)
-;;; init-builtins.el ends here
+(provide 'init-builtins-base)
+;;; init-builtins-base.el ends here

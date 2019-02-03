@@ -1,30 +1,14 @@
-;;; hydra-ibuffer.el --- hydra ibuffer description   -*- lexical-binding: t; -*-
+;;; init-keybindings-hydras-ibuffer.el --- hydra ibuffer description   -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Byungkuk Choi
-
 ;; Author: Byungkuk Choi <bk@i7-G6>
 ;; Keywords: lisp
 
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 ;;; Commentary:
-
 ;; hydra ibuffer description
 
 ;;; Code:
-
-(defhydra hydra-ibuffer (:color red :hint nil)
+(defhydra bk:hydra-ibuffer (:color red :hint nil)
   "
 ^Mark^         ^Actions^          ^View^        ^Select^         ^Navigation^
 _m_: mark      _D_: delete        _g_: refresh  _q_: quit        _p_:   ↑    _b_
@@ -34,14 +18,14 @@ _*_: specific  _._: toggle hydra  _H_: help     C-o: view other
 "
   ("m"   ibuffer-mark-forward)
   ("u"   ibuffer-unmark-forward)
-  ("*"   hydra-ibuffer-mark/body :color blue)
+  ("*"   bk:hydra-ibuffer-mark/body :color blue)
   ("t"   ibuffer-toggle-marks)
   ("D"   ibuffer-do-delete)
   ("S"   ibuffer-do-save)
-  ("a"   hydra-ibuffer-action/body :color blue)
+  ("a"   bk:hydra-ibuffer-action/body :color blue)
   ("g"   ibuffer-update)
-  ("s"   hydra-ibuffer-sort/body :color blue)
-  ("/"   hydra-ibuffer-filter/body :color blue)
+  ("s"   bk:hydra-ibuffer-sort/body :color blue)
+  ("/"   bk:hydra-ibuffer-filter/body :color blue)
   ("H"   describe-mode :color blue)
   ("b"   ibuffer-backward-filter-group)
   ("p"   ibuffer-backward-line)
@@ -53,8 +37,8 @@ _*_: specific  _._: toggle hydra  _H_: help     C-o: view other
   ("q"   quit-window :color blue)
   ("."   nil :color blue))
 
-(defhydra hydra-ibuffer-mark (:color teal :columns 5
-                                     :after-exit (hydra-ibuffer/body))
+(defhydra bk:hydra-ibuffer-mark
+  (:color teal :columns 5 :after-exit (bk:hydra-ibuffer/body))
   "Mark"
   ("*" ibuffer-unmark-all "unmark all")
   ("M" ibuffer-mark-by-mode "mode")
@@ -66,12 +50,11 @@ _*_: specific  _._: toggle hydra  _H_: help     C-o: view other
   ("e" ibuffer-mark-dissociated-buffers "dissociated")
   ("h" ibuffer-mark-help-buffers "help")
   ("z" ibuffer-mark-compressed-file-buffers "compressed")
-  ("b" hydra-ibuffer/body "back" :color blue))
+  ("b" bk:hydra-ibuffer/body "back" :color blue))
 
-(defhydra hydra-ibuffer-action (:color teal :columns 4
-                                       :after-exit
-                                       (if (eq major-mode 'ibuffer-mode)
-                                           (hydra-ibuffer/body)))
+(defhydra bk:hydra-ibuffer-action
+  (:color teal :columns 4 :after-exit (if (eq major-mode 'ibuffer-mode)
+                                          (bk:hydra-ibuffer/body)))
   "Action"
   ("A" ibuffer-do-view "view")
   ("E" ibuffer-do-eval "eval")
@@ -91,7 +74,7 @@ _*_: specific  _._: toggle hydra  _H_: help     C-o: view other
   ("X" ibuffer-do-shell-command-pipe "shell-command-pipe")
   ("b" nil "back"))
 
-(defhydra hydra-ibuffer-sort (:color amaranth :columns 3)
+(defhydra bk:hydra-ibuffer-sort (:color amaranth :columns 3)
   "Sort"
   ("i" ibuffer-invert-sorting "invert")
   ("a" ibuffer-do-sort-by-alphabetic "alphabetic")
@@ -99,9 +82,9 @@ _*_: specific  _._: toggle hydra  _H_: help     C-o: view other
   ("s" ibuffer-do-sort-by-size "size")
   ("f" ibuffer-do-sort-by-filename/process "filename")
   ("m" ibuffer-do-sort-by-major-mode "mode")
-  ("b" hydra-ibuffer/body "back" :color blue))
+  ("b" bk:hydra-ibuffer/body "back" :color blue))
 
-(defhydra hydra-ibuffer-filter (:color amaranth :columns 4)
+(defhydra bk:hydra-ibuffer-filter (:color amaranth :columns 4)
   "Filter"
   ("m" ibuffer-filter-by-used-mode "mode")
   ("M" ibuffer-filter-by-derived-mode "derived mode")
@@ -112,7 +95,7 @@ _*_: specific  _._: toggle hydra  _H_: help     C-o: view other
   (">" ibuffer-filter-by-size-gt "size")
   ("<" ibuffer-filter-by-size-lt "size")
   ("/" ibuffer-filter-disable "disable")
-  ("b" hydra-ibuffer/body "back" :color blue))
+  ("b" bk:hydra-ibuffer/body "back" :color blue))
 
-(provide 'hydra-ibuffer)
-;;; hydra-ibuffer.el ends here
+(provide 'init-keybindings-hydras-ibuffer)
+;;; init-keybindings-hydras-ibuffer.el ends here

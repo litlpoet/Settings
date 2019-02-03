@@ -8,7 +8,6 @@
 ;; Built-in Dired configurations
 
 ;;; Code:
-;; dired
 (use-builtin dired
   :init
   (if (or (eq system-type 'darwin)
@@ -16,23 +15,22 @@
       (setq dired-listing-switches "-lha"
             dired-use-ls-dired     nil)
     (setq dired-listing-switches
-          "-lha --group-directories-first"))
+          "-aBhl --group-directories-first"))
   (setq dired-dwim-target                         t
         dired-recursive-copies                    'always
-        dired-recursive-deletes                   'always
+        dired-recursive-deletes                   'top
         dired-hide-details-hide-symlink-targets   nil
         dired-hide-details-hide-information-lines t))
 
-;; dired-x
 (use-builtin dired-x  ; must be required for a certain keymap (i.e. C-x C-j)
   :after (dired)
   :demand t
   :init
   (setq-default
-   dired-omit-mode  t
-   dired-omit-files "^\\.$\\|^\\.[^\\.].+$"))
+   dired-omit-verbose nil
+   dired-omit-mode    t
+   dired-omit-files   "^\\.$\\|^\\.[^\\.].+$"))
 
-;; (dired) direx
 (use-package direx
   :init
   (setq direx:closed-icon "▸"

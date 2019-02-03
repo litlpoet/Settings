@@ -1,4 +1,4 @@
-;;; init-keybindings.el ---  all key bindings        -*- lexical-binding: t; -*-
+;;; init-keybindings-base.el ---  all key bindings        -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2019  Byungkuk Choi
 ;; Author: Byungkuk Choi <bk@i7-G6>
@@ -8,38 +8,12 @@
 ;; All key bindings
 
 ;;; Code:
-;; (navi) which-key
-(use-package which-key
-  :hook (after-init . which-key-mode)
-  :blackout t)
-
-;; (navi) hydra
-(use-package hydra
-  :init
-  (defhydra hydra-zoom (global-map "<f2>")
-    "zoom"
-    ("+" text-scale-increase "in")
-    ("-" text-scale-decrease "out")
-    ("0" text-scale-adjust   "reset")))
-
-(use-builtin hydra-dired
-  :after (hydra dired)
-  :bind (:map dired-mode-map
-              ("." . hydra-dired/body)))
-
-(use-builtin hydra-ibuffer
-  :after (hydra ibuffer)
-  :bind (:map ibuffer-mode-map
-              ("." . hydra-ibuffer/body)))
-
-(use-builtin hydra-window
-  :after (hydra)
-  :bind ("C-c w" . hydra-window/body))
+(use-package which-key :init (which-key-mode))
 
 ;; personal global key bindings (built-in)
 (bind-keys*
- ("C-x k" . kill-this-buffer)
- ("C-x C-b" . ibuffer)
+ ("C-x k"     . kill-this-buffer)
+ ("C-x C-b"   . ibuffer)
  ("S-<left>"  . windmove-left)
  ("S-<right>" . windmove-right)
  ("S-<down>"  . windmove-down)
@@ -47,14 +21,14 @@
 
 ;; personal global key bindings (modules)
 (bind-keys
- ("C-;" . iedit-mode)
- ("C-:" . iedit-mode-toggle-on-function)
- ("M-c" . duplicate-thing)
- ("M-2" . er/expand-region)
- ("M-3" . mc/mark-previous-like-this)
- ("M-4" . mc/mark-next-like-this)
- ("M-#" . mc/skip-to-previous-like-this)
- ("M-$" . mc/skip-to-next-like-this)
+ ("C-;"     . iedit-mode)
+ ("C-:"     . iedit-mode-toggle-on-function)
+ ("M-c"     . duplicate-thing)
+ ("M-2"     . er/expand-region)
+ ("M-3"     . mc/mark-previous-like-this)
+ ("M-4"     . mc/mark-next-like-this)
+ ("M-#"     . mc/skip-to-previous-like-this)
+ ("M-$"     . mc/skip-to-next-like-this)
  ("C-r"     . counsel-grep-or-swiper)
  ("C-s"     . counsel-grep-or-swiper)
  ("C-c C-r" . ivy-resume)
@@ -65,8 +39,8 @@
  ("C-c s"   . magit-status)
  ("C-c z"   . zeal-at-point)
  ("C-c C-j" . direx-project:jump-to-project-root)
- ("C-x o" . ace-window)
- ("C-x 1" . ace-delete-window))
+ ("C-x o"   . ace-window)
+ ("C-x 1"   . ace-delete-window))
 
 (with-eval-after-load 'undo-tree
   (bind-keys ("C-?" . undo-tree-redo))) ;; undo-tree-redo is not autoloaded
@@ -76,13 +50,13 @@
    :map projectile-mode-map
    ("C-c p" . projectile-command-map)))
 
-
 ;; personal local key bindings (built-in)
 (with-eval-after-load 'dired
   (bind-keys
    :map dired-mode-map
    ("k" . dired-kill-subdir)
-   (")" . dired-omit-mode)))
+   (")" . dired-omit-mode)
+   ([remap quit-window] . (lambda() (interactive) (quit-window t)))))
 
 ;; personal local key bindings (modules)
 (with-eval-after-load 'company
@@ -107,5 +81,10 @@
    :map emacs-lisp-mode-map
    ("C-c e m" . macrostep-expand)))
 
-(provide 'init-keybindings)
-;;; init-keybindings.el ends here
+(with-eval-after-load 'clang-format
+  (bind-keys
+   :map c-mode-base-map
+   ("C-c C-f" . clang-format-buffer)))
+
+(provide 'init-keybindings-base)
+;;; init-keybindings-base.el ends here

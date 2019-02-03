@@ -1,30 +1,14 @@
-;;; hydra-dired.el --- hydra dired definitions       -*- lexical-binding: t; -*-
+;;; init-keybindings-hydras-dired.el --- hydra dired definitions       -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018  Byungkuk Choi
-
 ;; Author: Byungkuk Choi <bk@i7-G6>
 ;; Keywords: lisp
 
-;; This program is free software; you can redistribute it and/or modify
-;; it under the terms of the GNU General Public License as published by
-;; the Free Software Foundation, either version 3 of the License, or
-;; (at your option) any later version.
-
-;; This program is distributed in the hope that it will be useful,
-;; but WITHOUT ANY WARRANTY; without even the implied warranty of
-;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-;; GNU General Public License for more details.
-
-;; You should have received a copy of the GNU General Public License
-;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 ;;; Commentary:
-
 ;; hydra dired definitions
 
 ;;; Code:
-
-(defhydra hydra-dired (:hint nil :color red)
+(defhydra bk:hydra-dired (:hint nil :color red)
   "
 ^Mark^            ^Actions^           ^Dir^               ^View^            ^wdired^           ^Navigation^
 _m_: mark         _C_: copy           _+_: mkdir          _v_: view         ^C-x C-q: edit^    _p_:   ↑
@@ -70,5 +54,5 @@ _F_: find marked  _Y_: rel symlink    _g_: revert         _s_: sort         ^ ^ 
   ("RET" dired-find-file :color blue)
   ("." nil :color blue))
 
-(provide 'hydra-dired)
-;;; hydra-dired.el ends here
+(provide 'init-keybindings-hydras-dired)
+;;; init-keybindings-hydras-dired.el ends here

@@ -1,9 +1,9 @@
-;;; init-languages.el -- common programming
+;;; init-languages-base.el -- common programming
 ;;; Commentary:
 
 ;;; Code:
+(use-package clean-aindent-mode :hook (prog-mode))
 
-;; lsp / lsp-ui
 (use-package lsp-mode
   :init
   (setq lsp-session-file (expand-file-name "lsp-session" bk:local-directory)
@@ -32,17 +32,12 @@
                       :foreground nil
                       :background nil))
 
-;; yasnippet
 (use-package yasnippet
   :hook ((prog-mode text-mode) . yas-minor-mode-on)
-  :init
-  (setq yas-verbosity 2)
-  :blackout yas-minor-mode)
+  :init (setq yas-verbosity 2))
 
-(use-package yasnippet-snippets
-  :after (yasnippet))
+(use-package yasnippet-snippets :after (yasnippet))
 
-;; company
 (use-package company
   :hook ((prog-mode text-mode) . company-mode)
   :init
@@ -50,54 +45,37 @@
         '(company-capf
           company-files
           (company-dabbrev-code company-keywords)
-          company-dabbrev))
-  :blackout t)
+          company-dabbrev)))
 
-;; company lsp
 (use-package company-lsp
   :after (company)
   :config
   (setq company-lsp-cache-candidates nil))
 
-;; fly-check
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically
-        '(save
-          mode-enabled
-          ;; idle-change
-          )
-        ;; flycheck-idle-change-delay 1.0
-        )
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (setq-default flycheck-disabled-checkers
                 '(c/c++-clang
                   c/c++-gcc
                   c/c++-cppcheck)))
 
-;; flycheck-popup-tip
 (use-package flycheck-popup-tip
   :after (flycheck)
   :hook (flycheck-mode . flycheck-popup-tip-mode))
 
-;; magit
 (use-package magit
-  :init
-  (setq magit-completing-read-function 'ivy-completing-read)
+  :init (setq magit-completing-read-function 'ivy-completing-read)
   :config
   (set-face-attribute 'magit-diff-file-heading nil
                       :inverse-video t
                       :weight 'extra-bold))
 
-;; clean-aindent-mode
-(use-package clean-aindent-mode
-  :hook (prog-mode))
-
-;; zeal docset
 (use-package zeal-at-point
   :config
   (add-to-list 'zeal-at-point-mode-alist
                '(c++-mode . ("cpp" "qt5" "gl4"))))
 
-(provide 'init-languages)
-;;; init-languages ends here
+(provide 'init-languages-base)
+;;; init-languages-base.el ends here

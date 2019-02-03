@@ -9,12 +9,10 @@
 
 ;;; Code:
 (use-package hungry-delete
-  :hook ((emacs-lisp-mode lisp-interaction-mode) . hungry-delete-mode)
-  :blackout t)
+  :hook ((emacs-lisp-mode lisp-interaction-mode) . hungry-delete-mode))
 
 (use-package aggressive-indent
-  :hook ((emacs-lisp-mode lisp-interaction-mode). aggressive-indent-mode)
-  :blackout t)
+  :hook ((emacs-lisp-mode lisp-interaction-mode). aggressive-indent-mode))
 
 (use-package macrostep)
 
