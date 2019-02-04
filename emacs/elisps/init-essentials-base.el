@@ -3,8 +3,11 @@
 
 ;;; Code:
 (use-package duplicate-thing)
+
 (use-package expand-region)
+
 (use-package iedit :config (set-face-inverse-video 'iedit-occurrence t))
+
 (use-package restart-emacs)
 
 (use-package multiple-cursors
@@ -31,6 +34,13 @@
                       :background nil))
 
 (use-package undo-tree :init (global-undo-tree-mode))
+
+(use-package amx
+  ;; counsel-M-x will automatically handle amx to load
+  :init
+  (setq amx-save-file (expand-file-name
+                       (convert-standard-filename "amx-items")
+                       bk:local-directory)))
 
 (use-package ivy
   :init

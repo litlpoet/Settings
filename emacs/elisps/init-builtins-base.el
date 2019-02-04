@@ -45,13 +45,21 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-builtin abbrev)
-(use-builtin delsel    :init (delete-selection-mode))
-(use-builtin frame     :init (blink-cursor-mode))
-(use-builtin ibuffer   :init (setq-default ibuffer-default-sorting-mode 'major-mode))
-(use-builtin menu-bar  :commands (kill-this-buffer))         ; kill-this-buffer is not autoloaded
+
+(use-builtin delsel :init (delete-selection-mode))
+
+(use-builtin frame :init (blink-cursor-mode))
+
+(use-builtin ibuffer :init (setq-default ibuffer-default-sorting-mode 'major-mode))
+
+(use-builtin menu-bar :commands (kill-this-buffer))         ; kill-this-buffer is not autoloaded
+
 (use-builtin prog-mode :hook (prog-mode . prettify-symbols-mode))
-(use-builtin tramp     :init (setq tramp-backup-directory-alist backup-directory-alist))
-(use-builtin vc-hooks  :init (setq vc-follow-symlinks t))
+
+(use-builtin tramp :init (setq tramp-backup-directory-alist backup-directory-alist))
+
+(use-builtin vc-hooks :init (setq vc-follow-symlinks t))
+
 (use-builtin windmove)
 
 (use-builtin faces
