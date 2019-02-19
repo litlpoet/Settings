@@ -37,7 +37,6 @@
         ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))))
 
 
-;; cmake
 (use-package cmake-mode
   :hook (cmake-mode . (lambda()
                         (progn
@@ -47,8 +46,13 @@
                                                          company-capf
                                                          company-files))))))
 
-;; cmake-font-lock
-(use-package cmake-font-lock)           ; autoload will add operation in the cmake-mode-hook
+;; (use-package cmake-font-lock
+;;   :hook (cmake-mode . (lambda()
+;;                         (progn
+;;                           (cmake-font-lock-activate)
+;;                           (font-lock-refresh-defaults)))))
+(use-package cmake-font-lock
+  :hook (cmake-mode . font-lock-refresh-defaults))
 
 ;; glsl
 (use-package glsl-mode)

@@ -39,26 +39,34 @@
                           point-entered minibuffer-avoid-prompt
                           face minibuffer-prompt)
               window-resize-pixelwise t
-              frame-resize-pixelwise  t)
+              frame-resize-pixelwise  t
+              fringes-outside-margins t)
 
 ;; alias
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-builtin abbrev)
 
-(use-builtin delsel :init (delete-selection-mode))
+(use-builtin delsel
+  :init (delete-selection-mode))
 
-(use-builtin frame :init (blink-cursor-mode))
+(use-builtin frame
+  :init (blink-cursor-mode))
 
-(use-builtin ibuffer :init (setq-default ibuffer-default-sorting-mode 'major-mode))
+(use-builtin ibuffer
+  :init (setq-default ibuffer-default-sorting-mode 'major-mode))
 
-(use-builtin menu-bar :commands (kill-this-buffer))         ; kill-this-buffer is not autoloaded
+(use-builtin menu-bar
+  :commands (kill-this-buffer))         ; kill-this-buffer is not autoloaded
 
-(use-builtin prog-mode :hook (prog-mode . prettify-symbols-mode))
+(use-builtin prog-mode
+  :hook (prog-mode . prettify-symbols-mode))
 
-(use-builtin tramp :init (setq tramp-backup-directory-alist backup-directory-alist))
+(use-builtin tramp
+  :init (setq tramp-backup-directory-alist backup-directory-alist))
 
-(use-builtin vc-hooks :init (setq vc-follow-symlinks t))
+(use-builtin vc-hooks
+  :init (setq vc-follow-symlinks t))
 
 (use-builtin windmove)
 
@@ -105,7 +113,7 @@
 
 (use-builtin fringe
   :commands fringe-mode                 ; fringe-mode is not autoloaded
-  :init (fringe-mode '(18 . 6)))
+  :init (fringe-mode '(16 . 16)))
 
 (use-builtin hl-line
   :hook ((prog-mode text-mode dired-mode) . hl-line-mode)

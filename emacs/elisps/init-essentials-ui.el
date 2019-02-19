@@ -42,16 +42,36 @@
 (use-package diff-hl
   :hook (((prog-mode text-mode) . diff-hl-mode)
          (dired-mode            . diff-hl-dired-mode)
-         (magit-post-refresh    . diff-hl-magit-post-refresh)))
+         (magit-post-refresh    . diff-hl-magit-post-refresh))
+  :init
+  (defun bk:vc-gutter-setup-fringe-bitmaps ()
+    "Define thin fringe bitmaps for maximum sexiness."
+    (define-fringe-bitmap 'diff-hl-bmp-top [224] nil nil '(center repeated))
+    (define-fringe-bitmap 'diff-hl-bmp-middle [224] nil nil '(center repeated))
+    (define-fringe-bitmap 'diff-hl-bmp-bottom [224] nil nil '(center repeated))
+    (define-fringe-bitmap 'diff-hl-bmp-insert [224] nil nil '(center repeated))
+    (define-fringe-bitmap 'diff-hl-bmp-single [224] nil nil '(center repeated))
+    (define-fringe-bitmap 'diff-hl-bmp-delete [240 224 192 128] nil nil 'top))
+  (defun bk:vc-gutter-type-at-pos (type _pos)
+    "Return the bitmap for `diff-hl' to use for change at point."
+    (pcase type
+      (`unknown 'question-mark)
+      (`delete  'diff-hl-bmp-delete)
+      (`change  'diff-hl-bmp-middle)
+      (`ignored 'diff-hl-bmp-i)
+      (x (intern (format "diff-hl-bmp-%s" x)))))
+  (setq diff-hl-fringe-bmp-function #'bk:vc-gutter-type-at-pos
+        diff-hl-draw-borders        nil)
+  (add-hook 'diff-hl-mode-hook #'bk:vc-gutter-setup-fringe-bitmaps))
 
 (use-package highlight-numbers
   :hook (prog-mode . highlight-numbers-mode))
 
-(use-package visual-fill-column
-  :hook (visual-line-mode . visual-fill-column-mode)
-  :init
-  (setq visual-fill-column-center-text t
-        visual-fill-column-width (+ 6 fill-column)))
+;; (use-package visual-fill-column
+;;   :hook (visual-line-mode . visual-fill-column-mode)
+;;   :init
+;;   (setq visual-fill-column-center-text t
+;;         visual-fill-column-width (+ 6 fill-column)))
 
 (use-package ace-window
   :config

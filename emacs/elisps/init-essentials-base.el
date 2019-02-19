@@ -6,7 +6,8 @@
 
 (use-package expand-region)
 
-(use-package iedit :config (set-face-inverse-video 'iedit-occurrence t))
+(use-package iedit
+  :config (set-face-inverse-video 'iedit-occurrence t))
 
 (use-package restart-emacs)
 
@@ -33,7 +34,8 @@
                       :foreground "gold"
                       :background nil))
 
-(use-package undo-tree :init (global-undo-tree-mode))
+(use-package undo-tree
+  :init (global-undo-tree-mode))
 
 (use-package amx
   ;; counsel-M-x will automatically handle amx to load
@@ -54,14 +56,19 @@
 
 (use-package ivy-xref
   :after (ivy)
-  :demand t
   :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
 (use-package ivy-hydra
   :after (ivy hydra)
   :demand t)
 
-(use-package counsel :init (counsel-mode t))
+(use-package counsel
+  :init (counsel-mode t)
+  :config
+  (setq counsel-describe-function-function #'helpful-callable
+        counsel-describe-variable-function #'helpful-variable))
+
+(use-package helpful)
 
 (provide 'init-essentials-base)
 ;;; init-essentials-base.el ends here

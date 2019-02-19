@@ -2,16 +2,17 @@
 ;;; Commentary:
 
 ;;; Code:
-(use-package clean-aindent-mode :hook (prog-mode))
+(use-package clean-aindent-mode
+  :hook (prog-mode))
 
 (use-package lsp-mode
   :init
-  (setq lsp-session-file (expand-file-name "lsp-session" bk:local-directory)
+  (setq lsp-session-file   (expand-file-name "lsp-session" bk:local-directory)
         lsp-prefer-flymake nil))
 
 (use-package lsp-ui
   :init
-  (setq lsp-ui-sideline-delay            1
+  (setq lsp-ui-sideline-delay            3
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-sideline-show-flycheck    nil
         lsp-ui-sideline-show-symbol      nil)
@@ -55,18 +56,29 @@
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled)
+        flycheck-indication-mode            'right-fringe)
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    [16 48 112 240 112 48 16] nil nil 'center)
   (setq-default flycheck-disabled-checkers
                 '(c/c++-clang
                   c/c++-gcc
                   c/c++-cppcheck)))
 
-(use-package flycheck-popup-tip
-  :after (flycheck)
-  :hook (flycheck-mode . flycheck-popup-tip-mode))
+;; (use-package flycheck-popup-tip
+;;   :after (flycheck)
+;;   :hook (flycheck-mode . flycheck-popup-tip-mode))
+
+(use-package flycheck-posframe
+  :hook (flycheck-mode . flycheck-posframe-mode)
+  :config
+  (setq flycheck-posframe-warning-prefix "⚠ "
+        flycheck-posframe-info-prefix    "··· "
+        flycheck-posframe-error-prefix   "✕ "))
 
 (use-package magit
-  :init (setq magit-completing-read-function 'ivy-completing-read)
+  :init
+  (setq magit-completing-read-function 'ivy-completing-read)
   :config
   (set-face-attribute 'magit-diff-file-heading nil
                       :inverse-video t

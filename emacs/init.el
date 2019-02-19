@@ -43,6 +43,7 @@
 (require 'init-languages-lisp)
 (require 'init-languages-cpp)
 (require 'init-languages-python)
+(require 'init-languages-rust)
 (require 'init-keybindings-base)
 (require 'init-keybindings-hydras-base)
 

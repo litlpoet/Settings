@@ -40,7 +40,8 @@
  ("C-c z"   . zeal-at-point)
  ("C-c C-j" . direx-project:jump-to-project-root)
  ([remap other-window]         . ace-window)
- ([remap delete-other-windows] . ace-delete-window))
+ ([remap delete-other-windows] . ace-delete-window)
+ ([remap describe-key]         . helpful-key))
 
 (with-eval-after-load 'undo-tree
   (bind-keys ("C-?" . undo-tree-redo))) ;; undo-tree-redo is not autoloaded
@@ -81,10 +82,12 @@
    :map emacs-lisp-mode-map
    ("C-c e m" . macrostep-expand)))
 
-(with-eval-after-load 'clang-format
+(with-eval-after-load 'cc-mode
   (bind-keys
    :map c-mode-base-map
-   ("C-c C-f" . clang-format-buffer)))
+   ("C-c C-f" . clang-format-buffer)
+   ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+   ([remap xref-find-references]  . lsp-ui-peek-find-references)))
 
 (provide 'init-keybindings-base)
 ;;; init-keybindings-base.el ends here
