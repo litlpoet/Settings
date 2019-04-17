@@ -65,7 +65,12 @@
    :map prog-mode-map
    ("M-i" . company-complete)
    :map text-mode-map
-   ("M-i" . company-complete)))
+   ("M-i" . company-complete)
+   :map company-active-map
+   ("M-p" . nil)
+   ("M-n" . nil)
+   ("C-p" . company-select-previous)
+   ("C-n" . company-select-next)))
 
 (with-eval-after-load 'smartparens
   (bind-keys
@@ -85,7 +90,7 @@
 (with-eval-after-load 'cc-mode
   (bind-keys
    :map c-mode-base-map
-   ("C-c C-f" . clang-format-buffer)
+   ("C-c C-f" . lsp-format-buffer)
    ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
    ([remap xref-find-references]  . lsp-ui-peek-find-references)))
 

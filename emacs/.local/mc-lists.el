@@ -11,6 +11,7 @@
         counsel-yank-pop
         hungry-delete-forward
         kill-region
+        wdired-finish-edit
         ))
 
 (setq mc/cmds-to-run-once

@@ -9,24 +9,22 @@
 
 ;;; Code:
 (use-package org
-  :pin    org
-  :bind (("C-c l" . org-store-link)
-         ("C-c a" . org-agenda)
-         ("C-c c" . org-capture)
-         ("C-c b" . org-iswitchb))
-  :hook (org-mode . bk:org-mode-hook)
-  :init
-  (defun bk:org-mode-hook()
-    (add-hook 'completion-at-point-functions
-              'pcomplete-completions-at-point nil t)))
+  ;; :bind (("C-c l" . org-store-link)
+  ;;        ("C-c a" . org-agenda)
+  ;;        ("C-c c" . org-capture)
+  ;;        ("C-c b" . org-iswitchb))
+  ;; :hook (org-mode . bk:org-mode-hook)
+  ;; :init
+  ;; (defun bk:org-mode-hook()
+  ;;   (add-hook 'completion-at-point-functions
+  ;;             'pcomplete-completions-at-point nil t))
+  )
 
 (use-package org-bullets
-  :ensure t
   :hook (org-mode . org-bullets-mode))
 
-(use-package ox-hugo
-  :ensure t
-  :after ox)
+;; (use-package ox-hugo
+;;   :after ox)
 
-(provide 'init-defaults-org)
+(provide 'init-builtins-org)
 ;;; init-builtins-org.el ends here

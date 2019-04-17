@@ -6,6 +6,7 @@
   :hook (prog-mode))
 
 (use-package lsp-mode
+  :commands (lsp-format-buffer)
   :init
   (setq lsp-session-file   (expand-file-name "lsp-session" bk:local-directory)
         lsp-prefer-flymake nil))
@@ -35,9 +36,13 @@
 
 (use-package yasnippet
   :hook ((prog-mode text-mode) . yas-minor-mode-on)
-  :init (setq yas-verbosity 2))
+  :init (setq yas-verbosity 2)
+  :config (yas-reload-all))
 
-(use-package yasnippet-snippets :after (yasnippet))
+(use-package yasnippet-snippets
+  ;; :after (yasnippet)
+  ;; :demand t
+  )
 
 (use-package company
   :hook ((prog-mode text-mode) . company-mode)
@@ -56,7 +61,8 @@
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
   :config
-  (setq flycheck-check-syntax-automatically '(save idle-change mode-enabled)
+  (setq flycheck-check-syntax-automatically '(save ;; idle-change
+                                              mode-enabled)
         flycheck-indication-mode            'right-fringe)
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [16 48 112 240 112 48 16] nil nil 'center)

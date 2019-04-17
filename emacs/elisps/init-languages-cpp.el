@@ -13,28 +13,34 @@
   :hook ((c-mode-common . google-set-c-style)
          (c-mode-common . google-make-newline-indent)))
 
-(use-package clang-format
-  :after (cc-mode)
-  :hook (before-save . (lambda()
-                         (when (or (eq major-mode 'c-mode)
-                                   (eq major-mode 'c++-mode)
-                                   (eq major-mode 'glsl-mode))
-                           (clang-format-buffer)))))
+;; (use-package clang-format
+;;   :after (cc-mode)
+;;   :hook (before-save . (lambda()
+;;                          (when (or (eq major-mode 'c-mode)
+;;                                    (eq major-mode 'c++-mode)
+;;                                    (eq major-mode 'glsl-mode))
+;;                            (clang-format-buffer)))))
 
 (use-package ccls
-  :hook (c-mode-common . (lambda()
-                           (progn
-                             (require 'ccls)
-                             (condition-case nil
-                                 (lsp)
-                               (user-error nil))
-                             (setq-local company-idle-delay 0.3)
-                             (setq-local company-dabbrev-code-everywhere t)
-                             (setq-local company-backends
-                                         '(company-lsp company-capf company-files)))))
+  :hook ((c-mode-common . (lambda()
+                            (progn
+                              (require 'ccls)
+                              (condition-case nil
+                                  (lsp)
+                                (user-error nil))
+                              (setq-local company-idle-delay 0.3)
+                              (setq-local company-dabbrev-code-everywhere t))))
+         (before-save . (lambda()
+                          (when (or (eq major-mode 'c-mode)
+                                    (eq major-mode 'c++-mode)
+                                    (eq major-mode 'glsl-mode))
+                            (lsp-format-buffer)))))
   :init
   (setq ccls-args '("--log-file=/home/bk/.cache/ccls/ccls.log")
-        ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t))))
+        ccls-initialization-options '(:index
+                                      (:comments 2)
+                                      :completion
+                                      (:detailedLabel t))))
 
 
 (use-package cmake-mode

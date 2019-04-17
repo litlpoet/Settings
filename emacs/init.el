@@ -36,6 +36,7 @@
 (require 'init-package-management)
 (require 'init-builtins-base)
 (require 'init-builtins-dired)
+(require 'init-builtins-org)
 (require 'init-essentials-base)
 (require 'init-essentials-project)
 (require 'init-essentials-ui)

@@ -20,10 +20,14 @@
         projectile-switch-project-action       #'projectile-dired
         projectile-find-dir-includes-top-level t
         projectile-mode-line-prefix            " Prj"
+        projectile-sort-order                  'recently-active
         projectile-project-root-files-top-down-recurring
         (append '("compile_commands.json"
                   ".ccls")
-                projectile-project-root-files-top-down-recurring))
+                projectile-project-root-files-top-down-recurring)
+        projectile-globally-ignored-directories
+        (append projectile-globally-ignored-directories
+                (list ".ccls-cache" "build")))
   (when (executable-find "fd")
     (setq projectile-git-command "fd . --type f -0 -H -E .git"
           projectile-generic-command projectile-git-command))
