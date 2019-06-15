@@ -91,8 +91,10 @@
   (bind-keys
    :map c-mode-base-map
    ("C-c C-f" . lsp-format-buffer)
-   ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-   ([remap xref-find-references]  . lsp-ui-peek-find-references)))
+   ("M-/"     . lsp-ui-peek-find-definitions)
+   ;; ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+   ([remap xref-find-references]  . lsp-ui-peek-find-references) ; "M-?"
+   ))
 
 (provide 'init-keybindings-base)
 ;;; init-keybindings-base.el ends here

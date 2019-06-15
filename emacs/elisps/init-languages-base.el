@@ -16,7 +16,8 @@
   (setq lsp-ui-sideline-delay            3
         lsp-ui-sideline-ignore-duplicate t
         lsp-ui-sideline-show-flycheck    nil
-        lsp-ui-sideline-show-symbol      nil)
+        lsp-ui-sideline-show-symbol      nil
+        lsp-ui-peek-always-show          t)
   :config
   (set-face-attribute 'lsp-face-highlight-read nil
                       :weight     'bold

@@ -3,14 +3,19 @@
 
 (setq mc/cmds-to-run-for-all
       '(
+        beginning-of-visual-line
         c-electric-brace
         c-electric-colon
         c-electric-delete-forward
         c-electric-semi&comma
         c-electric-slash
         counsel-yank-pop
+        end-of-visual-line
         hungry-delete-forward
         kill-region
+        org-cycle
+        org-delete-char
+        org-self-insert-command
         wdired-finish-edit
         ))
 
