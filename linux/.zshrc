@@ -70,7 +70,7 @@ plugins=(
 # export XMODIFIERS=@im=ibus
 # export QT_IM_MODULE=xim
 export PYTHONSTARTUP="$(python -m jedi repl)"
-export PATH="/home/bk/.local/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$HOME/.local/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment

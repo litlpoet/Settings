@@ -7,9 +7,12 @@
 
 (use-package lsp-mode
   :commands (lsp-format-buffer)
+  ;; :hook (c-mode-common . lsp)
   :init
   (setq lsp-session-file   (expand-file-name "lsp-session" bk:local-directory)
-        lsp-prefer-flymake nil))
+        lsp-prefer-flymake nil)
+  :config
+  (setq lsp-clients-clangd-args '("-j=4" "-background-index" "-log=error")))
 
 (use-package lsp-ui
   :init

@@ -36,12 +36,11 @@
                                     (eq major-mode 'glsl-mode))
                             (lsp-format-buffer)))))
   :init
-  (setq ccls-args '("--log-file=/home/bk/.cache/ccls/ccls.log")
+  (setq ccls-args '("--log-file=/home/bk/.cache/ccls.log")
         ccls-initialization-options '(:index
                                       (:comments 2)
                                       :completion
                                       (:detailedLabel t))))
-
 
 (use-package cmake-mode
   :hook (cmake-mode . (lambda()
